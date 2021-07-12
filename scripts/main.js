@@ -99,8 +99,6 @@ function scrollEvt(evt) {
   var scroll    = $(window).scrollTop();
   var delta     = 500;
 
-  console.log(docheight + " : " + scroll + " : " + winheight);
-
   if(scroll < delta) {
     $('#upbtn').hide();
     $('#dnbtn').show();
@@ -126,6 +124,7 @@ function main() {
 
   // Initilize the page
   $("#upbtn").hide();
+  $("#dnbtn").hide();
 }
 
 /**
