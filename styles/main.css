@@ -25,6 +25,11 @@
   margin: 3px;
 }
 
+header nav #logo {
+  width: 60px;
+  height: 60px;
+}
+
 main {
   width: 100%;
   min-height: 100vh;
@@ -43,9 +48,18 @@ main #menu {
   z-index: 100;
 }
 
+main #menu a {
+  font-size: 30px;
+  color: var(--color-forground);
+}
+
+main #menu a:hover {
+  color: rgb(32, 228, 32);
+}
+
 main #chat {
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
 
 main #chat #upbtn {
@@ -75,7 +89,7 @@ main #chat #dnbtn {
 main #chat .from {
   width: fit-content;
   height: fit-content;
-  max-width: 300px;
+  max-width: 50%;
   padding: 10px;
   position: relative;
   display: flex;
@@ -104,7 +118,7 @@ main #chat .from::before {
 main #chat .to {
   width: fit-content;
   height: fit-content;
-  max-width: 300px;
+  max-width: 50%;
   padding: 10px;
   position: relative;
   display: flex;
@@ -139,14 +153,6 @@ main #chat .to .msg-person {
   font-size: 90%;
 }
 
-main #chat .from .msg-person {
-  color: #35cd96;
-}
-
-main #chat .to .msg-person {
-  color: #db5ec2;
-}
-
 main #chat .from .msg-content,
 main #chat .to .msg-content {
   width: fit-content;
@@ -172,6 +178,12 @@ main #chat .to .msg-time {
   font-size: 60%;
   padding-top: 5px;
   color: gray;
+}
+
+@media (max-width: 600px) {
+  main #chat .from, main #chat .to {
+    max-width: 300px;
+  }
 }
 
 footer {

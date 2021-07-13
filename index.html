@@ -46,8 +46,8 @@
     <header>
       <nav class="navbar fixed-top theme">
         <div class="container">
-          <div class="navbar-brand">
-            ChatViewer
+          <div class="navbar-brand" >
+            <img src="image/logo.ico" id="logo"/>
           </div>
           <ul class="navbar-nav">
             <li class="nav-item">
@@ -72,9 +72,16 @@
             <p>This file processed in local only</p>
           </div>
           <select class="form-select mb-2" id="authors">
+            <option value="select" selected="selected">Select Primary Author</option>
           </select>
+          <div id="formstatus" class="form-text mb-2">
+          </div>
           <input type="submit" value="View" id="formsubmit" class="btn btn-success">
         </form>
+        <hr class="w-100">
+        <a href="https://github.com/lakshmi-kanthan/ChatViewer">
+          <i class="fab fa-github"></i>
+        </a>
       </div>
       <div id="chat">
         <div class="container">

@@ -4,22 +4,65 @@
 // https://opensource.org/licenses/MIT
 
 /**
+ * @brief Random Color
+ */
+function randColor() {
+  return (
+    "rgb(" +
+    Math.random() * 255 +
+    "," +
+    Math.random() * 255 +
+    "," +
+    Math.random() * 255 +
+    ")"
+  );
+}
+
+/**
+ * @brief Slide menu Down
+ */
+function meduDown() {
+  $("nav ul li button i").removeClass("fa-bars").addClass("fa-times");
+  $("header nav").css("box-shadow", "0px 0px 0px var(--color-shadow)");
+  $("footer").css("box-shadow", "0px 0px 0px var(--color-shadow)");
+  $("#menu").slideDown();
+}
+
+/**
+ * @brief Slide menu Up
+ */
+function menuUp() {
+  $("#menu").slideUp();
+  $("nav ul li button i").removeClass("fa-times").addClass("fa-bars");
+  $("header nav").css("box-shadow", "0px 0px 10px var(--color-shadow)");
+  $("footer").css("box-shadow", "0px 0px 10px var(--color-shadow)");
+}
+
+/**
  * @brief Toggle Menu
  */
 function openCloseMenu(evt) {
-  var btnicon = $("nav ul li button i");
-
-  if (btnicon.hasClass("fa-bars")) {
-    btnicon.removeClass("fa-bars").addClass("fa-times");
-    $("header nav").css("box-shadow", "0px 0px 0px var(--color-shadow)");
-    $("footer").css("box-shadow", "0px 0px 0px var(--color-shadow)");
-    $("#menu").slideDown();
+  if ($("nav ul li button i").hasClass("fa-bars")) {
+    meduDown();
   } else {
-    btnicon.removeClass("fa-times").addClass("fa-bars");
-    $("#menu").slideUp();
-    $("header nav").css("box-shadow", "0px 0px 10px var(--color-shadow)");
-    $("footer").css("box-shadow", "0px 0px 10px var(--color-shadow)");
+    menuUp();
   }
+}
+
+function htmlEncode(str) {
+  return $("<div></div>")
+    .text(str)
+    .html()
+    .replace(/\r?\n/g, "<br>")
+    .replace(/ /g, "&nbsp;")
+    .replace(
+      /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/g,
+      '<a href="$1" target="_blank">$1</a>'
+    )
+    .replace(
+      /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g,
+      '<a href="mailto:$1">$1</a>'
+    );
 }
 
 /**
@@ -40,14 +83,13 @@ function readFile(file) {
 }
 
 /**
- * @brief Add Chats
+ * @brief Add Chats to DOM
  */
-function addChat(name, msg, time) {
-  var chat_box = $("#chat > div");
-  var chat_msg = `
-      <div class="d-flex my-2">
+function addChat(name, msg, time, col) {
+  $("#chat > div").append(
+    `<div>
           <div id="msg-container">
-              <div class="msg-person">
+              <div class="msg-person" style="color:${col}">
                   ${name}
               </div>
               <div class="msg-content">
@@ -58,16 +100,59 @@ function addChat(name, msg, time) {
               </div>
           </div>
       </div>
-  `;
-  console.log(msg);
-  chat_box.append(chat_msg).hide();
+    `
+  );
 }
 
 /**
  * @brief loads chat from txt
  */
-function loadTxtFile(data) {
-  return whatsappChatParser.parseString(data);
+async function loadTxtFile(data) {
+  let messages = await whatsappChatParser.parseString(data);
+  let authors = [];
+
+  for (let msg of messages) {
+    msg.author = msg.author.trim();
+    msg.message = msg.message.trim();
+    msg.date = msg.date.toLocaleString();
+
+    if (msg.author != "System") {
+      authors.push({
+        name : msg.author
+      });
+    }
+  }
+
+  authors = authors.filter((author, index) => {
+    return authors.findIndex(function (a) {
+      return a.name === author.name;
+    }) === index;
+  }).sort((a, b) => {
+    return a.name.localeCompare(b.name);
+  });
+
+  for(let author of authors) {
+    author.color = randColor();
+  }
+
+  for (let author of authors) {
+    $("#authors").append(`<option value="${author.name}">${author.name}</option>`);
+  }
+
+  for (let i = 0; i < messages.length; i++) {
+    if (authors.find( (author) => {
+      return author.name == messages[i].author;
+    })) {
+      addChat(
+        messages[i].author,
+        htmlEncode(messages[i].message),
+        messages[i].date,
+        authors.find(author => author.name == messages[i].author).color
+      );
+    }
+  }
+
+  $("#chat").hide();
 }
 
 /**
@@ -81,8 +166,9 @@ function loadZipFile(data) {}
 async function formfileInput(evt) {
   $("#authors").prop("disabled", true);
   $("#formsubmit").prop("disabled", true);
+  $("#authors > option").not(":first").remove();
   $("#chat > div").empty();
-  $("#authors").empty();
+  $("#formstatus").text("Processing...");
   evt.preventDefault();
 
   try {
@@ -96,61 +182,19 @@ async function formfileInput(evt) {
     let data = await readFile(file);
 
     if (file.name.endsWith(".txt")) {
-      let messages = await loadTxtFile(data);
-      let authors = [];
-
-      for (msg of messages) {
-        authors.push(msg.author);
-      }
-
-      authors = [...new Set(authors)].filter((item) => item != "System").sort();
-
-      $("#authors").append(
-        `<option value="select" selected>Select Primary Author</option>`
-      );
-
-      for (author of authors) {
-        $("#authors").append(`<option value="${author}">${author}</option>`);
-      }
-
-      let HTMLencode = function (str) {
-        return $("<div></div>").text(str).html()
-                .replace(
-                  /\r?\n/g,
-                  "<br>"
-                )
-                .replace(
-                  / /g,
-                  "&nbsp;"
-                )
-                .replace(
-                  /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/g,
-                  '<a href="$1" target="_blank">$1</a>'
-                );
-      };
-
-      for (msg of messages) {
-        if (authors.includes(msg.author)) {
-          addChat(
-            msg.author,
-            HTMLencode(msg.message),
-            msg.date.toLocaleString()
-          );
-        }
-      }
-
-      $("#authors").prop("disabled", false);
-      $("#formsubmit").prop("disabled", false);
+      loadTxtFile(data);
     } else if (file.name.endsWith(".zip")) {
       loadZipFile(data);
     } else {
       alert("File Type Not Supported");
-      return;
     }
   } catch (error) {
     alert(error);
-    return;
   }
+
+  $("#authors").prop("disabled", false);
+  $("#formsubmit").prop("disabled", false);
+  $("#formstatus").text("Done");
 
   return;
 }
@@ -159,7 +203,9 @@ async function formfileInput(evt) {
  * @brief Action for form submit
  */
 function formSubmit(evt) {
-  let primaryauthor = $("#authors").val();
+  evt.preventDefault();
+  $("#formstatus").text("Processing...");
+  let primaryauthor = $("#authors").val().trim();
 
   if (primaryauthor == "select") {
     alert("Select a valid Author");
@@ -168,26 +214,25 @@ function formSubmit(evt) {
 
   let chats = $("#chat > div > div");
 
-  for (chat of chats) {
+  for (let chat of chats) {
     let author = $(chat).find(".msg-person").text().trim();
 
     if (author != primaryauthor) {
-      $(chat).addClass("justify-content-start");
-      $(chat).find("#msg-container").addClass("from");
+      $(chat).removeClass().addClass("d-flex my-2 justify-content-start");
+      $(chat).find("#msg-container").removeClass().addClass("from");
     } else {
-      $(chat).addClass("justify-content-end");
-      $(chat).find("#msg-container").addClass("to");
+      $(chat).removeClass().addClass("d-flex my-2 justify-content-end");
+      $(chat).find("#msg-container").removeClass().addClass("to");
     }
   }
 
   twemoji.parse($("#chat").get(0));
-  $("nav ul li button i").removeClass("fa-times").addClass("fa-bars");
-  $("#menu").slideUp();
-  $("header nav").css("box-shadow", "0px 0px 10px var(--color-shadow)");
-  $("footer").css("box-shadow", "0px 0px 10px var(--color-shadow)");
-  $("#chat > div").slideDown();
 
-  return false;
+  $("#formstatus").text("Done");
+
+  menuUp();
+
+  $("#chat").show(1000);
 }
 
 /**
@@ -250,8 +295,8 @@ function main() {
 $(function () {
   main();
   twemoji.parse($("body").get(0), {
-    folder: 'svg',
-    ext: '.svg',
-    size: 16
+    folder: "svg",
+    ext: ".svg",
+    size: 16,
   });
 });
