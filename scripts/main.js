@@ -180,6 +180,7 @@ function formSubmit(evt) {
     }
   }
 
+  twemoji.parse($("#chat").get(0));
   $("nav ul li button i").removeClass("fa-times").addClass("fa-bars");
   $("#menu").slideUp();
   $("header nav").css("box-shadow", "0px 0px 10px var(--color-shadow)");
@@ -248,4 +249,9 @@ function main() {
  */
 $(function () {
   main();
+  twemoji.parse($("body").get(0), {
+    folder: 'svg',
+    ext: '.svg',
+    size: 16
+  });
 });

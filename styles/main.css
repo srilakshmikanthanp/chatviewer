@@ -18,6 +18,13 @@
   border-radius: 15px;
 }
 
+.emoji {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  margin: 3px;
+}
+
 main {
   width: 100%;
   min-height: 100vh;
@@ -68,7 +75,7 @@ main #chat #dnbtn {
 main #chat .from {
   width: fit-content;
   height: fit-content;
-  max-width: 400px;
+  max-width: 300px;
   padding: 10px;
   position: relative;
   display: flex;
@@ -97,7 +104,7 @@ main #chat .from::before {
 main #chat .to {
   width: fit-content;
   height: fit-content;
-  max-width: 400px;
+  max-width: 300px;
   padding: 10px;
   position: relative;
   display: flex;
