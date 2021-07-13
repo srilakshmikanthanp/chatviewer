@@ -18,13 +18,10 @@
   border-radius: 15px;
 }
 
-body {
-  overflow-y: scroll;
-}
-
 main {
   width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 main #menu {
@@ -71,7 +68,7 @@ main #chat #dnbtn {
 main #chat .from {
   width: fit-content;
   height: fit-content;
-  max-width: 200px;
+  max-width: 50%;
   padding: 10px;
   position: relative;
   display: flex;
@@ -100,7 +97,7 @@ main #chat .from::before {
 main #chat .to {
   width: fit-content;
   height: fit-content;
-  max-width: 300px;
+  max-width: 50%;
   padding: 10px;
   position: relative;
   display: flex;
@@ -150,6 +147,8 @@ main #chat .to .msg-content {
   background-color: transparent;
   font-size: 100%;
   padding-top: 5px;
+  margin-right: auto;
+  word-break:break-all;
 }
 
 main #chat .from .msg-content a,
@@ -166,6 +165,12 @@ main #chat .to .msg-time {
   font-size: 60%;
   padding-top: 5px;
   color: gray;
+}
+
+@media (min-width: 800px) {
+  main #chat .from, main #chat .to {
+    max-width: 400px;
+  }
 }
 
 footer {
