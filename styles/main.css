@@ -68,7 +68,7 @@ main #chat #dnbtn {
 main #chat .from {
   width: fit-content;
   height: fit-content;
-  max-width: 50%;
+  max-width: 400px;
   padding: 10px;
   position: relative;
   display: flex;
@@ -97,7 +97,7 @@ main #chat .from::before {
 main #chat .to {
   width: fit-content;
   height: fit-content;
-  max-width: 50%;
+  max-width: 400px;
   padding: 10px;
   position: relative;
   display: flex;
@@ -165,12 +165,6 @@ main #chat .to .msg-time {
   font-size: 60%;
   padding-top: 5px;
   color: gray;
-}
-
-@media (min-width: 800px) {
-  main #chat .from, main #chat .to {
-    max-width: 400px;
-  }
 }
 
 footer {
