@@ -75,14 +75,46 @@ function mediaEncode(filedata, filename) {
     let blob = new Blob([filedata.buffer]);
     let url = URL.createObjectURL(blob);
     return `<img src="${url}" id="msg-img"/>`;
+  } else if (filename.endsWith(".mp3")) {
+    let blob = new Blob([filedata.buffer]);
+    let url = URL.createObjectURL(blob);
+    return `
+      <audio controls id="msg-aud">
+      <source src="${url}" type="audio/mp3">
+      <a href="${url}" target="_blank">
+      You Browser Did not support audio so,
+      Use This Link to Play audio</a>
+      </audio>
+    `;
   } else if (filename.endsWith(".mp4")) {
     let blob = new Blob([filedata.buffer]);
     let url = URL.createObjectURL(blob);
     return `
       <video controls id="msg-vid">
           <source src="${url}" type="video/mp4">
-          browser does not support the video.
+          <a href="${url}" target="_blank">
+          You Browser Did not support video so,
+          Use This Link to Play Video</a>
       </video>
+    `;
+  } else if (filename.endsWith(".webm")) {
+    let blob = new Blob([filedata.buffer]);
+    let url = URL.createObjectURL(blob);
+    return `
+      <video controls id="msg-vid">
+          <source src="${url}" type="video/webm">
+          <a href="${url}" target="_blank">
+          You Browser Did not support video so,
+          Use This Link to Play Video</a>
+      </video>
+    `;
+  } else {
+    let blob = new Blob([filedata.buffer]);
+    let url = URL.createObjectURL(blob);
+    return `
+      <a href="${url}" target="_blank">
+        Unkown File Type, Use to download
+      </a>
     `;
   }
 }

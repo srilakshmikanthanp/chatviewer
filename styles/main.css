@@ -166,6 +166,8 @@ main #chat .to .msg-content {
 
 main #chat .from .msg-content img#msg-img,
 main #chat .to .msg-content img#msg-img,
+main #chat .from .msg-content img#msg-aud,
+main #chat .to .msg-content img#msg-aud,
 main #chat .from .msg-content video#msg-vid,
 main #chat .to .msg-content video#msg-vid {
   width: 300px;
