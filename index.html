@@ -30,6 +30,13 @@
       integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
       crossorigin="anonymous"
     />
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"
+      integrity="sha512-uVSVjE7zYsGz4ag0HEzfugJ78oHCI1KhdkivjQro8ABL/PRiEO4ROwvrolYAcZnky0Fl/baWKYilQfWvESliRA==" 
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/whatsapp-chat-parser/dist/whatsapp-chat-parser.min.js"></script>  
 
@@ -69,7 +76,7 @@
         <form class="d-flex flex-column align-items-center justify-content-center">
           <input type="file" name="Choose" aria-describedby="privacy-msg" id="file-input" class="form-control">
           <div id="privacy-msg" class="form-text">
-            <p>This file processed in local only</p>
+            <p>This file (.txt, .zip) processed in local only</p>
           </div>
           <select class="form-select mb-2" id="authors">
             <option value="select" selected="selected">Select Primary Author</option>

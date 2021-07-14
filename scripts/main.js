@@ -66,20 +66,25 @@ function htmlEncode(str) {
 }
 
 /**
- * @brief Read File Promise
+ * @brief Encodes Media
  */
-function readFile(file) {
-  return new Promise((resolve, reject) => {
-    var fileReader = new FileReader();
-
-    fileReader.onload = function (evt) {
-      resolve(evt.target.result);
-    };
-
-    fileReader.onerror = reject;
-
-    fileReader.readAsText(file);
-  });
+function mediaEncode(filedata, filename) {
+  if (filedata == undefined) {
+    return "<img src'${filename}' alt='image'/>";
+  } else if (filename.endsWith(".webp")) {
+    let blob = new Blob([filedata.buffer]);
+    let url = URL.createObjectURL(blob);
+    return `<img src="${url}" id="msg-img"/>`;
+  } else if (filename.endsWith(".mp4")) {
+    let blob = new Blob([filedata.buffer]);
+    let url = URL.createObjectURL(blob);
+    return `
+      <video controls id="msg-vid">
+          <source src="${url}" type="video/mp4">
+          browser does not support the video.
+      </video>
+    `;
+  }
 }
 
 /**
@@ -107,7 +112,19 @@ function addChat(name, msg, time, col) {
 /**
  * @brief loads chat from txt
  */
-async function loadTxtFile(data) {
+async function loadTxtFile(file) {
+  let data = await new Promise((resolve, reject) => {
+    var fileReader = new FileReader();
+
+    fileReader.onload = function (evt) {
+      resolve(evt.target.result);
+    };
+
+    fileReader.onerror = reject;
+
+    fileReader.readAsText(file);
+  });
+
   let messages = await whatsappChatParser.parseString(data);
   let authors = [];
 
@@ -118,47 +135,167 @@ async function loadTxtFile(data) {
 
     if (msg.author != "System") {
       authors.push({
-        name : msg.author
+        name: msg.author,
       });
     }
   }
 
-  authors = authors.filter((author, index) => {
-    return authors.findIndex(function (a) {
-      return a.name === author.name;
-    }) === index;
-  }).sort((a, b) => {
-    return a.name.localeCompare(b.name);
-  });
+  authors = authors
+    .filter((author, index) => {
+      return (
+        authors.findIndex(function (a) {
+          return a.name === author.name;
+        }) === index
+      );
+    })
+    .sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
 
-  for(let author of authors) {
+  for (let author of authors) {
     author.color = randColor();
   }
 
   for (let author of authors) {
-    $("#authors").append(`<option value="${author.name}">${author.name}</option>`);
+    $("#authors").append(
+      `<option value="${author.name}">${author.name}</option>`
+    );
   }
 
+  $("#chat").hide();
+
   for (let i = 0; i < messages.length; i++) {
-    if (authors.find( (author) => {
-      return author.name == messages[i].author;
-    })) {
+    if (
+      authors.find((author) => {
+        return author.name == messages[i].author;
+      })
+    ) {
       addChat(
         messages[i].author,
         htmlEncode(messages[i].message),
         messages[i].date,
-        authors.find(author => author.name == messages[i].author).color
+        authors.find((author) => author.name == messages[i].author).color
       );
     }
   }
-
-  $("#chat").hide();
 }
 
 /**
  * @brief loads chat from zip
  */
-function loadZipFile(data) {}
+async function loadZipFile(file) {
+  let zipfile = await JSZip().loadAsync(file);
+  let maintxt = null;
+  let promisemedia = {
+    name: [],
+    promisedata: [],
+  };
+
+  zipfile.forEach((relativepath, zipentry) => {
+    if (zipentry.name.endsWith(".txt")) {
+      if (maintxt == null) {
+        maintxt = zipentry.async("string");
+      } else {
+        alert(`More than one .txt file in zip file!`);
+        return false;
+      }
+    } else {
+      promisemedia.name.push(zipentry.name);
+      promisemedia.promisedata.push(zipentry.async("uint8array"));
+    }
+  });
+
+  if (maintxt == null) {
+    alert(`No .txt file in zip file!`);
+  }
+
+  maintxt
+    .then((data) => {
+      Promise.all(promisemedia.promisedata)
+        .then(async (medias) => {
+          let messages = await whatsappChatParser.parseString(data, {
+            parseAttachments: true,
+          });
+          let medianames = promisemedia.name;
+          let authors = [];
+
+          for (let msg of messages) {
+            msg.author = msg.author.trim();
+            msg.message = msg.message.trim();
+            msg.date = msg.date.toLocaleString();
+
+            if (msg.author != "System") {
+              authors.push({
+                name: msg.author,
+              });
+            }
+          }
+
+          authors = authors
+            .filter((author, index) => {
+              return (
+                authors.findIndex(function (a) {
+                  return a.name === author.name;
+                }) === index
+              );
+            })
+            .sort((a, b) => {
+              return a.name.localeCompare(b.name);
+            });
+
+          for (let author of authors) {
+            author.color = randColor();
+          }
+
+          for (let author of authors) {
+            $("#authors").append(
+              `<option value="${author.name}">${author.name}</option>`
+            );
+          }
+
+          $("#chat").hide();
+
+          for (let i = 0; i < messages.length; i++) {
+            if (
+              authors.find((author) => {
+                return author.name == messages[i].author;
+              })
+            ) {
+              if ("attachment" in messages[i]) {
+                addChat(
+                  messages[i].author,
+                  mediaEncode(
+                    medias[
+                      medianames.findIndex((name) => {
+                        return name.includes(messages[i].attachment.fileName);
+                      })
+                    ],
+                    messages[i].attachment.fileName
+                  ),
+                  messages[i].date,
+                  authors.find((author) => author.name == messages[i].author)
+                    .color
+                );
+              } else {
+                addChat(
+                  messages[i].author,
+                  htmlEncode(messages[i].message),
+                  messages[i].date,
+                  authors.find((author) => author.name == messages[i].author)
+                    .color
+                );
+              }
+            }
+          }
+        })
+        .catch((err) => {
+          alert(`Error reading media files: ${err}`);
+        });
+    })
+    .catch((error) => {
+      alert(`Error reading .txt file: ${error}`);
+    });
+}
 
 /**
  * @brief form file inpit
@@ -179,12 +316,10 @@ async function formfileInput(evt) {
       return false;
     }
 
-    let data = await readFile(file);
-
     if (file.name.endsWith(".txt")) {
-      loadTxtFile(data);
+      loadTxtFile(file);
     } else if (file.name.endsWith(".zip")) {
-      loadZipFile(data);
+      loadZipFile(file);
     } else {
       alert("File Type Not Supported");
     }
