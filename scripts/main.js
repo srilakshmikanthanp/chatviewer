@@ -68,15 +68,13 @@ function htmlEncode(str) {
 /**
  * @brief Encodes Media
  */
-function mediaEncode(filedata, filename) {
-  if (filedata == undefined) {
-    return "<img src'${filename}' alt='image'/>";
+function mediaEncode(blob, filename) {
+  if (blob == undefined) {
+    return "<img src'${filename}' alt='error'/>";
   } else if (filename.endsWith(".webp")) {
-    let blob = new Blob([filedata.buffer]);
     let url = URL.createObjectURL(blob);
     return `<img src="${url}" id="msg-img"/>`;
   } else if (filename.endsWith(".mp3")) {
-    let blob = new Blob([filedata.buffer]);
     let url = URL.createObjectURL(blob);
     return `
       <audio controls id="msg-aud">
@@ -87,7 +85,6 @@ function mediaEncode(filedata, filename) {
       </audio>
     `;
   } else if (filename.endsWith(".mp4")) {
-    let blob = new Blob([filedata.buffer]);
     let url = URL.createObjectURL(blob);
     return `
       <video controls id="msg-vid">
@@ -98,7 +95,6 @@ function mediaEncode(filedata, filename) {
       </video>
     `;
   } else if (filename.endsWith(".webm")) {
-    let blob = new Blob([filedata.buffer]);
     let url = URL.createObjectURL(blob);
     return `
       <video controls id="msg-vid">
@@ -109,7 +105,6 @@ function mediaEncode(filedata, filename) {
       </video>
     `;
   } else {
-    let blob = new Blob([filedata.buffer]);
     let url = URL.createObjectURL(blob);
     return `
       <a href="${url}" target="_blank">
@@ -145,6 +140,10 @@ function addChat(name, msg, time, col) {
  * @brief loads chat from txt
  */
 async function loadTxtFile(file) {
+  $("#authors").prop("disabled", true);
+  $("#formsubmit").prop("disabled", true);
+  $("#formstatus").text("Processing...");
+
   let data = await new Promise((resolve, reject) => {
     var fileReader = new FileReader();
 
@@ -210,12 +209,20 @@ async function loadTxtFile(file) {
       );
     }
   }
+
+  $("#authors").prop("disabled", false);
+  $("#formsubmit").prop("disabled", false);
+  $("#formstatus").text("Done");
 }
 
 /**
  * @brief loads chat from zip
  */
 async function loadZipFile(file) {
+  $("#authors").prop("disabled", true);
+  $("#formsubmit").prop("disabled", true);
+  $("#formstatus").text("Processing...");
+
   let zipfile = await JSZip().loadAsync(file);
   let maintxt = null;
   let promisemedia = {
@@ -233,7 +240,7 @@ async function loadZipFile(file) {
       }
     } else {
       promisemedia.name.push(zipentry.name);
-      promisemedia.promisedata.push(zipentry.async("uint8array"));
+      promisemedia.promisedata.push(zipentry.async("blob"));
     }
   });
 
@@ -326,6 +333,10 @@ async function loadZipFile(file) {
     })
     .catch((error) => {
       alert(`Error reading .txt file: ${error}`);
+    }).finally(() => {
+      $("#authors").prop("disabled", false);
+      $("#formsubmit").prop("disabled", false);
+      $("#formstatus").text("Done");
     });
 }
 
@@ -333,11 +344,8 @@ async function loadZipFile(file) {
  * @brief form file inpit
  */
 async function formfileInput(evt) {
-  $("#authors").prop("disabled", true);
-  $("#formsubmit").prop("disabled", true);
   $("#authors > option").not(":first").remove();
   $("#chat > div").empty();
-  $("#formstatus").text("Processing...");
   evt.preventDefault();
 
   try {
@@ -358,10 +366,6 @@ async function formfileInput(evt) {
   } catch (error) {
     alert(error);
   }
-
-  $("#authors").prop("disabled", false);
-  $("#formsubmit").prop("disabled", false);
-  $("#formstatus").text("Done");
 
   return;
 }
