@@ -66,9 +66,39 @@ function htmlEncode(str) {
 }
 
 /**
+ * @brief set mime type
+ */
+function getBlobwithMIME(blob, filename) {
+  if (filename.endsWith(".webp")) {
+    return blob.slice(0, blob.size, "image/webp");
+  } else if (filename.endsWith(".jpg")) {
+    return blob.slice(0, blob.size, "image/jpeg");
+  } else if (filename.endsWith(".jpeg")) {
+    return blob.slice(0, blob.size, "image/jpeg");
+  } else if (filename.endsWith(".mp3")) {
+    return blob.slice(0, blob.size, "audio/mp3");
+  } else if (filename.endsWith(".opus")) {
+    return blob.slice(0, blob.size, "audio/ogg");
+  } else if (filename.endsWith(".mp4")) {
+    return blob.slice(0, blob.size, "video/mp4");
+  } else if (filename.endsWith(".webm")) {
+    return blob.slice(0, blob.size, "video/webm");
+  } else if (filename.endsWith(".ogv")) {
+    return blob.slice(0, blob.size, "video/ogg");
+  } else {
+    return blob.slice(0, blob.size, "unknown");
+  }
+}
+
+/**
  * @brief Encodes Media
  */
-function mediaEncode(blob, filename) {
+function mediaEncode(blob) {
+  // if empty the error message
+  if (blob == undefined) {
+    return "<img src'${filename}' alt='error'/>";
+  }
+
   // adds image
   let addImage = () => {
     let url = URL.createObjectURL(blob);
@@ -100,30 +130,34 @@ function mediaEncode(blob, filename) {
       </video>
     `;
   }
-
-  if (blob == undefined) {
-    return "<img src'${filename}' alt='error'/>";
-  } else if (filename.endsWith(".webp")) {
-    return addImage();
-  } else if (filename.endsWith(".jpg")) {
-    return addImage();
-  } else if (filename.endsWith(".jpeg")) {
-    return addImage();
-  } else if (filename.endsWith(".mp3")) {
-    return addAudio();
-  } else if (filename.endsWith(".opus")) {
-    return addAudio(); 
-  } else if (filename.endsWith(".mp4")) {
-    return addVideo();
-  } else if (filename.endsWith(".webm")) {
-    return addVideo();
-  } else {
+  
+  // adds unknown file
+  let addFile = () => {
     let url = URL.createObjectURL(blob);
     return `
       <a href="${url}" target="_blank">
         <Unkown File Type>
       </a>
     `;
+  }
+
+
+  if (blob.type == "image/webp") {
+    return addImage();
+  } else if (blob.type == "image/jpeg") {
+    return addImage();
+  } else if (blob.type == "image/jpeg") {
+    return addImage();
+  } else if (blob.type == "audio/mp3") {
+    return addAudio();
+  } else if (blob.type == "audio/ogg") {
+    return addAudio(); 
+  } else if (blob.type == "video/mp4") {
+    return addVideo();
+  } else if (blob.type == "vodeo/webm") {
+    return addVideo();
+  } else {
+    return addFile();
   }
 }
 
@@ -253,7 +287,8 @@ async function loadZipFile(file) {
       }
     } else {
       promisemedia.name.push(zipentry.name);
-      promisemedia.promisedata.push(zipentry.async("blob"));
+      let blob = zipentry.async("blob");
+      promisemedia.promisedata.push(blob);
     }
   });
 
@@ -261,15 +296,19 @@ async function loadZipFile(file) {
     alert(`No .txt file in zip file!`);
   }
 
-  maintxt
-    .then((data) => {
+  maintxt.then((data) => {
       Promise.all(promisemedia.promisedata)
         .then(async (medias) => {
           let messages = await whatsappChatParser.parseString(data, {
             parseAttachments: true,
           });
+          
           let medianames = promisemedia.name;
           let authors = [];
+
+          for(let i = 0; i < medianames.length; i++) {
+            medias[i] = getBlobwithMIME(medias[i], medianames[i]);
+          }
 
           for (let msg of messages) {
             msg.author = msg.author.trim();
@@ -321,8 +360,7 @@ async function loadZipFile(file) {
                       medianames.findIndex((name) => {
                         return name.includes(messages[i].attachment.fileName);
                       })
-                    ],
-                    messages[i].attachment.fileName
+                    ]
                   ),
                   messages[i].date,
                   authors.find((author) => author.name == messages[i].author)
