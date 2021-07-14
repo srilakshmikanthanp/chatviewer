@@ -69,12 +69,14 @@ function htmlEncode(str) {
  * @brief Encodes Media
  */
 function mediaEncode(blob, filename) {
-  if (blob == undefined) {
-    return "<img src'${filename}' alt='error'/>";
-  } else if (filename.endsWith(".webp")) {
+  // adds image
+  let addImage = () => {
     let url = URL.createObjectURL(blob);
     return `<img src="${url}" id="msg-img"/>`;
-  } else if (filename.endsWith(".mp3")) {
+  }
+
+  // adds audio
+  let addAudio = () => {
     let url = URL.createObjectURL(blob);
     return `
       <audio controls id="msg-aud">
@@ -84,7 +86,10 @@ function mediaEncode(blob, filename) {
       Use This Link to Play audio</a>
       </audio>
     `;
-  } else if (filename.endsWith(".mp4")) {
+  }
+  
+  // adds video
+  let addVideo = () => {
     let url = URL.createObjectURL(blob);
     return `
       <video controls id="msg-vid">
@@ -94,21 +99,29 @@ function mediaEncode(blob, filename) {
           Use This Link to Play Video</a>
       </video>
     `;
+  }
+
+  if (blob == undefined) {
+    return "<img src'${filename}' alt='error'/>";
+  } else if (filename.endsWith(".webp")) {
+    return addImage();
+  } else if (filename.endsWith(".jpg")) {
+    return addImage();
+  } else if (filename.endsWith(".jpeg")) {
+    return addImage();
+  } else if (filename.endsWith(".mp3")) {
+    return addAudio();
+  } else if (filename.endsWith(".opus")) {
+    return addAudio(); 
+  } else if (filename.endsWith(".mp4")) {
+    return addVideo();
   } else if (filename.endsWith(".webm")) {
-    let url = URL.createObjectURL(blob);
-    return `
-      <video controls id="msg-vid">
-          <source src="${url}" type="video/webm">
-          <a href="${url}" target="_blank">
-          You Browser Did not support video so,
-          Use This Link to Play Video</a>
-      </video>
-    `;
+    return addVideo();
   } else {
     let url = URL.createObjectURL(blob);
     return `
       <a href="${url}" target="_blank">
-        Unkown File Type, Use to download
+        <Unkown File Type>
       </a>
     `;
   }
