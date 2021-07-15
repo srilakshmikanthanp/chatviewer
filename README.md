@@ -69,7 +69,7 @@ git clone https://github.com/srilakshmikantanp/chatviewer
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Just goto [chatviewer](https://srilakshmikanthanp.github.io/chatviewer) and select whatsapp exported chat. File extensions should be `.txt` is chat exported as WITHOUT MEDIA `.zip` if chat is exported as WITH MEDIA.
+Just goto [chatviewer](https://srilakshmikanthanp.github.io/chatviewer) and select whatsapp exported chat. File extensions should be `.txt` is chat exported as without media `.zip` if chat is exported as with media.
 
 **Note : This file is never uploaded any server just processed in your own system with js.**
 
