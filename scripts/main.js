@@ -4,6 +4,13 @@
 // https://opensource.org/licenses/MIT
 
 /**
+ * stores objects
+ */
+var globalobject = {
+  chatscroll: 0,
+};
+
+/**
  * @brief Random Color
  */
 function randColor() {
@@ -16,37 +23,6 @@ function randColor() {
     Math.random() * 255 +
     ")"
   );
-}
-
-/**
- * @brief Slide menu Down
- */
-function meduDown() {
-  $("nav ul li button i").removeClass("fa-bars").addClass("fa-times");
-  $("header nav").css("box-shadow", "0px 0px 0px var(--color-shadow)");
-  $("footer").css("box-shadow", "0px 0px 0px var(--color-shadow)");
-  $("#menu").slideDown();
-}
-
-/**
- * @brief Slide menu Up
- */
-function menuUp() {
-  $("#menu").slideUp();
-  $("nav ul li button i").removeClass("fa-times").addClass("fa-bars");
-  $("header nav").css("box-shadow", "0px 0px 10px var(--color-shadow)");
-  $("footer").css("box-shadow", "0px 0px 10px var(--color-shadow)");
-}
-
-/**
- * @brief Toggle Menu
- */
-function openCloseMenu(evt) {
-  if ($("nav ul li button i").hasClass("fa-bars")) {
-    meduDown();
-  } else {
-    menuUp();
-  }
 }
 
 function htmlEncode(str) {
@@ -102,7 +78,11 @@ function mediaEncode(blob) {
   // adds image
   let addImage = () => {
     let url = URL.createObjectURL(blob);
-    return `<img src="${url}" id="msg-img"/>`;
+    return `
+    <div id="msg-img">
+      <img src="${url}"/>
+    </div>
+    `;
   }
 
   // adds audio
@@ -122,12 +102,14 @@ function mediaEncode(blob) {
   let addVideo = () => {
     let url = URL.createObjectURL(blob);
     return `
-      <video controls id="msg-vid">
-          <source src="${url}" type="video/mp4">
-          <a href="${url}" target="_blank">
-          You Browser Did not support video so,
-          Use This Link to Play Video</a>
-      </video>
+      <div id="msg-vid">
+        <video controls>
+            <source src="${url}" type="video/mp4">
+            <a href="${url}" target="_blank">
+            You Browser Did not support video so,
+            Use This Link to Play Video</a>
+        </video>
+      </div>
     `;
   }
   
@@ -322,8 +304,7 @@ async function loadZipFile(file) {
             }
           }
 
-          authors = authors
-            .filter((author, index) => {
+          authors = authors.filter((author, index) => {
               return (
                 authors.findIndex(function (a) {
                   return a.name === author.name;
@@ -380,15 +361,48 @@ async function loadZipFile(file) {
         })
         .catch((err) => {
           alert(`Error reading media files: ${err}`);
+        }).finally(() => {
+          $("#authors").prop("disabled", false);
+          $("#formsubmit").prop("disabled", false);
+          $("#formstatus").text("Done");
         });
     })
     .catch((error) => {
       alert(`Error reading .txt file: ${error}`);
-    }).finally(() => {
-      $("#authors").prop("disabled", false);
-      $("#formsubmit").prop("disabled", false);
-      $("#formstatus").text("Done");
     });
+}
+
+/**
+ * @brief Slide menu Down
+ */
+ function meduDown() {
+  $("#chat").hide();
+  $("nav ul li button i").removeClass("fa-bars").addClass("fa-times");
+  $("header nav").css("box-shadow", "0px 0px 0px var(--color-shadow)");
+  $("footer").css("box-shadow", "0px 0px 0px var(--color-shadow)");
+  $("#menu").slideDown();
+}
+
+/**
+ * @brief Slide menu Up
+ */
+function menuUp() {
+  $("#menu").slideUp();
+  $("nav ul li button i").removeClass("fa-times").addClass("fa-bars");
+  $("header nav").css("box-shadow", "0px 0px 10px var(--color-shadow)");
+  $("footer").css("box-shadow", "0px 0px 10px var(--color-shadow)");
+  $("#chat").show(1000);
+}
+
+/**
+ * @brief Toggle Menu
+ */
+function openCloseMenu(evt) {
+  if ($("nav ul li button i").hasClass("fa-bars")) {
+    meduDown();
+  } else {
+    menuUp();
+  }
 }
 
 /**
@@ -453,8 +467,6 @@ function formSubmit(evt) {
   $("#formstatus").text("Done");
 
   menuUp();
-
-  $("#chat").show(1000);
 }
 
 /**
@@ -493,6 +505,26 @@ function scrollEvt(evt) {
 }
 
 /**
+ * @brief Zoom In media when clicked
+ */
+function mediaZoomIn(evt) {
+  $(evt.target).clone().appendTo("#media-content");
+  globalobject.chatscroll = $(window).scrollTop();
+  $("#chat").hide();
+  $("#media").show();
+}
+
+/**
+ * @brief Zoom Out media when clicked
+ */
+function mediaZoomOut(evt) {
+  $("#media-content").children().not('button').remove();
+  $("#media").hide();
+  $("#chat").show();
+  $(window).scrollTop(globalobject.chatscroll);
+}
+
+/**
  * @brief main
  */
 function main() {
@@ -502,11 +534,17 @@ function main() {
   $("#formsubmit").on("click", formSubmit);
   $("#upbtn").on("click", gotoTop);
   $("#dnbtn").on("click", gotoDown);
+  $("#chat").on("click", "#msg-img", mediaZoomIn);
+  $("#chat").on("click", "#msg-vid", mediaZoomIn);
+  $("#media-close").on("click", mediaZoomOut);
   $(window).on("scroll", scrollEvt);
 
   // Initilize the page
   $("#upbtn").hide();
   $("#dnbtn").hide();
+  $("#chat").hide();
+  $("#media").hide();
+  $("#menu").show();
   $("#authors").prop("disabled", true);
   $("#formsubmit").prop("disabled", true);
 }
