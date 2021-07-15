@@ -445,6 +445,7 @@ function formSubmit(evt) {
 
   if (primaryauthor == "select") {
     alert("Select a valid Author");
+    $("#formstatus").text("Done");
     return false;
   }
 
