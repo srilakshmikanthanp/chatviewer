@@ -26,8 +26,8 @@
 }
 
 header nav #logo {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
 }
 
 main {
@@ -170,26 +170,17 @@ main #chat .from .msg-content #msg-img,
 main #chat .to .msg-content #msg-img,
 main #chat .from .msg-content #msg-vid,
 main #chat .to .msg-content #msg-vid {
-  width: 300px;
-  height: 300px;
   max-width: 100%;
   max-height: 100%;
-}
-
-main #chat .from .msg-content #msg-img:hover,
-main #chat .to .msg-content #msg-img:hover,
-main #chat .from .msg-content #msg-vid:hover,
-main #chat .to .msg-content #msg-vid:hover {
-  cursor: pointer;
 }
 
 main #chat .from .msg-content #msg-img img,
 main #chat .to .msg-content #msg-img img,
 main #chat .from .msg-content #msg-vid video,
 main #chat .to .msg-content #msg-vid video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
   border-radius: 10px;
   box-shadow: 0px 0px 1px var(--color-shadow);
 }
@@ -222,44 +213,6 @@ main #chat .to .msg-time {
   main #chat .from, main #chat .to {
     max-width: 300px;
   }
-}
-
-main #media {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-background);
-  z-index: 10000;
-}
-
-#media-close {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 25px;
-  background-color: rgba(255, 255, 255, 0.2);
-  z-index: 10000;
-}
-
-#media-content {
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  justify-content: center;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-#media-content img,
-#media-content video {
-  object-fit: contain;
 }
 
 footer {

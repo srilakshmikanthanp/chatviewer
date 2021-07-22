@@ -45,31 +45,15 @@ function htmlEncode(str) {
  * @brief set mime type
  */
 function getBlobwithMIME(blob, filename) {
-  if (filename.endsWith(".webp")) {
-    return blob.slice(0, blob.size, "image/webp");
-  } else if (filename.endsWith(".jpg")) {
-    return blob.slice(0, blob.size, "image/jpeg");
-  } else if (filename.endsWith(".jpeg")) {
-    return blob.slice(0, blob.size, "image/jpeg");
-  } else if (filename.endsWith(".mp3")) {
-    return blob.slice(0, blob.size, "audio/mp3");
-  } else if (filename.endsWith(".opus")) {
-    return blob.slice(0, blob.size, "audio/ogg");
-  } else if (filename.endsWith(".mp4")) {
-    return blob.slice(0, blob.size, "video/mp4");
-  } else if (filename.endsWith(".webm")) {
-    return blob.slice(0, blob.size, "video/webm");
-  } else if (filename.endsWith(".ogv")) {
-    return blob.slice(0, blob.size, "video/ogg");
-  } else {
-    return blob.slice(0, blob.size, "unknown");
-  }
+  var ext = filename.split(".").pop();
+  var typ = mime[ext];
+  return blob.slice(0, blob.size, typ);
 }
 
 /**
  * @brief Encodes Media
  */
-function mediaEncode(blob) {
+function mediaEncode(blob, fileName) {
   // if empty the error message
   if (blob == undefined) {
     return "<img src'${filename}' alt='error'/>";
@@ -118,7 +102,7 @@ function mediaEncode(blob) {
     let url = URL.createObjectURL(blob);
     return `
       <a href="${url}" target="_blank">
-        <Unkown File Type>
+        ${fileName}
       </a>
     `;
   }
@@ -342,6 +326,8 @@ async function loadZipFile(file) {
                         return name.includes(messages[i].attachment.fileName);
                       })
                     ]
+                    ,
+                    messages[i].attachment.fileName
                   ),
                   messages[i].date,
                   authors.find((author) => author.name == messages[i].author)
@@ -506,26 +492,6 @@ function scrollEvt(evt) {
 }
 
 /**
- * @brief Zoom In media when clicked
- */
-function mediaZoomIn(evt) {
-  $(evt.target).clone().appendTo("#media-content");
-  globalobject.chatscroll = $(window).scrollTop();
-  $("#chat").hide();
-  $("#media").show();
-}
-
-/**
- * @brief Zoom Out media when clicked
- */
-function mediaZoomOut(evt) {
-  $("#media-content").children().not('button').remove();
-  $("#media").hide();
-  $("#chat").show();
-  $(window).scrollTop(globalobject.chatscroll);
-}
-
-/**
  * @brief main
  */
 function main() {
@@ -535,9 +501,6 @@ function main() {
   $("#formsubmit").on("click", formSubmit);
   $("#upbtn").on("click", gotoTop);
   $("#dnbtn").on("click", gotoDown);
-  $("#chat").on("click", "#msg-img", mediaZoomIn);
-  $("#chat").on("click", "#msg-vid", mediaZoomIn);
-  $("#media-close").on("click", mediaZoomOut);
   $(window).on("scroll", scrollEvt);
 
   // Initilize the page
@@ -549,15 +512,3 @@ function main() {
   $("#authors").prop("disabled", true);
   $("#formsubmit").prop("disabled", true);
 }
-
-/**
- * @brief Initialize
- */
-$(function () {
-  main();
-  twemoji.parse($("body").get(0), {
-    folder: "svg",
-    ext: ".svg",
-    size: 16,
-  });
-});
