@@ -92,4 +92,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/srilakshmikanthanp/charviewer](https://github.com/srilakshmikanthanp/charviewer)
+Project Link: [https://github.com/srilakshmikanthanp/chatviewer](https://github.com/srilakshmikanthanp/chatviewer)
