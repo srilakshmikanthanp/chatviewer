@@ -5,6 +5,46 @@
  * https://opensource.org/licenses/MIT
  */
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #2a2f32;
+    --color-forground: white;
+    --color-shadow: #000;
+  }
+
+  .theme {
+    color: white;
+    background-color: #2a2f32;
+  }
+
+  main {
+    background-image: url("../image/bg-dark.png");
+    background-repeat: repeat;
+    background-size: contain;
+    background-attachment: fixed;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-background: #ededed;
+    --color-forground: black;
+    --color-shadow: #888888;
+  }
+
+  .theme {
+    color: black;
+    background-color: #ededed;
+  }
+
+  main {
+    background-image: url("../image/bg-light.png");
+    background-repeat: repeat;
+    background-size: contain;
+    background-attachment: fixed;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -63,26 +103,26 @@ main #chat {
 }
 
 main #chat #upbtn {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   position: fixed;
   bottom: 60px;
   left: 15px;
   border: none;
   color: white;
-  background-color: rgb(32, 228, 32);
+  background-color: var(--color-background);
   border-radius: 30px;
 }
 
 main #chat #dnbtn {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   position: fixed;
   bottom: 60px;
   right: 15px;
   border: none;
   color: white;
-  background-color: rgb(32, 228, 32);
+  background-color: var(--color-background);
   border-radius: 30px;
 }
 
@@ -221,44 +261,4 @@ footer {
   bottom: 0%;
   position: fixed;
   z-index: 1000;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #2a2f32;
-    --color-forground: white;
-    --color-shadow: #000;
-  }
-
-  .theme {
-    color: white;
-    background-color: #2a2f32;
-  }
-
-  main {
-    background-image: url("../image/bg-dark.png");
-    background-repeat: repeat;
-    background-size: contain;
-    background-attachment: fixed;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-background: #ededed;
-    --color-forground: black;
-    --color-shadow: #888888;
-  }
-
-  .theme {
-    color: black;
-    background-color: #ededed;
-  }
-
-  main {
-    background-image: url("../image/bg-light.png");
-    background-repeat: repeat;
-    background-size: contain;
-    background-attachment: fixed;
-  }
 }
