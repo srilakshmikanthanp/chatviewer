@@ -1,0 +1,201 @@
+/**
+ * Copyright (c) 2021 Sri Lakshmi Kanthan P
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+:root {
+  --pri-bg-col: 18, 18, 18;
+  --pri-fg-col: 255, 255, 255;
+  --sec-bg-col: 36, 41, 46;
+  --sec-fg-col: 255, 255, 255;
+  --bar-bg-col: 16, 42, 67;
+  --bar-fg-col: 255, 255, 255;
+  --lmg-bg-col: 36, 41, 46;
+  --lmg-fg-col: 255, 255, 255;
+  --rmg-bg-col: 16, 42, 67;
+  --rmg-fg-col: 255, 255, 255;
+  --shadow-col: 0, 0, 0;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  background: rgb(var(--pri-bg-col));
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgb(var(--sec-bg-col));
+}
+
+.ui-dialog {
+  color: rgb(var(--pri-fg-col)) !important;
+  background: rgb(var(--sec-bg-col)) !important;
+  border: none !important;
+  box-shadow: 0px 0px 5px rgba(var(--shadow-col)) !important;
+  padding: 10px !important;
+  margin: 20px;
+}
+
+.ui-dialog-titlebar {
+  color: rgb(var(--pri-fg-col)) !important;
+  background: rgb(var(--bar-bg-col)) !important;
+  border: none !important;
+  box-shadow: 0px 0px 5px rgba(var(--shadow-col)) !important;
+  padding: 10px !important;
+}
+
+.ui-dialog-titlebar-close {
+  background: rgb(var(--bar-bg-col)) !important;
+  border: none !important;
+  padding: 10px;
+}
+
+.ui-widget-overlay { 
+  z-index: 1000000 !important;
+  opacity: 0.2 !important;
+  transition: opacity 0.5s linear;
+}
+
+.msg-box-left {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.msg-box-right {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.msg-item-header {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.msg-item-header .msg-person {
+  font-size: 102%;
+  font-weight: 500;
+}
+
+.msg-item-body {
+  max-width: 350px;
+  padding: 10px;
+  word-break: break-all;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(var(--shadow-col));
+}
+
+.msg-item-body p {
+  margin: 0;
+}
+
+.msg-item-body img, 
+.msg-item-body video,
+.msg-item-body audio {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.msg-box-left .msg-item-body {
+  background: rgb(var(--lmg-bg-col));
+}
+
+.msg-box-right .msg-item-body {
+  background: rgb(var(--rmg-bg-col));
+}
+
+.msg-box-left .msg-item-body::before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  top: -18px;
+  left: 5px;
+  position: absolute;
+  border-top: 10px solid rgb(var(--lmg-bg-col));
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  filter: drop-shadow(0px 2px 1px rgb(var(--shadow-col)));
+  transform: rotate(180deg);
+}
+
+.msg-box-right .msg-item-body::after {
+  content: "";
+  width: 0px;
+  height: 0px;
+  top: -18px;
+  right: 5px;
+  position: absolute;
+  border-top: 10px solid rgb(var(--rmg-bg-col));
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  filter: drop-shadow(0px 2px 1px rgb(var(--shadow-col)));
+  transform: rotate(180deg);
+}
+
+.msg-footer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.msg-footer .msg-time {
+  color: gray;
+  text-decoration: none;
+  font-size: 70%;
+  font-weight: normal;
+  vertical-align: bottom;
+}
+
+
+div#dialog {
+  color: rgb(var(--pri-fg-col));
+  background-color: rgb(var(--sec-bg-col));
+}
+
+body {
+  margin: 0%;
+  color: rgb(var(--pri-fg-col));
+  background-color: rgb(var(--pri-bg-col));
+}
+
+header nav {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  color: rgb(var(--bar-fg-col));
+  background-color: rgb(var(--bar-bg-col));
+}
+
+header nav div.logo {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+}
+
+header nav button.menu-btn {
+  color: rgb(var(--pri-fg-col));
+  background-color: transparent;
+  border: none;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+footer nav {
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  color: rgb(var(--bar-fg-col));
+  background-color: rgb(var(--bar-bg-col));
+}

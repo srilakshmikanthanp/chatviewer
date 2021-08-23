@@ -4,6 +4,7 @@
  This software is released under the MIT License.
  https://opensource.org/licenses/MIT
 -->
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -19,101 +20,261 @@
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
       crossorigin="anonymous"
     ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    <script 
+      src="https://code.jquery.com/jquery-3.6.0.min.js" 
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
       crossorigin="anonymous"
     ></script>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+    ></script>
+    <link 
+      rel="stylesheet" 
+      href="http://code.jquery.com/ui/1.12.1/themes/black-tie/jquery-ui.css" 
+    />
     <link
+      rel="preconnect" 
+      href="https://fonts.googleapis.com"
+    >
+    <link
+      rel="preconnect" 
+      href="https://fonts.gstatic.com" crossorigin
+    >
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Oxygen:wght@700&display=swap" 
       rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
-      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+    >
+    <link 
+      rel="stylesheet" 
+      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" 
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" 
       crossorigin="anonymous"
     />
+    <script 
+      src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"
+    ></script>
     <script 
       src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"
       integrity="sha512-uVSVjE7zYsGz4ag0HEzfugJ78oHCI1KhdkivjQro8ABL/PRiEO4ROwvrolYAcZnky0Fl/baWKYilQfWvESliRA==" 
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/whatsapp-chat-parser/dist/whatsapp-chat-parser.min.js"
+    ></script>
     
-    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/whatsapp-chat-parser/dist/whatsapp-chat-parser.min.js"></script>  
+    <meta 
+      name="viewport" 
+      content="width=device-width, initial-scale=1" 
+    />
+    <meta 
+      name="keywords" 
+      content="srilakshmikanthanp, Sri Lakshmi Kanthan P" 
+    />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="keywords" content="Chat Viewer, Whatsapp, export, chat" />
+    <link 
+      rel="icon" 
+      href="/assets/image/logo.ico"
+    />
 
-    <link rel="icon" href="image/logo.ico" />
-    <link rel="stylesheet" href="styles/main.css" />
-    <script src="scripts/main.js"></script>
+    <link 
+      rel="stylesheet" 
+      href="/css/main.css" 
+    />
+    <script 
+      type="module"
+      src="/js/main.js"
+    ></script>
 
-    <script>
-      $(function () {
-        main();
-        twemoji.parse($("body").get(0), {
-          folder: "svg",
-          ext: ".svg",
-        });
-      });
-    </script>
-
-    <title>ChatViewer</title>
+    <title>
+      ChatViewer
+    </title>
   </head>
-  <body class="theme">
+  <body>
     <header>
-      <nav class="navbar fixed-top theme">
-        <div class="container">
-          <div class="navbar-brand" >
-            <img src="image/logo.ico" id="logo"/>
+      <header>
+        <nav class="navbar navbar-expand fixed-top">
+          <div class="container">
+            <div class="logo">
+              <a href="#">
+                <img src="/assets/image/logo.ico" alt="logo" class="img-fluid" />
+              </a>
+            </div>
+            <button class="menu-btn">
+              <i data-feather="file-plus"></i>
+            </button>
           </div>
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <button class="theme fs-5 border-0">
-                <i class="fas fa-times"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
+        </nav>
+      </header>
     </header>
     <main>
-      <div id="menu" class="theme p-3">
-        <h2>Chat Viewer</h2>
-        <hr class="w-100">
-        <p class="text-center">
-          View Whatsapp Exported chats Looks like on messenger
-        </p>
-        <form class="d-flex flex-column align-items-center justify-content-center">
-          <input type="file" name="Choose" aria-describedby="privacy-msg" id="file-input" class="form-control">
-          <div id="privacy-msg" class="form-text">
-            <p>This file (.txt, .zip) processed in local only</p>
+      <div class="container" id="msg-container">
+        <div class="row">
+          <div class="col-12">
+            <div class="msg-box-left">
+              <div class="msg-item-header">
+                <span class="msg-person">
+                  Jhon Deo
+                </span>
+              </div>
+              <div class="msg-item-body">
+                <p>Hello! This is Jhon Deo</p>
+              </div>
+              <div class="msg-footer">
+                <span class="msg-time">
+                  12.00 PM 01/01/2001
+                </span>
+              </div>
+            </div>
           </div>
-          <select class="form-select mb-2" id="authors">
-            <option value="select" selected="selected">Select Primary Author</option>
-          </select>
-          <div id="formstatus" class="form-text mb-2">
-            Done
-          </div>
-          <input type="submit" value="View" id="formsubmit" class="btn btn-success">
-        </form>
-        <hr class="w-100">
-        <a href="https://github.com/srilakshmikanthanp/chatviewer">
-          <i class="fab fa-github"></i>
-        </a>
-      </div>
-      <div id="chat">
-        <div class="container">
         </div>
-        <button id="upbtn">
-          <i class="fas fa-angle-double-up fs-5"></i>
-        </button>
-        <button id="dnbtn">
-          <i class="fas fa-angle-double-down fs-5"></i>
-        </button>
+        <div class="row">
+          <div class="col-12">
+            <div class="msg-box-right">
+              <div class="msg-item-header">
+                <span class="msg-person">
+                  You
+                </span>
+              </div>
+              <div class="msg-item-body">
+                <p>Hello! This is Peter. How are You</p>
+              </div>
+              <div class="msg-footer">
+                <span class="msg-time">
+                  12.00 PM 01/01/2001
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="msg-box-left">
+              <div class="msg-item-header">
+                <span class="msg-person">
+                  Jhon Deo
+                </span>
+              </div>
+              <div class="msg-item-body">
+                <p>I am Fine!</p>
+              </div>
+              <div class="msg-footer">
+                <span class="msg-time">
+                  12.00 PM 01/01/2001
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="msg-box-left">
+              <div class="msg-item-header">
+                <span class="msg-person">
+                  Jhon Deo
+                </span>
+              </div>
+              <div class="msg-item-body">
+                <p>What about You ?</p>
+              </div>
+              <div class="msg-footer">
+                <span class="msg-time">
+                  12.00 PM 01/01/2001
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="msg-box-right">
+              <div class="msg-item-header">
+                <span class="msg-person">
+                  You
+                </span>
+              </div>
+              <div class="msg-item-body">
+                <p>I am too!.</p>
+              </div>
+              <div class="msg-footer">
+                <span class="msg-time">
+                  12.00 PM 01/01/2001
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="msg-box-right">
+              <div class="msg-item-header">
+                <span class="msg-person">
+                  You
+                </span>
+              </div>
+              <div class="msg-item-body">
+                <p>Where are You ?</p>
+              </div>
+              <div class="msg-footer">
+                <span class="msg-time">
+                  12.00 PM 01/01/2001
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="msg-box-left">
+              <div class="msg-item-header">
+                <span class="msg-person">
+                  Jhon Deo
+                </span>
+              </div>
+              <div class="msg-item-body">
+                <p>I am living in New York!</p>
+              </div>
+              <div class="msg-footer">
+                <span class="msg-time">
+                  12.00 PM 01/01/2001
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
-    <footer class="d-flex align-items-center justify-content-center theme">
-      Made with &hearts; by Sri Lakshmi Kanthan
+    <footer>
+      <nav class="navbar navbar-expand fixed-bottom">
+        <div class="container justify-content-center">
+          <p class="m-2">&copy; 2020 Sri Lakshmi Kanthan P</p>
+        </div>
+      </nav>
     </footer>
+    <div id="form-dialog">
+      <div class="container">
+        <form class="d-flex flex-column align-items-center justify-content-center p-3">
+          <div class="form-group m-2">
+            <input type="file" name="Choose" aria-describedby="privacy-msg" id="file-input" class="form-control">
+            <div id="privacy-msg" class="form-text">
+              <p class="text-center m-0">
+                This file (.txt, .zip) processed in local only
+              </p>
+            </div>
+          </div>
+          <div class="form-group m-2">
+            <select class="form-select" id="authors">
+              <option value="select" selected="selected">Select Primary Author</option>
+            </select>
+          </div>
+          <div class="form-group m-2 text-center">
+            <input type="submit" value="View" id="formsubmit" class="btn btn-success">
+            <div id="formstatus" class="form-text text-center">
+              Done
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
