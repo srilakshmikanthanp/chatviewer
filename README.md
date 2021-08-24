@@ -15,7 +15,7 @@
   <p align="center">
     View Whatsapp exported chats looks like on messenger
     <br />
-    <a href="https://srilakshmikanthanp.github.io/chatviewer">View Demo</a>
+    <a href="https://chatviewer.netlify.app/">View Demo</a>
     ·
     <a href="https://github.com/srilakshmikanthanp/charviewer/issues">Report Bug</a>
     ·
@@ -69,7 +69,7 @@ git clone https://github.com/srilakshmikantanp/chatviewer
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Just goto [chatviewer](https://srilakshmikanthanp.github.io/chatviewer) and select whatsapp exported chat. File extensions should be `.txt` is chat exported as without media `.zip` if chat is exported as with media.
+Just goto [chatviewer](https://chatviewer.netlify.app/) and select whatsapp exported chat. File extensions should be `.txt` is chat exported as without media `.zip` if chat is exported as with media.
 
 **Note : This file is never uploaded any server just processed in your own system with js.**
 
