@@ -218,9 +218,6 @@ class WhatsappAttacher {
       }
 
       if( i % onepersent == 0) {
-        
-        console.log(i + ":" + this.messages.length);
-
         await Utility.delay(0);
 
         $("html, body").animate({
