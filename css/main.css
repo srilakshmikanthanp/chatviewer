@@ -93,7 +93,7 @@
   box-shadow: 0px 0px 5px rgba(var(--shadow-col));
 }
 
-.msg-item-body pre {
+.msg-item-body pre, .msg-item-body pre a {
   margin: 0;
   word-break: break-all;
   white-space: pre-wrap;
