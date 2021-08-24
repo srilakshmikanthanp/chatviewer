@@ -10,7 +10,7 @@ class Utility {
     /**
      * holds mime types
      */
-    static #mimeTypes = Utility.getJSON("assets/mime.json");
+    static #mimeTypes = Utility.getJSON("/assets/mime.json");
 
     /**
      * static initializer
