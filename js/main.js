@@ -74,6 +74,9 @@ function formSubmit(evt) {
 
     if (primaryauthor == "select") {
         $("#formstatus").text("Select a a valid Author");
+        $("#authors").prop("disabled", false);
+        $("#formsubmit").prop("disabled", false);
+        $("#form-dialog").dialog("close");
         return false;
     }
 
