@@ -6,6 +6,7 @@
 // load modules
 import WhatsappAttacher from "./attach.js";
 import WhatsappPraser from "./praser.js";
+import Utility from "./utility.js";
 
 /**
  * trigger the dialog box
@@ -32,39 +33,32 @@ function centerDialog(evt) {
  */
 async function fileInput(evt) {
     evt.preventDefault();
+    $("#formstatus").text("loading");
+    $("#authors").prop("disabled", true);
+    $("#formsubmit").prop("disabled", true);
 
     try {
         var file = $("#file-input").get(0).files[0];
 
         if (!(file instanceof File)) {
             $("#formstatus").text("Please Seleact a file");
+            $("#authors").prop("disabled", false);
+            $("#formsubmit").prop("disabled", false);
             return false;
         }
 
         var whPraser = new WhatsappPraser(file);
         var messages = await whPraser.getData();
         var whattach = new WhatsappAttacher(messages);
-        var authorid = $("#authors");
-        var authors  = []
-        
-        for(var msg of messages) {
-            if(!authors.includes(msg.author) && msg.author != "System") {
-                authors.push(msg.author);
-            }
-        }
 
-        $("#authors > option").not(":first").remove();
-
-        for (var author of authors) {
-            authorid.append(
-              `<option value="${author}">${author}</option>`
-            );
-        }
-
-        whattach.startattach();
+        await whattach.startattach();
     } catch (errorMessage) {
         $("#formstatus").text(errorMessage);
     }
+
+    $("#formstatus").text("done");
+    $("#authors").prop("disabled", false);
+    $("#formsubmit").prop("disabled", false);
 }
 
 /**
@@ -72,6 +66,35 @@ async function fileInput(evt) {
  */
 function formSubmit(evt) {
     evt.preventDefault();
+    $("#formstatus").text("loading");
+    $("#authors").prop("disabled", true);
+    $("#formsubmit").prop("disabled", true);
+
+    var primaryauthor = $("#authors").val().trim();
+
+    if (primaryauthor == "select") {
+        $("#formstatus").text("Select a a valid Author");
+        return false;
+    }
+
+    var messages = $("#msg-container > div");
+
+    for (var message of messages) {
+        var author = $(message).find("span.msg-person").text();
+
+        if (author == primaryauthor) {
+            var msgBlock = $(message).find(".msg-box-left");
+            $(msgBlock).removeClass("msg-box-left").addClass("msg-box-right");
+        } else {
+            var msgBlock = $(message).find(".msg-box-right");
+            $(msgBlock).removeClass("msg-box-right").addClass("msg-box-left");
+        }
+    }
+
+    $("#formstatus").text("done");
+    $("#authors").prop("disabled", false);
+    $("#formsubmit").prop("disabled", false);
+    $("#form-dialog").dialog("close");
 }
 
 /**
@@ -96,6 +119,10 @@ function main() {
             $('body').css("overflow", "auto");
         }
     });
+
+    new WhatsappAttacher(
+        Utility.getJSON("/assets/default.json")
+    ).startattach();
 
     // event listeners
     $(window).on("resize", centerDialog);

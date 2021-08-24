@@ -10,15 +10,15 @@ class Utility {
     /**
      * holds mime types
      */
-    static #mimeTypes = Utility.#init();
+    static #mimeTypes = Utility.getJSON("/assets/mime.json");
 
     /**
      * static initializer
      */
-    static #init() {
+    static getJSON(name) {
         var mimeTypes = null;
 
-        $.ajax("/assets/mime.json", {
+        $.ajax(name, {
             async: false,
             success: (data) => {
                 mimeTypes = data;
@@ -56,8 +56,6 @@ class Utility {
             $("<div></div>")
             .text(str)
             .html()
-            .replace(/\r?\n/g, "<br />")
-            .replace(/ /g, "&nbsp;")
             .replace(
                 /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/g,
                 '<a href="$1" target="_blank">$1</a>'
@@ -67,6 +65,45 @@ class Utility {
                 '<a href="mailto:$1">$1</a>'
             )
         );
+    }
+
+    /**
+     * delay funcetion
+     */
+    static delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * get media type with filename extension
+     */
+    static getmediatype(file) {
+        switch (file.split(".").pop()) {
+            case "png":
+            case "jpg":
+            case "jpeg":
+            case "gif":
+            case "webp":
+                return "image";
+            case "mp4":
+            case "webm":
+                return "video";
+            case "ogg":
+            case "ogv":
+            case "opus":
+                return "audio";
+            default:
+                return "file";
+        }
+    }
+
+    /**
+     * url for blob
+     */
+    static getBlobURL(blob, mimeType) {
+        blob = blob.slice(0, blob.size, mimeType);
+        var url = URL.createObjectURL(blob);
+        return url;
     }
 }
 

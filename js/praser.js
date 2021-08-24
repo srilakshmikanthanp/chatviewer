@@ -33,7 +33,7 @@ class WhatsappPraser {
      */
     async #prasezip() {
         // read the data from zip
-        var zipData  = (new JSZip()).loadAsync(file);
+        var zipData  = await (new JSZip()).loadAsync(this.file);
         var names = [];
         var datum = [];
 
@@ -63,18 +63,19 @@ class WhatsappPraser {
         }
 
         // read messages
-        var messages = await whatsappChatParser.parseString(data, {
-            parseAttachments: true
+        var messages = await whatsappChatParser.parseString(
+            await datum[pos].text(), {
+                parseAttachments: true
         });
 
         // final setp
-        for(msg of messages) {
-            if('attachment' in msg) {
+        for(var i = 0; i < messages.length; ++i) {
+            if('attachment' in messages[i]) {
                 var pos = names.findIndex(name => {
-                    name == msg.attachment.fileName
+                    return name.includes(messages[i].attachment.fileName)
                 });
 
-                msg.attachment.blob = datum[pos];
+                messages[i].attachment.blob = datum[pos];
             }
         }
 
