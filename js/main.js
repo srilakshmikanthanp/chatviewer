@@ -121,7 +121,7 @@ function main() {
     });
 
     new WhatsappAttacher(
-        Utility.getJSON("/assets/default.json")
+        Utility.getJSON("assets/default.json")
     ).startattach();
 
     // event listeners
