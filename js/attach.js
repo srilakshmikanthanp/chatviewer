@@ -204,6 +204,8 @@ class WhatsappAttacher {
 
     container.empty();
 
+    var onepersent = Math.floor(this.messages.length / 100);
+
     for (var i = 0; i < this.messages.length; i++) {
       var message = this.messages[i];
 
@@ -215,12 +217,23 @@ class WhatsappAttacher {
         this.#atachmedia(container, message);
       }
 
-      await Utility.delay(0);
+      if( i % onepersent == 0) {
+        
+        console.log(i + ":" + this.messages.length);
 
-      $("html, body").animate({
-        scrollTop: $(document).height()
-      }, 0);
+        await Utility.delay(0);
+
+        $("html, body").animate({
+          scrollTop: $(document).height()
+        }, 0);
+      }
     }
+
+    await Utility.delay(0);
+
+    $("html, body").animate({
+      scrollTop: $(document).height()
+    }, 0);
   }
 }
 
