@@ -110,10 +110,12 @@
 }
 
 .msg-box-left .msg-item-body {
+  margin-right: 20px;
   background: rgb(var(--lmg-bg-col));
 }
 
 .msg-box-right .msg-item-body {
+  margin-left: 20px;
   background: rgb(var(--rmg-bg-col));
 }
 
