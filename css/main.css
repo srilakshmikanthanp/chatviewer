@@ -59,6 +59,10 @@
   transition: opacity 0.5s linear;
 }
 
+#form-dialog {
+  display: none;
+}
+
 .msg-box-left {
   display: flex;
   align-items: flex-start;
