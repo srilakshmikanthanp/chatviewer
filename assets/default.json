@@ -38,5 +38,15 @@
     "date": "Today, now",
     "author": "Harry",
     "message": "Nice !"
+  },
+  {
+    "date": "Today, now",
+    "author": "ChatViewer",
+    "message": "You know chatviewer is opensource, check it out https://github.com/srilakshmikanthanp/chatviewer"
+  },
+  {
+    "date": "Today, now",
+    "author": "Harry",
+    "message": "Looks nice, I will check it out"
   }
 ]
