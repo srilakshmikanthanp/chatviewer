@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/rest-api/src",
+  "sourceRoot": "apps/rest-api",
   "projectType": "application",
   "targets": {
     "build": {
@@ -8,21 +8,14 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/rest-api",
-        "main": "apps/rest-api/src/main.ts",
-        "tsConfig": "apps/rest-api/tsconfig.app.json",
-        "assets": ["apps/rest-api/src/assets"]
+        "main": "apps/rest-api/server.ts",
+        "tsConfig": "apps/rest-api/tsconfig.app.json"
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/rest-api/src/environments/environment.ts",
-              "with": "apps/rest-api/src/environments/environment.prod.ts"
-            }
-          ]
+          "inspect": false
         }
       }
     },
