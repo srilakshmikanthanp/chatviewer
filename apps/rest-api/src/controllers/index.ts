@@ -3,11 +3,30 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { userPostController, userGetController, userPatchController, userDeleteController } from "./userController";
+import {
+  deleteChatByIdController,
+  postChatController,
+  getAllChatsController,
+  getChatByIdController,
+  getTokenByIdController,
+  getChatBlobController
+} from "./chatController";
+import {
+  userPostController,
+  userGetController,
+  userPatchController,
+  userDeleteController
+} from "./userController";
 
 export {
   userPostController,
   userGetController,
   userPatchController,
-  userDeleteController
+  userDeleteController,
+  postChatController,
+  getAllChatsController,
+  getChatByIdController,
+  deleteChatByIdController,
+  getTokenByIdController,
+  getChatBlobController,
 };

@@ -3,10 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { IJwtPayload } from "./interfaces";
+import { IJwtAuthPayload } from "./interfaces";
 
 interface ILocals {
-  user_payload: IJwtPayload;
+  user_auth_payload?: IJwtAuthPayload;
 }
 
 declare module "Express" {

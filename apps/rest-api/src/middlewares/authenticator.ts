@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import { IJwtAuthPayload } from "../interfaces";
 import * as jsonwebtoken from "jsonwebtoken";
-import { IJwtPayload } from "../interfaces";
 
 
 /**
@@ -29,8 +29,8 @@ export default async function authenticator(req: Request, res: Response, next: N
 
   // verify the token
   try {
-    const decoded: IJwtPayload = jsonwebtoken.verify(token, process.env.JWT_SECRET) as IJwtPayload;
-    res.locals.user_payload = decoded;
+    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET) as IJwtAuthPayload;
+    res.locals.user_auth_payload = decoded;
     next();
   } catch (err) {
     return res.status(401).send("Invalid token");

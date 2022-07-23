@@ -9,9 +9,10 @@ import { sequelize } from "../database";
 // Model Class for Chat manipulation
 class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
   declare chatId: CreationOptional<number>;
-  declare message: string;
-  declare createdAt: Date;
-  declare updatedAt: Date;
+  declare userId: CreationOptional<number>;
+  declare data: Buffer;
+  declare mimeType: string;
+  declare createdAt: CreationOptional<Date>;
 }
 
 // Initialize the Chat model
@@ -21,19 +22,28 @@ Chat.init({
     primaryKey: true,
     autoIncrement: true
   },
-  message: {
-    type: DataTypes.TEXT,
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  data: {
+    type: DataTypes.BLOB,
+    allowNull: false
+  },
+  mimeType: {
+    type: DataTypes.STRING,
     allowNull: false
   },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false
   },
-  updatedAt: {
-    type: DataTypes.DATE,
-    allowNull: false
-  }
-}, { sequelize });
+}, {
+  sequelize: sequelize,
+  timestamps: true,
+  createdAt: true,
+  updatedAt: false,
+});
 
 // export the Chat model
 export default Chat;

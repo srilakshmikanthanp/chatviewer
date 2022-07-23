@@ -9,19 +9,19 @@ import { authenticator } from "../../middlewares";
 import { Router } from "express";
 
 // create a router object
-const router = Router();
+const router = Router({ mergeParams: true });
 
 // login user, user to login or signup user
 router.post("/", userPostValidator, userPostController);
 
 // get the user details from the database
-router.get("/:id", authenticator, userGetController);
+router.get("/:user_id", authenticator, userGetController);
 
 // update user details in the database
-router.patch("/:id", authenticator, userPatchValidator, userPatchController);
+router.patch("/:user_id", authenticator, userPatchValidator, userPatchController);
 
 // delete user from the database
-router.delete("/:id", authenticator, userDeleteController);
+router.delete("/:user_id", authenticator, userDeleteController);
 
 // export the router object
 export default router;

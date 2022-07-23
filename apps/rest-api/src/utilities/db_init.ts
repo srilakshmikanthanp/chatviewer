@@ -11,5 +11,5 @@ export default async function db_initializer() {
   await sequelize.authenticate();
 
   // sync the database
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
 }
