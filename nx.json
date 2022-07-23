@@ -25,7 +25,6 @@
       "dependsOn": ["^build"]
     }
   },
-  "defaultProject": "rest-api",
   "generators": {
     "@nrwl/react": {
       "application": {
@@ -41,5 +40,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "defaultProject": "rest-api"
 }
