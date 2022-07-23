@@ -11,12 +11,9 @@ const sequelize: Sequelize = new Sequelize({
   password: process.env.DB_PASS,
   host: process.env.DB_HOST,
   port: +process.env.DB_PORT,
-});
-
-// connect to the database
-sequelize.authenticate().then(() => {
-  console.log("Connected to the database");
+  dialect: "mysql",
+  database: process.env.DB_NAME,
 });
 
 // export the sequelize object
-export default sequelize;
+export { sequelize };

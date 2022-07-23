@@ -3,8 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-export default interface IChat {
-  chat_id: number;
-  user_id: number;
-  message: string;
+import db_initializer from "./db_init";
+
+export {
+  db_initializer
 }

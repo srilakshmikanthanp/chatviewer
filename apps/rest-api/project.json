@@ -11,10 +11,7 @@
       "options": {
         "outputPath": "dist/apps/rest-api",
         "main": "apps/rest-api/src/main.ts",
-        "tsConfig": "apps/rest-api/tsconfig.app.json",
-        "assets": [
-          "apps/rest-api/src/assets"
-        ]
+        "tsConfig": "apps/rest-api/tsconfig.app.json"
       },
       "configurations": {
         "production": {

@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { userPostController } from "../../controllers"
+import { userPostController, userGetController, userPatchController, userDeleteController } from "../../controllers"
 import { userPatchValidator, userPostValidator } from "../../validators";
 import { authenticator } from "../../middlewares";
 import { Router } from "express";
@@ -15,13 +15,13 @@ const router = Router();
 router.post("/", userPostValidator, userPostController);
 
 // get the user details from the database
-router.get("/:id", authenticator);
+router.get("/:id", authenticator, userGetController);
 
 // update user details in the database
-router.patch("/:id", authenticator, userPatchValidator);
+router.patch("/:id", authenticator, userPatchValidator, userPatchController);
 
 // delete user from the database
-router.delete("/:id", authenticator);
+router.delete("/:id", authenticator, userDeleteController);
 
 // export the router object
 export default router;

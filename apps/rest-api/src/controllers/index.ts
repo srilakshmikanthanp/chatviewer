@@ -3,8 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { userPostController } from "./userController";
+import { userPostController, userGetController, userPatchController, userDeleteController } from "./userController";
 
 export {
   userPostController,
+  userGetController,
+  userPatchController,
+  userDeleteController
 };

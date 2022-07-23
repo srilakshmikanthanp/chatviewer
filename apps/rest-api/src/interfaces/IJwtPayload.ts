@@ -4,7 +4,9 @@
 // https://opensource.org/licenses/MIT
 
 export default interface IJwtPayload {
-  user_id: number;
+  userId: number;
   email: string;
   name: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
