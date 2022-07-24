@@ -299,7 +299,7 @@ This API has some of the utilities for the REST API
 
 ### Get the chat with token
 
-You can generate a token for a specific chat with that token, use this API to get the chat details
+You can generate a token for a specific chat with that token, and use this API to get the chat details
 
 #### Request
 
