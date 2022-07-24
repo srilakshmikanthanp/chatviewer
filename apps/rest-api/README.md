@@ -66,7 +66,7 @@ Authorization Bearer <Token>
 
 ### To update the User Details
 
-This API was to update the user details currently only updatable field is Name
+This API was to update the user details currently only updatable field is the Name
 
 #### Request
 
