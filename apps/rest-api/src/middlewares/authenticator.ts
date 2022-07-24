@@ -16,7 +16,9 @@ export default async function authenticator(req: Request, res: Response, next: N
 
   // if the auth header is not set
   if (!authHeader) {
-    return res.status(401).send("No token provided");
+    return res.status(401).json({
+      error: "No token provided"
+    });
   }
 
   // get the token from the header
@@ -24,7 +26,9 @@ export default async function authenticator(req: Request, res: Response, next: N
 
   // if the token is not set
   if (!token) {
-    return res.status(401).send("No token provided");
+    return res.status(401).json({
+      error: "No token provided"
+    });
   }
 
   // verify the token
@@ -33,6 +37,8 @@ export default async function authenticator(req: Request, res: Response, next: N
     res.locals.user_auth_payload = decoded;
     next();
   } catch (err) {
-    return res.status(401).send("Invalid token");
+    return res.status(401).json({
+      error: "Invalid token"
+    });
   }
 }

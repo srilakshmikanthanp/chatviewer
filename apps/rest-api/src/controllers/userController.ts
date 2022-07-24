@@ -96,7 +96,7 @@ export async function userPatchController(req: Request, res: Response) {
   await user.update({ name });
 
   // send the user details
-  res.status(200).json(user);
+  res.status(200).json({ message: "User updated" });
 }
 
 // delete the user details from the database
