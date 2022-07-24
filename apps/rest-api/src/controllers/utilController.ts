@@ -14,7 +14,7 @@ export async function getChatWithJwtController(req: Request, res: Response) {
   const JwtSecret = process.env.JWT_SECRET;
 
   // get the token from the request
-  const JwtToken = req.params.token;
+  const JwtToken = req.body.token;
 
   // verify the token
   try {
@@ -22,6 +22,6 @@ export async function getChatWithJwtController(req: Request, res: Response) {
     const chat = await Chat.findByPk(decoded.chatId);
     res.send(Object.assign({}, chat.toJSON(), { data: chat.data.toString('base64') }));
   } catch (error) {
-    res.status(401).send('Unauthorized');
+    res.status(401).json({message: "Invalid token"});
   }
 }

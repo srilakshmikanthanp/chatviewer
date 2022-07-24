@@ -121,3 +121,204 @@ Authorization Bearer <Token>
 ```
 
 ## Chat
+
+This API was used to manipulate the chat details of a user.
+
+### Create a New Chat
+
+
+This API is used to create a new chat for the user.
+
+#### Request
+
+```sh
+POST {{host}}/api/v1/users/1/chats
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Body
+
+```json
+{
+  "mimeType": "text/pain",
+  "data": "base64"
+}
+```
+
+#### Response
+
+```json
+{
+  "message": "Chat created"
+}
+```
+
+### Get all chats of the User
+
+This API is used to get all chats of the user
+
+#### Request
+
+```sh
+GET {{host}}/api/v1/users/1/chats
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Response
+
+```json
+[
+  {
+    "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+    "mimeType": "text/pain",
+    "chatId": 2,
+    "userId": 1,
+    "createdAt": "2022-07-23T22:16:42.000Z"
+  },
+  {
+    "blobUrl": "http://localhost:8000/api/v1/users/1/chats/3/blob",
+    "mimeType": "text/pain",
+    "chatId": 3,
+    "userId": 1,
+    "createdAt": "2022-07-24T07:16:16.000Z"
+  }
+]
+```
+
+### Get the Specific Chat
+
+This API was used to get the Specific chat if the user
+
+#### Request
+
+```sh
+GET {{host}}/api/v1/users/1/chats/2
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Response
+
+```json
+{
+  "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+  "mimeType": "text/pain",
+  "chatId": 2,
+  "userId": 1,
+  "createdAt": "2022-07-23T22:16:42.000Z"
+}
+```
+
+### Delete a Chat of the user
+
+This API is used to delete the chat of the user
+
+#### Request
+
+```sh
+DELETE {{host}}/api/v1/users/1/chats/3
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Response
+
+```json
+{
+    "message": "Chat deleted"
+}
+```
+
+### Token for a chat of user
+
+This API is used to generate a JWT token for the chat, so it can be shared easily
+
+#### Request
+
+```sh
+GET {{host}}/api/v1/users/1/chats/2/token
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Response
+
+```json
+{
+    "token": "xxx"
+}
+```
+
+### Get the BLOB of Chat
+
+This API is used to get the BLOB of the Chat
+
+#### Request
+
+```sh
+GET {{host}}/api/v1/users/1/chats/2/blob
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Response
+
+Data encoded in base64
+
+## Util
+
+This API has some of the utilities for the REST API
+
+### Get the chat with token
+
+You can generate a token for a specific chat with that token and use this API to get the chat details
+
+#### Request
+
+```sh
+GET {{host}}/api/v1/utils/chat
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Response
+
+```json
+{
+    "chatId": 2,
+    "userId": 1,
+    "data": "data in base64",
+    "mimeType": "text/pain",
+    "createdAt": "2022-07-23T22:16:42.000Z"
+}
+```
