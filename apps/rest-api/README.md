@@ -16,7 +16,7 @@ This API uses the Google sign-in button to get the work done, the token was the 
 
 #### Request
 
-```http
+```sh
 POST {{host}}/api/v1/users/
 ```
 
@@ -42,13 +42,13 @@ This API was used to get the user details from the Application, None of the user
 
 #### Request
 
-```http
+```sh
 GET {{host}}/api/v1/users/1
 ```
 
 #### Auth
 
-```http
+```sh
 Authorization Bearer <Token>
 ```
 
@@ -66,17 +66,17 @@ Authorization Bearer <Token>
 
 ### To update the User Details
 
-This API was to update the user details currently only updatable fields ins Name
+This API was to update the user details currently only updatable fields in the Name
 
 #### Request
 
-```http
+```sh
 PATCH {{host}}/api/v1/users/1
 ```
 
 #### Auth
 
-```http
+```sh
 Authorization Bearer <Token>
 ```
 
@@ -98,17 +98,17 @@ Authorization Bearer <Token>
 
 ### To Delete the User Details
 
-This will remove all details of the all users, so make correct use of it
+This will remove all details of the user, so make correct use of it
 
 #### Request
 
-```http
+```sh
 DELETE {{host}}/api/v1/users/1
 ```
 
 #### Auth
 
-```http
+```sh
 Authorization Bearer <Token>
 ```
 
