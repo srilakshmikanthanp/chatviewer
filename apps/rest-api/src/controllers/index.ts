@@ -17,6 +17,9 @@ import {
   userPatchController,
   userDeleteController
 } from "./userController";
+import {
+  getChatWithJwtController
+} from "./utilController";
 
 export {
   userPostController,
@@ -29,4 +32,5 @@ export {
   deleteChatByIdController,
   getTokenByIdController,
   getChatBlobController,
+  getChatWithJwtController
 };
