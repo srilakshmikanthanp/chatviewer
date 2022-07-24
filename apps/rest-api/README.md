@@ -307,10 +307,12 @@ You can generate a token for a specific chat with that token, and use this API t
 GET {{host}}/api/v1/utils/chat
 ```
 
-#### Auth
+#### Body
 
-```sh
-Authorization Bearer <Token>
+```json
+{
+  "token": "xxx"
+}
 ```
 
 #### Response
