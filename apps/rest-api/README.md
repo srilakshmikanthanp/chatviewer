@@ -289,7 +289,9 @@ Authorization Bearer <Token>
 
 #### Response
 
+```
 Data encoded in base64
+```
 
 ## Util
 
