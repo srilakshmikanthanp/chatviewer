@@ -3,3 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+export default interface IChat {
+  createdAt: string;
+  blobUrl: string;
+  mimeType: string;
+  chatId: string;
+  userId: string;
+}

@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { postChatValidator, getTokenByIdValidator } from "./chatValidator";
+import { postChatValidator, getTokenByIdValidator, patchChatValidator } from "./chatValidator";
 import { userPostValidator, userPatchValidator } from "./userValidator";
 
 export {
@@ -11,4 +11,5 @@ export {
   userPostValidator,
   postChatValidator,
   getTokenByIdValidator,
+  patchChatValidator
 }

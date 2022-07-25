@@ -10,6 +10,7 @@ import { sequelize } from "../database";
 class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
   declare chatId: CreationOptional<number>;
   declare userId: CreationOptional<number>;
+  declare name: string;
   declare data: Buffer;
   declare mimeType: string;
   declare createdAt: CreationOptional<Date>;
@@ -24,6 +25,10 @@ Chat.init({
   },
   userId: {
     type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING,
     allowNull: false
   },
   data: {

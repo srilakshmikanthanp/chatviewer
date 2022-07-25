@@ -12,6 +12,25 @@ export async function postChatValidator (req: Request, res: Response, next: Next
   const schema = yup.object().shape({
     mimeType: yup.string().required(),
     data: yup.string().required(),
+    name: yup.string().required(),
+  });
+
+  // validate the request body
+  try {
+    await schema.validate(req.body);
+    next();
+  } catch (err) {
+    res.status(400).json({
+      error: err.message
+    });
+  }
+}
+
+// patch chat validation function
+export async function patchChatValidator (req: Request, res: Response, next: NextFunction) {
+  // create a schema for the patch chat request
+  const schema = yup.object({
+    name: yup.string(),
   });
 
   // validate the request body

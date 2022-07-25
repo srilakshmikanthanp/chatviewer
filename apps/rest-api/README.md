@@ -146,7 +146,8 @@ Authorization Bearer <Token>
 ```json
 {
   "mimeType": "text/pain",
-  "data": "base64"
+  "data": "base64",
+  "name": "Chat 1",
 }
 ```
 
@@ -181,6 +182,7 @@ Authorization Bearer <Token>
   {
     "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
     "mimeType": "text/pain",
+    "name": "Chat 1",
     "chatId": 2,
     "userId": 1,
     "createdAt": "2022-07-23T22:16:42.000Z"
@@ -188,6 +190,7 @@ Authorization Bearer <Token>
   {
     "blobUrl": "http://localhost:8000/api/v1/users/1/chats/3/blob",
     "mimeType": "text/pain",
+    "name": "Chat 2",
     "chatId": 3,
     "userId": 1,
     "createdAt": "2022-07-24T07:16:16.000Z"
@@ -217,9 +220,42 @@ Authorization Bearer <Token>
 {
   "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
   "mimeType": "text/pain",
+  "name": "Chat 1",
   "chatId": 2,
   "userId": 1,
   "createdAt": "2022-07-23T22:16:42.000Z"
+}
+```
+
+### Update a Chat of the User
+
+This API is used to update the chat of the user, currently, the only updatable field is the Name
+
+#### Request
+
+```sh
+PATCH {{host}}/api/v1/users/1/chats/2
+```
+
+#### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Body
+
+```json
+{
+  "name": "Chat 1"
+}
+```
+
+#### Response
+
+```json
+{
+  "message": "Chat updated"
 }
 ```
 

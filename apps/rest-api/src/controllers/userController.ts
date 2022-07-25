@@ -90,7 +90,7 @@ export async function userPatchController(req: Request, res: Response) {
   }
 
   // get the new name
-  const name = req.body.name;
+  const name = req.body.name || user.name;
 
   // update the user details in the database
   await user.update({ name });

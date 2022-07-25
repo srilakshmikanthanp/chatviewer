@@ -3,10 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import Navigation from "./components/Navigation";
+import IUser from "./IUser";
+import IChat from "./IChat";
 
-export default function App() {
-  return (
-    <Navigation />
-  );
+export {
+  IUser,
+  IChat
 }

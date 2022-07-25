@@ -36,6 +36,7 @@ export async function postChatController(req: Request, res: Response) {
   await user.createChat({
     mimeType: mimeType,
     data: data,
+    name: req.body.name,
   });
 
   // send the success response
@@ -78,6 +79,7 @@ export async function getAllChatsController(req: Request, res: Response) {
       mimeType: chat.mimeType,
       chatId: chat.chatId,
       userId: chat.userId,
+      name: chat.name,
       createdAt: chat.createdAt,
     }
   });
@@ -128,8 +130,52 @@ export async function getChatByIdController(req: Request, res: Response) {
     mimeType: chat[0].mimeType,
     chatId: chat[0].chatId,
     userId: chat[0].userId,
+    name: chat[0].name,
     createdAt: chat[0].createdAt,
   });
+}
+
+// patch chat by id controller function
+export async function patchChatByIdController(req: Request, res: Response) {
+  // get the user id from JWt and url and validate it
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+
+  // id from the url should be same as the id from the jwt
+  if (!userID) {
+    return res.status(401).json({ message: "Not a valid token" });
+  }
+
+  // get the user data from the database
+  const user = await User.findOne({ where: { userId: userID } });
+
+  // if user is not found
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  // chat id
+  const chatId = +req.params.chat_id;
+
+  // get the chat name from the request body
+  const name = req.body.name;
+
+  // query string
+  const query = 'UPDATE chats SET name = ? WHERE userId = ? AND chatId = ?';
+
+  // update the chat name with raw query
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result = <any[]>await sequelize.query(query, {
+    replacements: [name, userID, chatId],
+    type: QueryTypes.UPDATE,
+  });
+
+  // if chat is not found
+  if (!result.length) {
+    return res.status(404).json({ message: "Chat not found" });
+  }
+
+  // send the success response
+  res.status(200).json({ message: "Chat updated" });
 }
 
 // delete chat by id controller function
@@ -167,7 +213,6 @@ export async function deleteChatByIdController(req: Request, res: Response) {
   // send the success response
   res.status(200).json({ message: "Chat deleted" });
 }
-
 
 // get the chat blob controller function
 export async function getChatBlobController(req: Request, res: Response) {

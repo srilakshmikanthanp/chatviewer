@@ -4,16 +4,15 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { HTMLAttributes, useState } from "react";
-import { GOOGLE_CLIENT_ID } from "../constants";
-
 import CloseImg from "../assets/images/close.svg";
 import AppLogo from "../assets/images/logo.png";
 import MenuImg from "../assets/images/menu.svg";
-
+import { GOOGLE_CLIENT_ID } from "../constants";
 import styled from "styled-components";
-
+import { IUser } from "../interfaces";
 import { useEffect } from "react";
+import { useState } from "react";
+import Button from "./Button";
 import React from "react";
 
 const NavigationDiv = styled.div`
@@ -57,52 +56,77 @@ const SideBar = styled.div`
   top: 0%;
   right: 0%;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: #4285F4;
   border-radius: 15px 0px 0px 15px;
-  transition: all 0.5s linear;
+  transition: all 0.5s ease-in-out;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const CloseBtn = styled.img`
+  position: absolute;
   margin-left: auto;
   cursor: pointer;
   height: 30px;
   width: 30px;
+  right: 15px;
+  top: 15px;
   padding: 15px;
   overflow: hidden;
 `;
 
-const SignOut = styled.div`
-  height: 50px;
-  width: 100px;
+const UserDetails = styled.div`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 70px;
 `;
 
-// Navigation Props
-interface IProps extends HTMLAttributes<HTMLDivElement> {
-  onSignIn?: (token: string) => void;
-  onSignOut?: () => void;
-  isSignedIn: boolean;
-}
+const FullName = styled.div`
+  font-weight: bold;
+  font-size: 23px;
+  margin: auto;
+  color: #fff;
+`;
+
+const Email = styled.div`
+  font-size: 15px;
+  margin: auto;
+  color: #fff;
+`;
 
 // Navbar component
-export default function Navigation({ onSignIn, onSignOut, isSignedIn }: IProps) {
+export default function Navigation() {
   // Is the side bar hidden or not
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   // ref for the sign in sutton
   const signInRef = React.createRef<HTMLDivElement>();
 
+  // user details
+  const user = undefined as IUser | undefined;
+
   // dynamic right side component
   let RightSideComponent = (<SignIn ref={signInRef} />);
 
   // is signed in
-  if (isSignedIn) {
+  if (user) {
     RightSideComponent = (<Menu src={MenuImg} onClick={() => setIsHidden(!isHidden)} />);
   }
 
   // attach the google sign in button
   // @ts-ignore
   google.accounts.id.initialize({client_id: GOOGLE_CLIENT_ID, callback: (res) => {
-    onSignIn && onSignIn(res.credential)
+    console.log(res);
   }});
 
   // render the sign in button
@@ -120,6 +144,21 @@ export default function Navigation({ onSignIn, onSignOut, isSignedIn }: IProps) 
       {RightSideComponent}
       <SideBar hidden={isHidden}>
         <CloseBtn src={CloseImg} onClick={() => setIsHidden(!isHidden)} />
+        <ContentWrapper>
+          <UserDetails>
+            <FullName>{user?.name}</FullName>
+            <Email>{user?.email}</Email>
+          </UserDetails>
+          <Button color="#4285F4" onClick={() => null}>
+            View Profile
+          </Button>
+          <Button color="#4285F4" onClick={() => null}>
+            Upload Chat
+          </Button>
+          <Button color="#4285F4" onClick={() => null}>
+            Sign Out
+          </Button>
+        </ContentWrapper>
       </SideBar>
     </NavigationDiv>
   );
