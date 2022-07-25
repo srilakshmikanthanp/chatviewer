@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "es2022",
     "jsx": "react-jsx",
     "allowJs": true,
     "esModuleInterop": true,
