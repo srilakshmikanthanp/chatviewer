@@ -10,10 +10,10 @@ import { Router } from "express";
 const router = Router({mergeParams: true});
 
 // get blob with jwt
-router.get('/chat/:token/blob', getBlobWithJwtController);
+router.get('/chats/:token/blob', getBlobWithJwtController);
 
 // get chat with jwt
-router.get('/chat/:token', getChatWithJwtController);
+router.get('/chats/:token', getChatWithJwtController);
 
 // export router
 export default router;

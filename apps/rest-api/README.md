@@ -304,14 +304,14 @@ You can generate a token for a specific chat with that token, and use this API t
 #### Request
 
 ```sh
-GET {{host}}/api/v1/utils/chat/<token>
+GET {{host}}/api/v1/utils/chats/<token>
 ```
 
 #### Response
 
 ```json
 {
-    "blobUrl": "http://localhost:8000/api/v1/utils/chat/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
+    "blobUrl": "http://localhost:8000/api/v1/utils/chats/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
     "mimeType": "text/pain",
     "chatId": 2,
     "userId": 1,
@@ -326,7 +326,7 @@ You can generate a token for a specific chat with that token, and use this API t
 #### Request
 
 ```sh
-GET {{host}}/api/v1/utils/chat/<token>/blob
+GET {{host}}/api/v1/utils/chats/<token>/blob
 ```
 
 #### Response
