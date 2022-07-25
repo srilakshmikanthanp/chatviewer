@@ -201,8 +201,11 @@ export async function getChatBlobController(req: Request, res: Response) {
   // get the blob
   const blob = chat.data;
 
+  // set the content type
+  res.setHeader('Content-Type', chat.mimeType);
+
   // send the success response
-  res.status(200).send(blob.toString('base64'));
+  res.status(200).send(blob);
 }
 
 // share chat by id controller function

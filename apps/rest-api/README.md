@@ -290,7 +290,7 @@ Authorization Bearer <Token>
 #### Response
 
 ```
-Data encoded in base64
+Raw data, identify with the ContentType
 ```
 
 ## Util
@@ -304,25 +304,33 @@ You can generate a token for a specific chat with that token, and use this API t
 #### Request
 
 ```sh
-GET {{host}}/api/v1/utils/chat
-```
-
-#### Body
-
-```json
-{
-  "token": "xxx"
-}
+GET {{host}}/api/v1/utils/chat/<token>
 ```
 
 #### Response
 
 ```json
 {
+    "blobUrl": "http://localhost:8000/api/v1/utils/chat/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
+    "mimeType": "text/pain",
     "chatId": 2,
     "userId": 1,
-    "data": "data in base64",
-    "mimeType": "text/pain",
     "createdAt": "2022-07-23T22:16:42.000Z"
 }
+```
+
+### Get the Blob with token
+
+You can generate a token for a specific chat with that token, and use this API to get the blob of chat
+
+#### Request
+
+```sh
+GET {{host}}/api/v1/utils/chat/<token>/blob
+```
+
+#### Response
+
+```
+Raw data, identify with the ContentType
 ```

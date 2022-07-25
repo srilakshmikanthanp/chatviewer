@@ -5,12 +5,10 @@
 
 import { postChatValidator, getTokenByIdValidator } from "./chatValidator";
 import { userPostValidator, userPatchValidator } from "./userValidator";
-import { getChatWithJwtValidator } from "./utilValidator";
 
 export {
   userPatchValidator,
   userPostValidator,
   postChatValidator,
   getTokenByIdValidator,
-  getChatWithJwtValidator,
 }

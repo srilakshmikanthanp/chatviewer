@@ -18,10 +18,13 @@ import {
   userDeleteController
 } from "./userController";
 import {
-  getChatWithJwtController
+  getChatWithJwtController,
+  getBlobWithJwtController
 } from "./utilController";
 
 export {
+  getChatWithJwtController,
+  getBlobWithJwtController,
   userPostController,
   userGetController,
   userPatchController,
@@ -32,5 +35,4 @@ export {
   deleteChatByIdController,
   getTokenByIdController,
   getChatBlobController,
-  getChatWithJwtController
 };
