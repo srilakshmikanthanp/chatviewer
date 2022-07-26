@@ -12,18 +12,19 @@ import styled from "styled-components";
 import { IUser } from "../interfaces";
 import { useEffect } from "react";
 import { useState } from "react";
-import Button from "./Button";
+import Clickable from "./Clickable";
 import React from "react";
 
-const NavigationDiv = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+const MenubarWrapper = styled.div`
+  box-shadow: var(--shadow-color) 1.95px 1.95px 2.6px;
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: flex;
   width: 100vw;
   height: 80px;
   left: 0%;
   top: 0%;
   position: fixed;
-  background-color: #fff;
   align-items: center;
 `;
 
@@ -105,7 +106,7 @@ const Email = styled.div`
 `;
 
 // Navbar component
-export default function Navigation() {
+export default function Menubar() {
   // Is the side bar hidden or not
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
@@ -139,7 +140,7 @@ export default function Navigation() {
 
   // render the component
   return (
-    <NavigationDiv>
+    <MenubarWrapper>
       <LogoImg src={AppLogo} alt="logo" />
       {RightSideComponent}
       <SideBar hidden={isHidden}>
@@ -149,17 +150,17 @@ export default function Navigation() {
             <FullName>{user?.name}</FullName>
             <Email>{user?.email}</Email>
           </UserDetails>
-          <Button color="#4285F4" onClick={() => null}>
+          <Clickable color="#4285F4" onClick={() => null}>
             View Profile
-          </Button>
-          <Button color="#4285F4" onClick={() => null}>
+          </Clickable>
+          <Clickable color="#4285F4" onClick={() => null}>
             Upload Chat
-          </Button>
-          <Button color="#4285F4" onClick={() => null}>
+          </Clickable>
+          <Clickable color="#4285F4" onClick={() => null}>
             Sign Out
-          </Button>
+          </Clickable>
         </ContentWrapper>
       </SideBar>
-    </NavigationDiv>
+    </MenubarWrapper>
   );
 }

@@ -1,0 +1,30 @@
+/**
+ * Copyright (c) 2022 Sri Lakshmi Kanthan P
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --background-color: #fff;
+    --text-color: #000;
+    --pri-msg-bg-color: #0070f3;
+    --pri-msg-fg-color: #fff;
+    --sec-msg-bg-color: #FFF;
+    --sec-msg-fg-color: #000;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --background-color: #fff;
+    --text-color: #000;
+    --pri-msg-bg-color: #0070f3;
+    --pri-msg-fg-color: #fff;
+    --sec-msg-bg-color: #0070f3;
+    --sec-msg-fg-color: #fff;
+  }
+}

@@ -33,7 +33,7 @@ interface IButtonProps {
   children?: string;
 }
 
-export default function Button({backgroundColor, onClick, color, children }: IButtonProps) {
+export default function Clickable({backgroundColor, onClick, color, children }: IButtonProps) {
   return (
     <ButtonWrapper color={color} backgroundColor={backgroundColor} onClick={onClick}>
       {children}

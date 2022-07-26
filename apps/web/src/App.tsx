@@ -3,10 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import Navigation from "./components/Navigation";
+import Footnote from "./components/Footnote";
+import './styles/global.module.css';
 
 export default function App() {
   return (
-    <Navigation />
+    <Footnote />
   );
 }
