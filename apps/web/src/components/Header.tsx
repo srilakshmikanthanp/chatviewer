@@ -15,8 +15,7 @@ import { useState } from "react";
 import Clickable from "./Clickable";
 import React from "react";
 
-const MenubarWrapper = styled.div`
-  box-shadow: var(--shadow-color) 1.95px 1.95px 2.6px;
+const HeaderWrapper = styled.div`
   background-color: var(--background-color);
   color: var(--text-color);
   display: flex;
@@ -50,15 +49,15 @@ const Menu = styled.img`
 
 const SideBar = styled.div`
   transform: translateX(${props => props.hidden ? "300px" : "0px"});
+  justify-content: center;
+  flex-direction: column;
   position: absolute;
   height: 100vh;
   display: flex;
   width: 300px;
   top: 0%;
   right: 0%;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
   background-color: #4285F4;
   border-radius: 15px 0px 0px 15px;
   transition: all 0.5s ease-in-out;
@@ -106,7 +105,7 @@ const Email = styled.div`
 `;
 
 // Navbar component
-export default function Menubar() {
+export default function Header() {
   // Is the side bar hidden or not
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
@@ -140,7 +139,7 @@ export default function Menubar() {
 
   // render the component
   return (
-    <MenubarWrapper>
+    <HeaderWrapper>
       <LogoImg src={AppLogo} alt="logo" />
       {RightSideComponent}
       <SideBar hidden={isHidden}>
@@ -150,17 +149,26 @@ export default function Menubar() {
             <FullName>{user?.name}</FullName>
             <Email>{user?.email}</Email>
           </UserDetails>
-          <Clickable color="#4285F4" onClick={() => null}>
+          <Clickable
+            isPrimary={false}
+            onClick={() => null}
+          >
             View Profile
           </Clickable>
-          <Clickable color="#4285F4" onClick={() => null}>
+          <Clickable
+            isPrimary={false}
+            onClick={() => null}
+          >
             Upload Chat
           </Clickable>
-          <Clickable color="#4285F4" onClick={() => null}>
+          <Clickable
+            isPrimary={false}
+            onClick={() => null}
+          >
             Sign Out
           </Clickable>
         </ContentWrapper>
       </SideBar>
-    </MenubarWrapper>
+    </HeaderWrapper>
   );
 }

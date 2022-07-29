@@ -5,15 +5,10 @@
 
 import styled from "styled-components";
 
-interface ButtonWrapperProps {
-  backgroundColor?: string;
-  color?: string;
-}
 
-const ButtonWrapper = styled("div")<ButtonWrapperProps>`
-  background-color: ${props => props.backgroundColor || "#fff"};
-  color: ${props => props.color || "#4285F4"};
-  height: 13px;
+const ClickableWrapper = styled("div") <{ isPrimary?: boolean }>`
+  background-color: ${props => props.isPrimary ? "#4285F4" : "#FFF"};
+  color: ${props => props.isPrimary ? "#FFF" : "#4285F4"};
   width: 200px;
   padding: 10px;
   text-align: center;
@@ -26,17 +21,16 @@ const ButtonWrapper = styled("div")<ButtonWrapperProps>`
   border-radius: 10px;
 `;
 
-interface IButtonProps {
-  backgroundColor?: string;
+interface IClickableProps {
+  isPrimary: boolean;
   onClick?: () => void;
-  color?: string;
   children?: string;
 }
 
-export default function Clickable({backgroundColor, onClick, color, children }: IButtonProps) {
+export default function Clickable({ isPrimary, onClick, children }: IClickableProps) {
   return (
-    <ButtonWrapper color={color} backgroundColor={backgroundColor} onClick={onClick}>
+    <ClickableWrapper isPrimary={isPrimary} onClick={onClick}>
       {children}
-    </ButtonWrapper>
+    </ClickableWrapper>
   );
 }

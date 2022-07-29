@@ -5,18 +5,18 @@
 
 import styled from "styled-components";
 
-const FootnoteWrapper = styled.div`
-  box-shadow: var(--shadow-color) 1.95px 1.95px 2.6px;
-  height: fit-content;
-  width: 100vw;
-  margin: 0%;
-  padding: 10px;
-  color: var(--text-color);
+const FooterWrapper = styled.div`
   background-color: var(--background-color);
+  color: var(--text-color);
+  height: fit-content;
+  margin: 0 0 0 0;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 8px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 const SocialLinks = styled.div`
@@ -24,6 +24,7 @@ const SocialLinks = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
+  margin-right: auto;
 `;
 
 const SocialLink = styled.a`
@@ -37,13 +38,18 @@ const LinkImg = styled.img`
 `;
 
 const Copyright = styled.div`
-  font-size: medium;
-  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: gray;
+  font-weight: 400;
+  font-size: 0.8rem;
+  margin-left: auto;
 `;
 
-export default function Footnote() {
+export default function Footer() {
   return (
-    <FootnoteWrapper>
+    <FooterWrapper>
       <SocialLinks>
         <SocialLink href="https://github.com/srilakshmikanthanp/chatviewer">
           <LinkImg src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
@@ -52,6 +58,6 @@ export default function Footnote() {
       <Copyright>
         Copyright &copy; {new Date().getFullYear()} Sri Lakshmi Kanthan P
       </Copyright>
-    </FootnoteWrapper>
+    </FooterWrapper>
   );
 }

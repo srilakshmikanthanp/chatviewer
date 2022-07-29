@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { linkify } from '../utilities';
 import { IMsg } from '../interfaces';
 
-const MessageWrapper = styled('div') < { isPrimary: boolean } >`
+const ChatBoxWrapper = styled('div') < { isPrimary: boolean } >`
   align-items: ${props => props.isPrimary ? "flex-end" : "flex-start"};
   justify-content: center;
   display: flex;
@@ -21,14 +21,14 @@ const MessageWrapper = styled('div') < { isPrimary: boolean } >`
   background-color: transparent;
 `;
 
-const MessageAuthor = styled('div')`
+const ChatBoxAuthor = styled('div')`
   color: var(--text-color);
   font-size: 102%;
   margin: 10px;
   font-weight: bold;
 `;
 
-const MessageCover = styled('div') < { isPrimary: boolean } >`
+const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   background-color: ${props => props.isPrimary ? (
     "var(--pri-msg-bg-color)"
@@ -69,14 +69,14 @@ const MessageCover = styled('div') < { isPrimary: boolean } >`
   }
 `;
 
-const MessageImage = styled('img')`
+const ChatBoxImage = styled('img')`
   border-radius: 10px;
   max-width: 100%;
   max-height: 400px;
   object-fit: cover;
 `;
 
-const MessageText = styled('div')`
+const ChatBoxText = styled('div')`
   word-wrap: break-word;
   max-width: 350px;
   min-width: 20px;
@@ -85,7 +85,7 @@ const MessageText = styled('div')`
   font-weight: bold;
 `;
 
-const MessageMedia = styled('a')`
+const ChatBoxMedia = styled('a')`
   color: var(--text-color);
   text-decoration: none;
   &:hover {
@@ -93,7 +93,7 @@ const MessageMedia = styled('a')`
   }
 `;
 
-const MessageTime = styled('div')`
+const ChatBoxTime = styled('div')`
   font-weight: bold;
   color: gray;
   margin: 10px;
@@ -101,37 +101,37 @@ const MessageTime = styled('div')`
 `;
 
 // component props
-interface IMessageProps extends HtmlHTMLAttributes<HTMLDivElement> {
+interface IChatBoxProps extends HtmlHTMLAttributes<HTMLDivElement> {
   onClicked?: (msgId: number) => void;
-  message: IMsg;
+  ChatBox: IMsg;
   isPrimary: boolean;
 }
 
 // component
-function Message({ onClicked, message, isPrimary }: IMessageProps) {
-  // media body of message component
+function ChatBox({ onClicked, ChatBox, isPrimary }: IChatBoxProps) {
+  // media body of ChatBox component
   let mediaBodyComponent: JSX.Element | null = null;
 
-  // switch on message type
-  switch (message?.media?.mimeType.split('/')[0]) {
+  // switch on ChatBox type
+  switch (ChatBox?.media?.mimeType.split('/')[0]) {
     case 'image':
       mediaBodyComponent = (
-        <MessageImage
-          src={message.media.url}
+        <ChatBoxImage
+          src={ChatBox.media.url}
         />
       );
       break;
     case 'audio':
       mediaBodyComponent = (
         <AudioPlayer
-          src={message.media.url}
+          src={ChatBox.media.url}
         />
       );
       break;
     case 'video':
       mediaBodyComponent = (
         <ReactPlayer
-          url={message.media.url}
+          url={ChatBox.media.url}
           height = "100%"
           width = "100%"
           controls = {true}
@@ -139,10 +139,10 @@ function Message({ onClicked, message, isPrimary }: IMessageProps) {
       );
       break;
     default:
-      if(message.media) {
+      if(ChatBox.media) {
         mediaBodyComponent = (
-          <MessageMedia
-            href={message.media.url}
+          <ChatBoxMedia
+            href={ChatBox.media.url}
             target="_blank"
           />
         );
@@ -151,25 +151,25 @@ function Message({ onClicked, message, isPrimary }: IMessageProps) {
   }
 
   // add text to body
-  const messageBody = (
-    <MessageCover isPrimary={isPrimary}>
+  const ChatBoxBody = (
+    <ChatBoxCover isPrimary={isPrimary}>
       {mediaBodyComponent}
-      <MessageText dangerouslySetInnerHTML={{ __html: linkify(message.message) }} />
-    </MessageCover>
+      <ChatBoxText dangerouslySetInnerHTML={{ __html: linkify(ChatBox.message) }} />
+    </ChatBoxCover>
   );
 
   // render the component
   return (
-    <MessageWrapper isPrimary={isPrimary}>
-      <MessageAuthor>
-        {message.author}
-      </MessageAuthor>
-      {messageBody}
-      <MessageTime>
-        {message.timestamp}
-      </MessageTime>
-    </MessageWrapper>
+    <ChatBoxWrapper isPrimary={isPrimary}>
+      <ChatBoxAuthor>
+        {ChatBox.author}
+      </ChatBoxAuthor>
+      {ChatBoxBody}
+      <ChatBoxTime>
+        {ChatBox.timestamp}
+      </ChatBoxTime>
+    </ChatBoxWrapper>
   );
 }
 
-export default Message;
+export default ChatBox;
