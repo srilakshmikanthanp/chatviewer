@@ -24,7 +24,17 @@
     --text-color: #000;
     --pri-msg-bg-color: #0070f3;
     --pri-msg-fg-color: #fff;
-    --sec-msg-bg-color: #0070f3;
-    --sec-msg-fg-color: #fff;
+    --sec-msg-bg-color: #FF7F50;
+    --sec-msg-fg-color: #FFF;
   }
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #0070f3;
 }

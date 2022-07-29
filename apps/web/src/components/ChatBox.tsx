@@ -16,8 +16,8 @@ const ChatBoxWrapper = styled('div') < { isPrimary: boolean } >`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  margin: 10px;
+  padding: 10px 0px;
+  margin: 10px 0px;
   background-color: transparent;
 `;
 
@@ -103,35 +103,35 @@ const ChatBoxTime = styled('div')`
 // component props
 interface IChatBoxProps extends HtmlHTMLAttributes<HTMLDivElement> {
   onClicked?: (msgId: number) => void;
-  ChatBox: IMsg;
+  message: IMsg;
   isPrimary: boolean;
 }
 
 // component
-function ChatBox({ onClicked, ChatBox, isPrimary }: IChatBoxProps) {
+function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
   // media body of ChatBox component
   let mediaBodyComponent: JSX.Element | null = null;
 
   // switch on ChatBox type
-  switch (ChatBox?.media?.mimeType.split('/')[0]) {
+  switch (message?.media?.mimeType.split('/')[0]) {
     case 'image':
       mediaBodyComponent = (
         <ChatBoxImage
-          src={ChatBox.media.url}
+          src={message.media.url}
         />
       );
       break;
     case 'audio':
       mediaBodyComponent = (
         <AudioPlayer
-          src={ChatBox.media.url}
+          src={message.media.url}
         />
       );
       break;
     case 'video':
       mediaBodyComponent = (
         <ReactPlayer
-          url={ChatBox.media.url}
+          url={message.media.url}
           height = "100%"
           width = "100%"
           controls = {true}
@@ -139,10 +139,10 @@ function ChatBox({ onClicked, ChatBox, isPrimary }: IChatBoxProps) {
       );
       break;
     default:
-      if(ChatBox.media) {
+      if(message.media) {
         mediaBodyComponent = (
           <ChatBoxMedia
-            href={ChatBox.media.url}
+            href={message.media.url}
             target="_blank"
           />
         );
@@ -154,7 +154,7 @@ function ChatBox({ onClicked, ChatBox, isPrimary }: IChatBoxProps) {
   const ChatBoxBody = (
     <ChatBoxCover isPrimary={isPrimary}>
       {mediaBodyComponent}
-      <ChatBoxText dangerouslySetInnerHTML={{ __html: linkify(ChatBox.message) }} />
+      <ChatBoxText dangerouslySetInnerHTML={{ __html: linkify(message.message) }} />
     </ChatBoxCover>
   );
 
@@ -162,11 +162,11 @@ function ChatBox({ onClicked, ChatBox, isPrimary }: IChatBoxProps) {
   return (
     <ChatBoxWrapper isPrimary={isPrimary}>
       <ChatBoxAuthor>
-        {ChatBox.author}
+        {message.author}
       </ChatBoxAuthor>
       {ChatBoxBody}
       <ChatBoxTime>
-        {ChatBox.timestamp}
+        {message.timestamp}
       </ChatBoxTime>
     </ChatBoxWrapper>
   );

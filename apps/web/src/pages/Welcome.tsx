@@ -17,7 +17,7 @@ const WelcomeWrapper = styled.div`
   flex-direction: column;
 `;
 
-const ImageOscillate = keyframes`
+const ImgOscillator = keyframes`
   0% {
     transform: translateY(0px);
   }
@@ -36,12 +36,13 @@ const ImageOscillate = keyframes`
 `;
 
 const LogoImage = styled.img`
-  animation: ${ImageOscillate} 1s linear infinite;
+  animation: ${ImgOscillator} 1s linear infinite;
   max-height: 300px;
   max-width: 300px;
+  margin: 0 auto;
 `;
 
-const Text = styled.p`
+const Paragraph = styled.p`
   font-size: larger;
   max-width: 600px;
   margin: 10px;
@@ -49,45 +50,25 @@ const Text = styled.p`
   font-weight: 600;
 `;
 
-const RowCenter = styled(Row)`
-  justify-content: center;
-  align-items: center;
-  display: flex;
-`;
-
-const ColCenter = styled(Col)`
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-`;
-
 export default function Welcome() {
-  // Message
-  const message = (`
-    Missing the feel while reading Exported chats
-    don't worry chatviewer comes to rescue
-  `);
-
-  // render
   return (
     <WelcomeWrapper>
       <Header />
-      <Container>
-        <RowCenter>
-          <ColCenter xs={12} lg={6}>
-            <LogoImage src={ImgLogo} />
-          </ColCenter>
-          <ColCenter xs={12} lg={6}>
-            <Text>{message}</Text>
-            <Clickable
-              onClick={() => null}
-              isPrimary={true}
-            >
+      <Container fluid={true} style={{ margin: "80px 0px" }}>
+        <Row className="d-flex align-items-center justify-content-center">
+          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
+            <Paragraph>
+              Missing the feel while reading Exported chats don't
+              worry chat viewer comes to rescue
+            </Paragraph>
+            <Clickable onClick={() => null} isPrimary={true} >
               Import
             </Clickable>
-          </ColCenter>
-        </RowCenter>
+          </Col>
+          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
+            <LogoImage alt="Chat Viewer" src={ImgLogo} />
+          </Col>
+        </Row>
       </Container>
       <Footer />
     </WelcomeWrapper>

@@ -3,11 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import Welcome from './pages/Welcome';
+import Message from './pages/Message';
 import './styles/global.module.css';
 
 export default function App() {
   return (
-    <Welcome />
+    <Message />
   );
 }

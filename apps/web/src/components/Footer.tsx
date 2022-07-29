@@ -12,11 +12,12 @@ const FooterWrapper = styled.div`
   margin: 0 0 0 0;
   width: 100vw;
   position: fixed;
+  padding: 10px 30px;
   bottom: 0;
   left: 0;
-  padding: 8px;
   display: flex;
   flex-direction: row;
+  z-index: 1000000000;
 `;
 
 const SocialLinks = styled.div`

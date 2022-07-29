@@ -23,8 +23,10 @@ const HeaderWrapper = styled.div`
   height: 80px;
   left: 0%;
   top: 0%;
+  padding: 0px 30px;
   position: fixed;
   align-items: center;
+  z-index: 1000000000;
 `;
 
 const LogoImg = styled.img`
