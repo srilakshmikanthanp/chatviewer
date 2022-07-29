@@ -6,15 +6,15 @@
 import styled from "styled-components";
 
 const FooterWrapper = styled.div`
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
   height: fit-content;
-  margin: 0 0 0 0;
-  width: 100vw;
+  padding: 10px 10px;
   position: fixed;
-  padding: 10px 30px;
+  width: 100vw;
   bottom: 0;
   left: 0;
+  margin: 0px;
   display: flex;
   flex-direction: row;
   z-index: 1000000000;
@@ -26,6 +26,7 @@ const SocialLinks = styled.div`
   display: flex;
   flex-direction: row;
   margin-right: auto;
+  padding: 0px 10px;
 `;
 
 const SocialLink = styled.a`
@@ -43,6 +44,7 @@ const Copyright = styled.div`
   align-items: center;
   display: flex;
   color: gray;
+  padding: 0px 10px;
   font-weight: 400;
   font-size: 0.8rem;
   margin-left: auto;

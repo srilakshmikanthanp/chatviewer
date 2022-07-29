@@ -56,6 +56,26 @@ export default function Message() {
       author: "Sri Lakshmi Kanthan P",
       timestamp: new Date().toLocaleString(),
       msgId: 5
+    },
+    {
+      message: "See this Image",
+      author: "Sri Lakshmi Kanthan P",
+      timestamp: new Date().toLocaleString(),
+      msgId: 6,
+      media: {
+        mimeType: "image/jpeg",
+        url: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      }
+    },
+    {
+      message: "See this Audio",
+      author: "Sri Lakshmi Kanthan P",
+      timestamp: new Date().toLocaleString(),
+      msgId: 7,
+      media: {
+        mimeType: "audio/mpeg",
+        url: "https://file-examples.com/storage/fe52cb0c4862dc676a1b341/2017/11/file_example_MP3_700KB.mp3",
+      }
     }
   ];
 

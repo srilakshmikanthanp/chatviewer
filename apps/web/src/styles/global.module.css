@@ -7,9 +7,6 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --shadow-color: rgba(0, 0, 0, 0.15);
-    --background-color: #fff;
-    --text-color: #000;
     --pri-msg-bg-color: #0070f3;
     --pri-msg-fg-color: #fff;
     --sec-msg-bg-color: #FFF;
@@ -19,9 +16,6 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --shadow-color: rgba(0, 0, 0, 0.15);
-    --background-color: #fff;
-    --text-color: #000;
     --pri-msg-bg-color: #0070f3;
     --pri-msg-fg-color: #fff;
     --sec-msg-bg-color: #FF7F50;
@@ -36,5 +30,5 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #0070f3;
+  background: var(--pri-msg-bg-color);
 }

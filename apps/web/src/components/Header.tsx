@@ -16,14 +16,14 @@ import Clickable from "./Clickable";
 import React from "react";
 
 const HeaderWrapper = styled.div`
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
   display: flex;
   width: 100vw;
   height: 80px;
   left: 0%;
   top: 0%;
-  padding: 0px 30px;
+  padding: 0px 10px;
   position: fixed;
   align-items: center;
   z-index: 1000000000;

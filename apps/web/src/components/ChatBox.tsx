@@ -17,19 +17,19 @@ const ChatBoxWrapper = styled('div') < { isPrimary: boolean } >`
   display: flex;
   flex-direction: column;
   padding: 10px 0px;
-  margin: 10px 0px;
+  margin: 5px 10px;
   background-color: transparent;
 `;
 
 const ChatBoxAuthor = styled('div')`
   color: var(--text-color);
   font-size: 102%;
-  margin: 10px;
+  margin: 5px;
   font-weight: bold;
 `;
 
 const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: var(--bs-border-color) 0px 2px 8px 0px;
   background-color: ${props => props.isPrimary ? (
     "var(--pri-msg-bg-color)"
   ) : (
@@ -86,7 +86,7 @@ const ChatBoxText = styled('div')`
 `;
 
 const ChatBoxMedia = styled('a')`
-  color: var(--text-color);
+  color: var(--bs-body-color);
   text-decoration: none;
   &:hover {
     text-decoration: underline;
@@ -96,8 +96,8 @@ const ChatBoxMedia = styled('a')`
 const ChatBoxTime = styled('div')`
   font-weight: bold;
   color: gray;
-  margin: 10px;
-  font-size: 80%;
+  margin: 5px;
+  font-size: 60%;
 `;
 
 // component props
@@ -124,6 +124,7 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
     case 'audio':
       mediaBodyComponent = (
         <AudioPlayer
+          style={{ minWidth: '320px' }}
           src={message.media.url}
         />
       );
@@ -132,7 +133,7 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
       mediaBodyComponent = (
         <ReactPlayer
           url={message.media.url}
-          height = "100%"
+          height = "200px"
           width = "100%"
           controls = {true}
         />
