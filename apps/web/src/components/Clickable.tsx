@@ -9,13 +9,12 @@ import styled from "styled-components";
 const ClickableWrapper = styled("div") <{ isPrimary?: boolean }>`
   background-color: ${props => props.isPrimary ? "#4285F4" : "#FFF"};
   color: ${props => props.isPrimary ? "#FFF" : "#4285F4"};
-  width: 200px;
-  padding: 10px;
   text-align: center;
-  margin-right: auto;
   margin-top: 10px;
-  margin-left: auto;
   cursor: pointer;
+  padding: 10px;
+  width: 200px;
+  max-width: 100%;
   font-size: 15px;
   font-weight: bold;
   border-radius: 10px;

@@ -3,11 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import Message from './pages/Message';
+import Dashboard from './pages/Dashboard';
 import './styles/global.module.css';
 
 export default function App() {
   return (
-    <Message />
+    <Dashboard />
   );
 }
