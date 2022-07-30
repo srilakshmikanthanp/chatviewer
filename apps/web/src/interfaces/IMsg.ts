@@ -6,7 +6,7 @@
 export default interface IMsg {
   message: string;
   author: string;
-  timestamp: string;
+  timestamp: Date;
   msgId: number;
   media?: {
     mimeType: string;

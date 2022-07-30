@@ -167,7 +167,7 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
       </ChatBoxAuthor>
       {ChatBoxBody}
       <ChatBoxTime>
-        {message.timestamp}
+        {message.timestamp.toLocaleString()}
       </ChatBoxTime>
     </ChatBoxWrapper>
   );

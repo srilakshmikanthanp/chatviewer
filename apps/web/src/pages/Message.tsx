@@ -26,25 +26,25 @@ export default function Message() {
     {
       message: "Hello, I am Sri Lakshmi Kanthan P",
       author: "Sri Lakshmi Kanthan P",
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date(),
       msgId: 1,
     },
     {
       message: "How are you?",
       author: "John Doe",
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date(),
       msgId: 2,
     },
     {
       message: "I am fine, thank you",
       author: "Sri Lakshmi Kanthan P",
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date(),
       msgId: 3,
     },
     {
       message: "See this video",
       author: "John Doe",
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date(),
       msgId: 4,
       media: {
         mimeType: "video/mp4",
@@ -54,13 +54,13 @@ export default function Message() {
     {
       message: "Hey, Nice",
       author: "Sri Lakshmi Kanthan P",
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date(),
       msgId: 5
     },
     {
       message: "See this Image",
       author: "Sri Lakshmi Kanthan P",
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date(),
       msgId: 6,
       media: {
         mimeType: "image/jpeg",
@@ -70,7 +70,7 @@ export default function Message() {
     {
       message: "See this Audio",
       author: "Sri Lakshmi Kanthan P",
-      timestamp: new Date().toLocaleString(),
+      timestamp: new Date(),
       msgId: 7,
       media: {
         mimeType: "audio/mpeg",

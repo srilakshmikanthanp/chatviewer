@@ -349,6 +349,7 @@ GET {{host}}/api/v1/utils/chats/<token>
 {
     "blobUrl": "http://localhost:8000/api/v1/utils/chats/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
     "mimeType": "text/pain",
+    "name": "Chat 1",
     "chatId": 2,
     "userId": 1,
     "createdAt": "2022-07-23T22:16:42.000Z"
