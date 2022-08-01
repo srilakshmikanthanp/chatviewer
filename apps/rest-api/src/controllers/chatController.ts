@@ -62,8 +62,19 @@ export async function getAllChatsController(req: Request, res: Response) {
     return res.status(404).json({ message: "User not found" });
   }
 
+  // get the per_page from query
+  const per_page = +req.query.per_page;
+
+  // get the page from query
+  const page = +req.query.page;
+
   // query string
-  const query = 'SELECT chatId, userId, mimeType, createdAt FROM Chats WHERE userId = ?';
+  let query = 'SELECT chatId, userId, mimeType, createdAt FROM Chats WHERE userId = ?';
+
+  // if per_page is not null and page is not null
+  if (per_page && page) {
+    query += ` LIMIT ${per_page} OFFSET ${per_page * (page - 1)}`;
+  }
 
   // get chats with raw query
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,6 +94,33 @@ export async function getAllChatsController(req: Request, res: Response) {
       createdAt: chat.createdAt,
     }
   });
+
+  // query to count the total number of chats
+  const countQuery = 'SELECT COUNT(*) as total FROM Chats WHERE userId = ?';
+
+  // get the total number of chats
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const total = +(<any>await sequelize.query(countQuery, {
+    type: QueryTypes.SELECT,
+    replacements: [userID],
+  })).total;
+
+  // construct the link header
+  if (per_page && page) {
+    const topMostUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    const totalPages = Math.ceil(total / per_page);
+    const links = [];
+
+    if (page < totalPages) {
+      links.push(`<${topMostUrl}?page=${page + 1}&per_page=${per_page}>; rel="next"`);
+    }
+
+    if (page > 1) {
+      links.push(`<${topMostUrl}?page=${page - 1}&per_page=${per_page}>; rel="prev"`);
+    }
+
+    res.set('Link', links.join(', '));
+  }
 
   // send the success response
   res.status(200).json(chats);

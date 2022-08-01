@@ -175,6 +175,13 @@ GET {{host}}/api/v1/users/1/chats
 Authorization Bearer <Token>
 ```
 
+#### Query Parameters
+
+The Query Parameters have been used for paging the results. It returns results with a link header.
+
+  * `per_page`: Number of chats per page
+  * `page`: Page number
+  
 #### Response
 
 ```json
