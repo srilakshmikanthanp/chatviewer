@@ -16,10 +16,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --pri-msg-bg-color: #0070f3;
+    --pri-msg-bg-color: #006AFF;
     --pri-msg-fg-color: #fff;
-    --sec-msg-bg-color: #FF7F50;
-    --sec-msg-fg-color: #FFF;
+    --sec-msg-bg-color: #FF4500;
+    --sec-msg-fg-color: #fff;
   }
 }
 
@@ -30,5 +30,10 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: var(--pri-msg-bg-color);
+  background: #c9c9c9;
+  ;
+}
+
+:root {
+  font: Roboto, sans-serif;
 }

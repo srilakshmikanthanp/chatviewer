@@ -4,14 +4,13 @@
 // https://opensource.org/licenses/MIT
 
 import ChatBox from "./ChatBox";
-import Clickable from "./Clickable";
 import Footer from "./Footer";
 import Header from "./Header";
-
+import UserView from "./UserView";
 
 export {
   ChatBox,
-  Clickable,
   Footer,
   Header,
+  UserView
 }

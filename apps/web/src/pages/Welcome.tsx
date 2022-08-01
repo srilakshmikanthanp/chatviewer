@@ -3,10 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Header, Footer, Clickable } from "../components";
 import styled, { keyframes } from "styled-components";
+import { Header, Footer } from "../components";
 import ImgLogo from "../assets/images/logo.png";
 import { Container, Row, Col } from "react-bootstrap";
+import { Button } from "@mui/material";
 
 const WelcomeWrapper = styled.div`
   justify-content: center;
@@ -61,12 +62,18 @@ export default function Welcome() {
               Missing the feel while reading Exported chats don't
               worry chat viewer comes to rescue
             </Paragraph>
-            <Clickable onClick={() => null} isPrimary={true} >
+            <Button
+              onClick={() => null}
+              variant="contained"
+            >
               Import
-            </Clickable>
+            </Button>
           </Col>
           <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
-            <LogoImage alt="Chat Viewer" src={ImgLogo} />
+            <LogoImage
+              alt="Chat Viewer"
+              src={ImgLogo}
+            />
           </Col>
         </Row>
       </Container>

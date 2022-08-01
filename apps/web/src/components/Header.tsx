@@ -8,11 +8,11 @@ import CloseImg from "../assets/images/close.svg";
 import AppLogo from "../assets/images/logo.png";
 import MenuImg from "../assets/images/menu.svg";
 import { GOOGLE_CLIENT_ID } from "../constants";
+import Button from "@mui/material/Button";
 import styled from "styled-components";
 import { IUser } from "../interfaces";
 import { useEffect } from "react";
 import { useState } from "react";
-import Clickable from "./Clickable";
 import React from "react";
 
 const HeaderWrapper = styled.div`
@@ -127,9 +127,11 @@ export default function Header() {
 
   // attach the google sign in button
   // @ts-ignore
-  google.accounts.id.initialize({client_id: GOOGLE_CLIENT_ID, callback: (res) => {
-    console.log(res);
-  }});
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID, callback: (res) => {
+      console.log(res);
+    }
+  });
 
   // render the sign in button
   useEffect(() => {
@@ -151,24 +153,24 @@ export default function Header() {
             <FullName>{user?.name}</FullName>
             <Email>{user?.email}</Email>
           </UserDetails>
-          <Clickable
-            isPrimary={false}
+          <Button
             onClick={() => null}
+            variant="contained"
           >
             View Profile
-          </Clickable>
-          <Clickable
-            isPrimary={false}
+          </Button>
+          <Button
             onClick={() => null}
+            variant="contained"
           >
             Upload Chat
-          </Clickable>
-          <Clickable
-            isPrimary={false}
+          </Button>
+          <Button
             onClick={() => null}
+            variant="contained"
           >
             Sign Out
-          </Clickable>
+          </Button>
         </ContentWrapper>
       </SideBar>
     </HeaderWrapper>
