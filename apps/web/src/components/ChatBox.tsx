@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import React, { HtmlHTMLAttributes } from 'react';
+import { HtmlHTMLAttributes } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import ReactPlayer from 'react-player/youtube';

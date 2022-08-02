@@ -8,6 +8,7 @@ import { Header, Footer } from "../components";
 import ImgLogo from "../assets/images/logo.png";
 import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "@mui/material";
+import React from "react";
 
 const WelcomeWrapper = styled.div`
   justify-content: center;
@@ -53,31 +54,33 @@ const Paragraph = styled.p`
 
 export default function Welcome() {
   return (
-    <WelcomeWrapper>
+    <React.Fragment>
       <Header />
-      <Container fluid={true} style={{ margin: "80px 0px" }}>
-        <Row className="d-flex align-items-center justify-content-center">
-          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
-            <Paragraph>
-              Missing the feel while reading Exported chats don't
-              worry chat viewer comes to rescue
-            </Paragraph>
-            <Button
-              onClick={() => null}
-              variant="contained"
-            >
-              Import
-            </Button>
-          </Col>
-          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
-            <LogoImage
-              alt="Chat Viewer"
-              src={ImgLogo}
-            />
-          </Col>
-        </Row>
-      </Container>
+      <WelcomeWrapper>
+        <Container fluid={true} style={{ margin: "80px 0px" }}>
+          <Row className="d-flex align-items-center justify-content-center">
+            <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
+              <Paragraph>
+                Missing the feel while reading Exported chats don't
+                worry chat viewer comes to rescue
+              </Paragraph>
+              <Button
+                onClick={() => null}
+                variant="contained"
+              >
+                Import
+              </Button>
+            </Col>
+            <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
+              <LogoImage
+                alt="Chat Viewer"
+                src={ImgLogo}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </WelcomeWrapper>
       <Footer />
-    </WelcomeWrapper>
+    </React.Fragment>
   );
 }

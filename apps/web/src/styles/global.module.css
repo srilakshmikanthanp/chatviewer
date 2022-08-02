@@ -23,6 +23,17 @@
   }
 }
 
+:root {
+  font: Roboto, sans-serif;
+}
+
+body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0%;
+  padding: 0%;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
   background: var(--background-color);
@@ -31,9 +42,4 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background: #c9c9c9;
-  ;
-}
-
-:root {
-  font: Roboto, sans-serif;
 }

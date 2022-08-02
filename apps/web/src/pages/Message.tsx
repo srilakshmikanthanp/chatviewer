@@ -7,12 +7,15 @@ import { Header, ChatBox, Footer } from "../components";
 import { Container, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { IMsg } from "../interfaces";
+import React from "react";
 
 const MessageWrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
   display: flex;
+  margin-top: 100px;
+  margin-bottom: 60px;
   align-items: center;
   flex-direction: column;
 `;
@@ -94,12 +97,14 @@ export default function Message() {
 
   // render
   return (
-    <MessageWrapper>
+    <React.Fragment>
       <Header />
-      <Container fluid={true} style={{ margin: "80px 0px" }}>
-        <Row> {chats} </Row>
-      </Container>
+      <MessageWrapper>
+        <Container fluid={true} >
+          <Row> {chats} </Row>
+        </Container>
+      </MessageWrapper>
       <Footer />
-    </MessageWrapper>
+    </React.Fragment>
   );
 }
