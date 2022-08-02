@@ -137,7 +137,7 @@ export default function Header() {
   useEffect(() => {
     // @ts-ignore
     signInRef.current && google.accounts.id.renderButton(signInRef.current, {
-      theme: 'outline', size: "large"
+      theme: 'outline', size: "medium"
     });
   });
 
