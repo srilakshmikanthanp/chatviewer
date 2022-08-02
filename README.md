@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/srilakshmikanthanp/chatviewer">
-    <img src="assets/logo.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Chat Viewer</h3>
@@ -75,7 +75,7 @@ This Project was initiated to view the WhatsApp exported chat as it like in What
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is a Web interface application to view the exported chat you optionally create an account to maintain the copy of the chat in cloud and make it easy to share.
+This is a Web interface application to view the exported chat you optionally create an account to maintain the copy of the chat in the cloud and make it easy to share.
 
 ### Prerequisites
 
@@ -85,7 +85,7 @@ To run the project local install npm and node js
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repo from github
    ```sh
    git clone https://github.com/srilakshmikanthanp/chatviewer.git
    ```
@@ -109,10 +109,15 @@ To run the project local install npm and node js
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Currently under development
+For REST API documentation go to the following link
+
+  * [REST API](/rest-api)
+
+For Web UI documentation go to the following link
+
+  * [Web UI](/web)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- ROADMAP -->
@@ -144,7 +149,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -155,7 +160,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 Project Link: [https://github.com/srilakshmikanthanp/chatviewer](https://github.com/srilakshmikanthanp/chatviewer)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- ACKNOWLEDGMENTS -->
