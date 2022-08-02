@@ -59,22 +59,16 @@ export default function Welcome() {
       <Container fluid={true} style={{ margin: "80px 0px" }}>
         <Row className="d-flex align-items-center justify-content-center">
           <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
+            <LogoImage alt="Chat Viewer" src={ImgLogo} />
+          </Col>
+          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
             <Paragraph>
               Missing the feel while reading Exported chats don't
               worry chat viewer comes to rescue
             </Paragraph>
-            <Button
-              onClick={() => null}
-              variant="contained"
-            >
+            <Button onClick={() => null} variant="outlined">
               Import
             </Button>
-          </Col>
-          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
-            <LogoImage
-              alt="Chat Viewer"
-              src={ImgLogo}
-            />
           </Col>
         </Row>
       </Container>
