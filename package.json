@@ -26,6 +26,7 @@
     "react-dom": "18.2.0",
     "react-h5-audio-player": "^3.8.4",
     "react-player": "^2.10.1",
+    "react-router-dom": "^6.3.0",
     "react-table": "^7.8.0",
     "regenerator-runtime": "0.13.7",
     "sequelize": "^6.21.3",

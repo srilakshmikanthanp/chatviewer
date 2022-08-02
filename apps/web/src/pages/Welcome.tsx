@@ -10,7 +10,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "@mui/material";
 import React from "react";
 
-const WelcomeWrapper = styled.div`
+const ContentWrapper = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
@@ -21,19 +21,19 @@ const WelcomeWrapper = styled.div`
 
 const ImgOscillator = keyframes`
   0% {
-    transform: translateY(0px);
-  }
-  25% {
-    transform: translateY(10px);
-  }
-  50% {
-    transform: translateY(0px);
-  }
-  75% {
     transform: translateY(-10px);
   }
-  100% {
+  25% {
     transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  75% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-10px);
   }
 `;
 
@@ -53,33 +53,39 @@ const Paragraph = styled.p`
 `;
 
 export default function Welcome() {
+  // body component
+  const Body = () => (
+    <ContentWrapper>
+      <Container fluid={true} style={{ margin: "80px 0px" }}>
+        <Row className="d-flex align-items-center justify-content-center">
+          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
+            <Paragraph>
+              Missing the feel while reading Exported chats don't
+              worry chat viewer comes to rescue
+            </Paragraph>
+            <Button
+              onClick={() => null}
+              variant="contained"
+            >
+              Import
+            </Button>
+          </Col>
+          <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
+            <LogoImage
+              alt="Chat Viewer"
+              src={ImgLogo}
+            />
+          </Col>
+        </Row>
+      </Container>
+    </ContentWrapper>
+  );
+
+  // renter
   return (
     <React.Fragment>
       <Header />
-      <WelcomeWrapper>
-        <Container fluid={true} style={{ margin: "80px 0px" }}>
-          <Row className="d-flex align-items-center justify-content-center">
-            <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
-              <Paragraph>
-                Missing the feel while reading Exported chats don't
-                worry chat viewer comes to rescue
-              </Paragraph>
-              <Button
-                onClick={() => null}
-                variant="contained"
-              >
-                Import
-              </Button>
-            </Col>
-            <Col xs={12} lg={6} className="d-flex flex-column align-items-center justify-content-center">
-              <LogoImage
-                alt="Chat Viewer"
-                src={ImgLogo}
-              />
-            </Col>
-          </Row>
-        </Container>
-      </WelcomeWrapper>
+      <Body />
       <Footer />
     </React.Fragment>
   );
