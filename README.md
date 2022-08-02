@@ -111,11 +111,11 @@ To run the project local install npm and node js
 
 For REST API documentation go to the following link
 
-  * [REST API](/rest-api)
+  * [REST API](apps/rest-api)
 
 For Web UI documentation go to the following link
 
-  * [Web UI](/web)
+  * [Web UI](apps/web)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
