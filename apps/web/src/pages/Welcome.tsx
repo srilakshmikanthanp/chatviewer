@@ -47,7 +47,7 @@ const LogoImage = styled.img`
 const Paragraph = styled.p`
   font-size: larger;
   max-width: 600px;
-  margin: 10px;
+  margin: 20px 10px;
   text-align: center;
   font-weight: 600;
 `;
