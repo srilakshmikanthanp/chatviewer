@@ -111,12 +111,12 @@ export async function getAllChatsController(req: Request, res: Response) {
     const totalPages = Math.ceil(total / per_page);
     const links = [];
 
-    if (page < totalPages) {
-      links.push(`<${topMostUrl}?page=${page + 1}&per_page=${per_page}>; rel="next"`);
-    }
-
     if (page > 1) {
       links.push(`<${topMostUrl}?page=${page - 1}&per_page=${per_page}>; rel="prev"`);
+    }
+
+    if (page < totalPages) {
+      links.push(`<${topMostUrl}?page=${page + 1}&per_page=${per_page}>; rel="next"`);
     }
 
     res.set('Link', links.join(', '));
@@ -321,7 +321,7 @@ export async function getTokenByIdController(req: Request, res: Response) {
   const payload: IJwtChatPayload = { chatId: chatId };
 
   // get the expiry
-  const expiry = req.body.expiry;
+  const expiry = req.body.expiresIn;
 
   // generate a jwt
   const token = jwt.sign(payload, process.env.JWT_SECRET, {

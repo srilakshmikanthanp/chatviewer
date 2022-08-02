@@ -48,7 +48,7 @@ export async function patchChatValidator (req: Request, res: Response, next: Nex
 export async function getTokenByIdValidator (req: Request, res: Response, next: NextFunction) {
   // create a schema for the share link request
   const schema = yup.object().shape({
-    expiry: yup.string().required(),
+    expiresIn: yup.string().required(),
   });
 
   // validate the request body
