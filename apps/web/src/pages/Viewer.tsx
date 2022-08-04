@@ -38,7 +38,7 @@ export default function Viewer() {
     return (
       <Col xs={12}>
         <ChatBox isPrimary={message.author === primaryAuthor}
-          message={message} key={message.msgId} />
+          message={message} />
       </Col>
     );
   });

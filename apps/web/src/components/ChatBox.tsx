@@ -113,11 +113,11 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
   let mediaBodyComponent: JSX.Element | null = null;
 
   // switch on ChatBox type
-  switch (message?.media?.mimeType.split('/')[0]) {
+  switch (message?.media?.type.split('/')[0]) {
     case 'image':
       mediaBodyComponent = (
         <ChatBoxImage
-          src={message.media.url}
+          src={URL.createObjectURL(message.media)}
         />
       );
       break;
@@ -125,14 +125,14 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
       mediaBodyComponent = (
         <AudioPlayer
           style={{ minWidth: '320px' }}
-          src={message.media.url}
+          src={URL.createObjectURL(message.media)}
         />
       );
       break;
     case 'video':
       mediaBodyComponent = (
         <ReactPlayer
-          url={message.media.url}
+          url={URL.createObjectURL(message.media)}
           height = "200px"
           width = "100%"
           controls = {true}
@@ -143,7 +143,7 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
       if(message.media) {
         mediaBodyComponent = (
           <ChatBoxMedia
-            href={message.media.url}
+            href={URL.createObjectURL(message.media)}
             target="_blank"
           />
         );
@@ -155,7 +155,9 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
   const ChatBoxBody = (
     <ChatBoxCover isPrimary={isPrimary}>
       {mediaBodyComponent}
-      <ChatBoxText dangerouslySetInnerHTML={{ __html: linkify(message.message) }} />
+      <ChatBoxText dangerouslySetInnerHTML={{
+        __html: linkify(message.message)
+      }} />
     </ChatBoxCover>
   );
 

@@ -7,9 +7,5 @@ export default interface IMsg {
   message: string;
   author: string;
   timestamp: Date;
-  msgId: number;
-  media?: {
-    mimeType: string;
-    url: string;
-  }
+  media?: Blob
 }

@@ -18,8 +18,10 @@
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "express": "4.17.2",
+    "file-type": "^17.1.6",
     "google-auth-library": "^8.1.1",
     "jsonwebtoken": "^8.5.1",
+    "jszip": "^3.10.1",
     "mysql2": "^2.3.3",
     "react": "18.2.0",
     "react-bootstrap": "^2.4.0",
@@ -32,6 +34,7 @@
     "sequelize": "^6.21.3",
     "styled-components": "^5.3.5",
     "tslib": "^2.3.0",
+    "whatsapp-chat-parser": "^3.2.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
