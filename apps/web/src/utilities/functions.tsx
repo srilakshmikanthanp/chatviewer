@@ -3,6 +3,21 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import MimeTypes from "../assets/json/mime-types.json";
+
+/**
+ * Escape the html string
+ *
+ * @param html string
+ * @return string
+ */
+export function escapeHtml(html: string){
+  const text = document.createTextNode(html);
+  const p = document.createElement('p');
+  p.appendChild(text);
+  return p.innerHTML;
+}
+
 /**
  * Text Link to Anchor Tag converter
  *
@@ -11,7 +26,7 @@
  */
 export function linkify(inputText: string) {
   // initialize the return string
-  let replacedText : string = inputText;
+  let replacedText: string = escapeHtml(inputText);
 
   //URLs starting with http://, https://, or ftp://
   const replaceHttp = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
@@ -27,4 +42,25 @@ export function linkify(inputText: string) {
 
   // return the replaced text
   return replacedText;
+}
+
+
+/**
+ * Get MIME Type from File Name
+ * @param fileName File Name
+ * @return MIME Type
+ */
+export function getMimeType(fileName: string) {
+  const extension = fileName.split('.').pop();
+
+  if (!extension) {
+    return 'application/octet-stream';
+  }
+
+  type MimeType = keyof typeof MimeTypes;
+
+  return (
+    MimeTypes[extension as MimeType] ||
+    'application/octet-stream'
+  );
 }

@@ -3,13 +3,16 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { Message } from 'whatsapp-chat-parser/types/types';
 import { parseString } from 'whatsapp-chat-parser';
 import { IMsg } from '../interfaces';
 import JSzip, { file } from 'jszip';
-import { fileTypeFromBuffer } from 'file-type';
-import { Message } from 'whatsapp-chat-parser/types/types';
+import { getMimeType } from './functions';
 
 export default class WhatsappParser {
+  // Constant Author of System Message
+  private readonly SYSTEM_AUTHOR = 'System';
+
   // private attributes of parser
   private chatFile: Blob;
 
@@ -18,23 +21,26 @@ export default class WhatsappParser {
     return { message: message.message, author: message.author, timestamp: message.date, media: media };
   }
 
-  // Utility To get the Media From Buffer
-  private async getMedia(arrayBuffer: ArrayBuffer | undefined): Promise<Blob> {
-    // check if arrayBuffer is undefined
-    if (!arrayBuffer) { throw new Error('No Media Found'); }
-
-    // get the file type from buffer
-    const fileType = await fileTypeFromBuffer(arrayBuffer);
-
-    // check if file type is undefined
-    if (!fileType) { throw new Error('No Media Found'); }
-
-    // return the media
-    return new Blob([arrayBuffer], { type: fileType.mime });
-  }
-
   // implement Iterable For Zip File
   private async *iteratorForZipFile(): AsyncIterableIterator<IMsg> {
+    // Create Media from Attachments
+    const createMsgWithMedia = async (msg: Message): Promise<IMsg> => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const fileName = msg.attachment!.fileName;
+      const zipObj = zipFile.file(fileName);
+      const medBlob = await zipObj?.async('blob');
+
+      // if no media found
+      if(!medBlob) {
+        throw new Error('No Media Found');
+      }
+
+      // return Message
+      return this.createMsgObject(msg, medBlob.slice(
+        0, medBlob.size, getMimeType(fileName)
+      ));
+    }
+
     // Create a new JSZip object
     const zipFile = await JSzip.loadAsync(this.chatFile);
 
@@ -54,17 +60,12 @@ export default class WhatsappParser {
       parseAttachments: true
     });
 
-    // Create Media from Attachments
-    const createMsgWithMedia = async (msg: Message): Promise<IMsg> => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const zipObj = zipFile.file(msg.attachment!.fileName);
-      const buffer = await zipObj?.async('arraybuffer');
-      const mMedia = await this.getMedia(buffer);
-      return this.createMsgObject(msg, mMedia);
-    }
-
     // Create IMsg object
     for (const message of messages) {
+      if (message.author === this.SYSTEM_AUTHOR) {
+        continue;
+      }
+
       if (message.attachment) {
         yield await createMsgWithMedia(message);
       } else {
@@ -75,13 +76,18 @@ export default class WhatsappParser {
 
   // implement Iterable For Text File
   private async *iteratorForTextFile(): AsyncIterableIterator<IMsg> {
-    for (const msg of await parseString(this.chatFile.toString())) {
-      yield this.createMsgObject(msg);
+    for (const msg of await parseString(await this.chatFile.text())) {
+      if(msg.author !== this.SYSTEM_AUTHOR) {
+        yield this.createMsgObject(msg);
+      }
     }
   }
 
+  // constructor
+  constructor(chatFile: Blob) { this.chatFile = chatFile; }
+
   // implement Iterable interface
-  private async *iteratorForMessages(): AsyncIterator<IMsg> {
+  public iterator(): AsyncIterator<IMsg> {
     // check if mimetype is application/zip
     if (this.chatFile.type === 'application/zip') {
       return this.iteratorForZipFile();
@@ -89,18 +95,15 @@ export default class WhatsappParser {
 
     // check if mimetype is text/plain
     if (this.chatFile.type === 'text/plain') {
-      yield* this.iteratorForTextFile();
+      return this.iteratorForTextFile();
     }
 
     // throw error if mimetype is not supported
     throw new Error('Mimetype not supported');
   }
 
-  // constructor
-  constructor(chatFile: Blob) { this.chatFile = chatFile; }
-
   // implement Iterable interface
-  async [Symbol.asyncIterator](): Promise<AsyncIterator<IMsg>> {
-    return this.iteratorForMessages();
+  public [Symbol.asyncIterator](): AsyncIterator<IMsg> {
+    return this.iterator();
   }
 }

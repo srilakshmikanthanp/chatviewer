@@ -17,7 +17,6 @@ const FooterWrapper = styled.div`
   margin: 0px;
   display: flex;
   flex-direction: row;
-  z-index: 1000000000;
 `;
 
 const SocialLinks = styled.div`

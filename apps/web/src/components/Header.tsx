@@ -26,7 +26,6 @@ const HeaderWrapper = styled.div`
   padding: 0px 10px;
   position: fixed;
   align-items: center;
-  z-index: 1000000000;
 `;
 
 const LogoImg = styled.img`

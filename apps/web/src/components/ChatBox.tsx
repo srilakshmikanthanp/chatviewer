@@ -48,6 +48,7 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   max-width: 350px;
   min-width: 20px;
   padding: 8px;
+  z-index: -1;
   &:before {
     filter: drop-shadow(0px 2px 1px rgb(var(--shadow-color)));
     border-top: 10px solid ${props => props.isPrimary ? (

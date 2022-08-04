@@ -3,12 +3,12 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { useLocation, useNavigate } from "react-router-dom";
 import { Header, ChatBox, Footer } from "../components";
 import { Container, Row, Col } from "react-bootstrap";
-import { IMsgState } from "../interfaces/pages";
-import { useLocation } from "react-router-dom";
+import { IViewerState } from "../interfaces/pages";
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect } from "react";
 
 // Content Css Styles
 const ContentWrapper = styled.div`
@@ -25,23 +25,19 @@ const ContentWrapper = styled.div`
 // Message Component
 export default function Viewer() {
   // location state from the router
-  const locationState = useLocation().state as IMsgState;
-
-  // primary author of the messages
-  const primaryAuthor = locationState.header.primaryAuthor;
+  const locationState = useLocation().state as IViewerState;
 
   // list of message data
   const messages = locationState.body.messages;
 
+  console.log(messages);
+
   // to component
-  const chats = messages.map((message) => {
-    return (
-      <Col xs={12}>
-        <ChatBox isPrimary={message.author === primaryAuthor}
-          message={message} />
-      </Col>
-    );
-  });
+  const chats = messages.map((message) => (
+    <Col xs={12}>
+      <ChatBox isPrimary={message.author === ''} message={message} />
+    </Col>
+  ));
 
   // Body
   const Body = () => (

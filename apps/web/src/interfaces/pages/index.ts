@@ -3,8 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import IMsgState from "./IMsgState";
+import IViewerState from "./IMsgState";
 
 export {
-  IMsgState
+  IViewerState
 }

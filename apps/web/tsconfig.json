@@ -4,6 +4,7 @@
     "target": "es2022",
     "jsx": "react-jsx",
     "allowJs": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
