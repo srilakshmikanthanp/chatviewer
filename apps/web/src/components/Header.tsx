@@ -4,18 +4,20 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import CloseImg from "../assets/images/close.svg";
+import MenuIcon from '@mui/icons-material/Menu';
 import AppLogo from "../assets/images/logo.png";
-import MenuImg from "../assets/images/menu.svg";
 import { GOOGLE_CLIENT_ID } from "../constants";
-import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IUser } from "../interfaces";
-import { useEffect } from "react";
-import { useState } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {
+  MenuItem,
+  Menu,
+  Divider,
+} from "@mui/material";
 
-const HeaderWrapper = styled.div`
+const HeaderContent = styled.div`
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
   display: flex;
@@ -40,73 +42,11 @@ const SignIn = styled.div`
   padding: 10px;
 `;
 
-const Menu = styled.img`
-  margin-left: auto;
-  cursor: pointer;
-  height: 30px;
-  width: 30px;
-  padding: 15px;
-`;
-
-const SideBar = styled.div`
-  transform: translateX(${props => props.hidden ? "300px" : "0px"});
-  justify-content: center;
-  flex-direction: column;
-  position: absolute;
-  height: 100vh;
-  display: flex;
-  width: 300px;
-  top: 0%;
-  right: 0%;
-  align-items: center;
-  background-color: #4285F4;
-  border-radius: 15px 0px 0px 15px;
-  transition: all 0.5s ease-in-out;
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CloseBtn = styled.img`
-  position: absolute;
-  margin-left: auto;
-  cursor: pointer;
-  height: 30px;
-  width: 30px;
-  right: 15px;
-  top: 15px;
-  padding: 15px;
-  overflow: hidden;
-`;
-
-const UserDetails = styled.div`
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  margin-top: 10px;
-  margin-bottom: 70px;
-`;
-
-const FullName = styled.div`
-  font-weight: bold;
-  font-size: 23px;
-  margin: auto;
-  color: #fff;
-`;
-
-const Email = styled.div`
-  font-size: 15px;
-  margin: auto;
-  color: #fff;
-`;
-
 // Navbar component
 export default function Header() {
+  // ref for Menu Button to open the menu
+  const [menuRef, setMenuRef] = useState<SVGSVGElement | null>(null);
+
   // Is the side bar hidden or not
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
@@ -114,14 +54,20 @@ export default function Header() {
   const signInRef = React.createRef<HTMLDivElement>();
 
   // user details
-  const user = undefined as IUser | undefined;
+  const user : IUser | null = null;
 
   // dynamic right side component
   let RightSideComponent = (<SignIn ref={signInRef} />);
 
   // is signed in
   if (user) {
-    RightSideComponent = (<Menu src={MenuImg} onClick={() => setIsHidden(!isHidden)} />);
+    RightSideComponent = (
+      <MenuIcon
+        style={{ cursor: "pointer", marginLeft: "auto" }}
+        onClick={() => setIsHidden(!isHidden)}
+        ref={setMenuRef}
+      />
+    );
   }
 
   // attach the google sign in button
@@ -135,43 +81,57 @@ export default function Header() {
   // render the sign in button
   useEffect(() => {
     // @ts-ignore
-    signInRef.current && google.accounts.id.renderButton(signInRef.current, {
-      theme: 'outline', size: "medium"
-    });
+    signInRef.current && google.accounts.id.renderButton(
+      signInRef.current, { theme: 'outline', size: "medium" }
+    );
   });
+
+  // handle the Import Chat
+  const handleImportChat = () => {
+    console.log("Import Chat");
+  }
+
+  // handle the Dashboard
+  const handleDashboard = () => {
+    console.log("Dashboard");
+  }
+
+  // handle the Sign Out
+  const handleSignOut = () => {
+    console.log("Sign Out");
+  }
+
 
   // render the component
   return (
-    <HeaderWrapper>
-      <LogoImg src={AppLogo} alt="logo" />
+    <HeaderContent>
+      <Link to="/"><LogoImg src={AppLogo} alt="logo" /></Link>
       {RightSideComponent}
-      <SideBar hidden={isHidden}>
-        <CloseBtn src={CloseImg} onClick={() => setIsHidden(!isHidden)} />
-        <ContentWrapper>
-          <UserDetails>
-            <FullName>{user?.name}</FullName>
-            <Email>{user?.email}</Email>
-          </UserDetails>
-          <Button
-            onClick={() => null}
-            variant="contained"
-          >
-            View Profile
-          </Button>
-          <Button
-            onClick={() => null}
-            variant="contained"
-          >
-            Upload Chat
-          </Button>
-          <Button
-            onClick={() => null}
-            variant="contained"
-          >
-            Sign Out
-          </Button>
-        </ContentWrapper>
-      </SideBar>
-    </HeaderWrapper>
+      {user && <Menu
+        anchorEl={menuRef}
+        open={!isHidden}
+        onClose={() => setIsHidden(true)}
+      >
+        <MenuItem
+          sx={{ justifyContent: "center" }}
+          onClick={handleImportChat}
+        >
+          Import Chat
+        </MenuItem>
+        <MenuItem
+          sx={{ justifyContent: "center" }}
+          onClick={handleDashboard}
+        >
+          My account
+        </MenuItem>
+        <Divider />
+        <MenuItem
+          sx={{ justifyContent: "center" }}
+          onClick={handleSignOut}
+        >
+          Sign Out
+        </MenuItem>
+      </Menu>}
+    </HeaderContent>
   );
 }

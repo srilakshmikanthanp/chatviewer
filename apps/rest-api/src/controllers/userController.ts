@@ -96,7 +96,7 @@ export async function userPatchController(req: Request, res: Response) {
   await user.update({ name });
 
   // send the user details
-  res.status(200).json({ message: "User updated" });
+  res.status(200).json({ userId: user.userId });
 }
 
 // delete the user details from the database
@@ -121,5 +121,5 @@ export async function userDeleteController(req: Request, res: Response) {
   await user.destroy();
 
   // send the user details
-  res.status(200).json({ message: "User deleted Successfully" });
+  res.status(200).json({ userId: user.userId });
 }

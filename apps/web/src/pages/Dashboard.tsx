@@ -88,7 +88,6 @@ export default function Dashboard() {
           onDelete={() => null}
           onOpen={() => null}
           onEdit={() => null}
-          onShare={() => null}
           hasPrev={false}
           chats={chats}
           hasNext={false}

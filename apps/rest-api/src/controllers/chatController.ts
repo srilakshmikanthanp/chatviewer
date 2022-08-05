@@ -33,14 +33,14 @@ export async function postChatController(req: Request, res: Response) {
   const mimeType = req.body.mimeType;
 
   // set the chat id in the user data
-  await user.createChat({
+  const chat = await user.createChat({
     mimeType: mimeType,
     data: data,
     name: req.body.name,
   });
 
   // send the success response
-  res.status(200).json({ message: "Chat created" });
+  res.status(200).json({ charId: chat.chatId });
 }
 
 
@@ -69,19 +69,18 @@ export async function getAllChatsController(req: Request, res: Response) {
   const page = +req.query.page;
 
   // query string
-  let query = 'SELECT chatId, userId, mimeType, createdAt FROM Chats WHERE userId = ?';
+  let ChatQuery = 'SELECT chatId, userId, mimeType, createdAt FROM Chats WHERE userId = ?';
 
   // if per_page is not null and page is not null
   if (per_page && page) {
-    query += ` LIMIT ${per_page} OFFSET ${per_page * (page - 1)}`;
+    ChatQuery += ` LIMIT ${per_page} OFFSET ${per_page * (page - 1)}`;
   }
 
   // get chats with raw query
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const results = <any[]>await sequelize.query(query, {
+  const results = await sequelize.query(ChatQuery, {
     type: QueryTypes.SELECT,
     replacements: [userID],
-  });
+  }) as Chat[];
 
   // add the blob url
   const chats = results.map(chat => {
@@ -99,11 +98,10 @@ export async function getAllChatsController(req: Request, res: Response) {
   const countQuery = 'SELECT COUNT(*) as total FROM Chats WHERE userId = ?';
 
   // get the total number of chats
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const total = +(<any>await sequelize.query(countQuery, {
+  const total = +(await sequelize.query(countQuery, {
     type: QueryTypes.SELECT,
     replacements: [userID],
-  })).total;
+  }) as [ { total: number} ] )[0].total;
 
   // construct the link header
   if (per_page && page) {
@@ -213,7 +211,7 @@ export async function patchChatByIdController(req: Request, res: Response) {
   }
 
   // send the success response
-  res.status(200).json({ message: "Chat updated" });
+  res.status(200).json({ chatId: chatId });
 }
 
 // delete chat by id controller function
@@ -249,7 +247,7 @@ export async function deleteChatByIdController(req: Request, res: Response) {
   await chat.destroy();
 
   // send the success response
-  res.status(200).json({ message: "Chat deleted" });
+  res.status(200).json({ chatId: chatId });
 }
 
 // get the chat blob controller function

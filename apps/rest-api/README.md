@@ -92,7 +92,7 @@ Authorization Bearer <Token>
 
 ```json
 { 
-  "message": "User updated" 
+  "userId": <id> 
 }
 ```
 
@@ -126,7 +126,6 @@ This API was used to manipulate the chat details of a user.
 
 ### Create a New Chat
 
-
 This API is used to create a new chat for the user.
 
 #### Request
@@ -155,7 +154,7 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "message": "Chat created"
+  "chatId": <id>
 }
 ```
 
@@ -179,8 +178,8 @@ Authorization Bearer <Token>
 
 The Query Parameters have been used for paging the results. It returns results with a link header.
 
-  * `per_page`: Number of chats per page
-  * `page`: Page number
+* `per_page`: Number of chats per page
+* `page`: Number of Page
   
 #### Response
 
@@ -262,7 +261,7 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "message": "Chat updated"
+  "chatId": <id>
 }
 ```
 
@@ -286,7 +285,7 @@ Authorization Bearer <Token>
 
 ```json
 {
-    "message": "Chat deleted"
+    "chatId": <id>
 }
 ```
 

@@ -6,7 +6,6 @@
 import { Button, Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { HTMLAttributes, MouseEvent } from 'react';
 import Minus from "../assets/images/minus.svg";
-import Share from "../assets/images/share.svg";
 import styled from 'styled-components';
 import { IChat } from "../interfaces";
 import React from 'react';
@@ -22,11 +21,14 @@ interface IHorizontalBarProps extends HTMLAttributes<HTMLDivElement> {
 
 // Horizontal Bar Wrapper
 const HorizontalBarWrapper = styled.div`
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
   justify-content: space-between;
   padding: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
+  position: relative;
+  border-radius: 5px;
   &:hover {
     backdrop-filter: brightness(95%);
     cursor: pointer;
@@ -59,7 +61,7 @@ const ImgIcon = styled.img`
   margin: 0px 10px;
   cursor: pointer;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
 `;
 
@@ -96,21 +98,11 @@ function HorizontalBar({
     onDelete && onDelete(chat);
   }
 
-  // Click Handler for the Share Icon
-  const handleShare = (event: MouseEvent<HTMLDivElement>) => {
-    // stop the event from propagating
-    event.stopPropagation();
-
-    // call the onShare function
-    onShare && onShare(chat);
-  }
-
   // render
   return (
     <HorizontalBarWrapper onClick={handleBarClick}>
       <ChatName>{chat.name}</ChatName>
       <Options>
-        <ImgIcon src={Share} onClick={handleShare} />
         <ImgIcon src={Minus} onClick={handleDelete} />
       </Options>
     </HorizontalBarWrapper>
@@ -127,7 +119,6 @@ interface IChatViewProps extends HTMLAttributes<HTMLDivElement> {
   onDelete?: (chat: IChat) => void;
   onOpen?: (chat: IChat) => void;
   onEdit?: (chat: IChat) => void;
-  onShare?: (chat: IChat) => void;
 }
 
 // Chat View Wrapper
@@ -208,7 +199,6 @@ export default function ChatView({
   onDelete,
   onOpen,
   onEdit,
-  onShare
 }: IChatViewProps) {
   // short by state to sort the chats
   const [sortBy, setSortBy] = React.useState('name');
@@ -249,7 +239,6 @@ export default function ChatView({
           onOpen={onOpen}
           chat={chat}
           onEdit={onEdit}
-          onShare={onShare}
         />
         <ChatDivider />
       </React.Fragment>

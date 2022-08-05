@@ -52,7 +52,7 @@ export default function ImportChat(props: IImportChatProps) {
 
     // Check if the file is valid
     if (!inputFile) {
-      throw new Error("No file selected");
+      return setIsCancelable(true);
     }
 
     // get the Whatsapp Parser
@@ -64,8 +64,11 @@ export default function ImportChat(props: IImportChatProps) {
     setChats([]);
 
     // iterate over the file
-    for await (const msg of iterator) {
-      setChats(chats => [...chats, msg]);
+    try {
+      for await (const msg of iterator)
+        setChats(chats => [...chats, msg]);
+    } catch (err) {
+      return setIsCancelable(true);
     }
 
     // Stop the event propagation
