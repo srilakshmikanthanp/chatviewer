@@ -12,13 +12,15 @@ import styled from "styled-components";
 import { Selector } from "../modals";
 import {
   SpeedDialAction,
-  SpeedDial
+  SpeedDial,
+  SpeedDialIcon,
 } from "@mui/material";
 import {
   CloudDownload,
   Person,
   Share,
   Construction,
+  Close,
 } from '@mui/icons-material';
 
 interface IChatBoxProps {
@@ -31,6 +33,9 @@ interface IChatBoxProps {
 }
 
 function ChatOptions(props: IChatBoxProps) {
+  // SpeedDial Icon Constants
+  const SPEED_DIAL_ICON = (<SpeedDialIcon openIcon={<Close />} icon={<Construction />}/>);
+
   // is speed dial open
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,11 +43,14 @@ function ChatOptions(props: IChatBoxProps) {
   return (
     <SpeedDial
       sx={{ position: 'fixed', bottom: 70, right: 20 }}
+      onMouseLeave={() => setIsOpen(false)}
+      onMouseEnter={() => setIsOpen(true)}
       ariaLabel="Chat Options"
       direction="up"
-      icon={<Construction />}
+      icon={SPEED_DIAL_ICON}
       onClick={() => setIsOpen(!isOpen)}
       open={isOpen}
+      openIcon={<Close />}
     >
       {props.downloadable && (
         <SpeedDialAction
