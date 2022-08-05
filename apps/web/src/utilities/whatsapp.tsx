@@ -37,6 +37,9 @@ export default class WhatsappParser {
       // Get the Media
       const medBlob = await zipObj[0].async('blob');
 
+      // remove status
+      msg.message = msg.message.replace(/.+\(file attached\)/, '');
+
       // return Message
       return this.createMsgObject(msg, medBlob.slice(
         0, medBlob.size, getMimeType(fileName)

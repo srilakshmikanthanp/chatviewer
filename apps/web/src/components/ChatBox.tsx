@@ -80,9 +80,9 @@ const ChatBoxText = styled('div')`
   word-wrap: break-word;
   max-width: 100%;
   min-width: 20px;
-  padding: 5px;
   font-size: 100%;
   font-weight: bold;
+  padding: 2px;
 `;
 
 const ChatBoxMedia = styled('a')`
