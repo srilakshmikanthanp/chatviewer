@@ -4,7 +4,9 @@
 // https://opensource.org/licenses/MIT
 
 import ImportChat from "./ImportChat";
+import Selector from "./Selector";
 
 export {
-  ImportChat
+  ImportChat,
+  Selector
 };

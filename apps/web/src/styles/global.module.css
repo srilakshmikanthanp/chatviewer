@@ -7,19 +7,19 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --pri-msg-bg-color: #0070f3;
-    --pri-msg-fg-color: #fff;
-    --sec-msg-bg-color: #FFF;
-    --sec-msg-fg-color: #000;
+    --pri-msg-bg-color: #0071f3;
+    --pri-msg-fg-color: #FFF;
+    --sec-msg-bg-color: #F28200;
+    --sec-msg-fg-color: #FFF;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --pri-msg-bg-color: #006AFF;
-    --pri-msg-fg-color: #fff;
-    --sec-msg-bg-color: #FF4500;
-    --sec-msg-fg-color: #fff;
+    --pri-msg-bg-color: #0071f3;
+    --pri-msg-fg-color: #FFF;
+    --sec-msg-bg-color: #F28200;
+    --sec-msg-fg-color: #FFF;
   }
 }
 

@@ -71,7 +71,7 @@ export default function Welcome() {
 
   // Handle Import
   const handleImport = (msgs: IMsg[]) => {
-    navigate("/viewer", { state: createViewerState(msgs) });
+    navigate("/viewer", { state: createViewerState(null, msgs) });
   }
 
   // body component

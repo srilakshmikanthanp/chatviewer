@@ -6,6 +6,9 @@
 import IMsg from "../IMsg";
 
 export default interface IViewerState {
+  header: {
+    chatId: number | null;
+  },
   body: {
     messages: IMsg[];
   }

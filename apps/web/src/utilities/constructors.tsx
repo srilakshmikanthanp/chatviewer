@@ -13,9 +13,11 @@ import { IMsg } from "../interfaces";
  * @return - returns a viewer state
  */
 export function createViewerState(
-  messages: IMsg[]
+  chatId: number | null,
+  messages: IMsg[],
 ): IViewerState {
   return {
+    header: { chatId },
     body: { messages }
   };
 }
