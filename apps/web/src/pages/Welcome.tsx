@@ -7,24 +7,17 @@ import { createViewerState } from "../utilities/constructors";
 import styled, { keyframes } from "styled-components";
 import { Header, Footer } from "../components";
 import ImgLogo from "../assets/images/logo.png";
-import React, { ChangeEvent, useState } from "react";
-import WhatsappParser from "../utilities/whatsapp";
-import { getMimeType } from "../utilities/functions";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IMsg } from "../interfaces";
+import { ImportChat } from "../modals";
 import {
   Container,
   Row,
   Col,
-  Form
 } from "react-bootstrap";
 import {
-  DialogContentText,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle
 } from "@mui/material";
 
 const ContentWrapper = styled.div`
@@ -70,93 +63,47 @@ const Paragraph = styled.p`
 `;
 
 export default function Welcome() {
-  // State for the dialog
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // is Dialog Open State
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   // Navigation Tool
   const navigate = useNavigate();
 
-  // Chats Data from the file
-  const chatsData: IMsg[] = [];
-
-  // on File Upload
-  const handleFileUpload = async (evt: ChangeEvent<HTMLInputElement>) => {
-    // get the File
-    const inputFile = evt.target.files?.[0];
-
-    // Check if the file is valid
-    if (!inputFile) {
-      throw new Error("No file selected");
-    }
-
-    // get the Whatsapp Parser
-    const iterator = new WhatsappParser(
-      inputFile.slice(0, inputFile.size, getMimeType(inputFile.name)
-    ));
-
-    // Clear the chats data
-    chatsData.length = 0;
-
-    // iterate over the file
-    for await (const msg of iterator) {
-      chatsData.push(msg);
-    }
-
-    // Stop the event propagation
-    evt.stopPropagation();
-  }
-
-  // handle Import
-  const handleImport = () => {
-    navigate("/viewer", { state: createViewerState(chatsData) });
+  // Handle Import
+  const handleImport = (msgs: IMsg[]) => {
+    navigate("/viewer", { state: createViewerState(msgs) });
   }
 
   // body component
   const Body = () => (
     <ContentWrapper>
       <Container fluid={true} style={{ margin: "80px 0px" }}>
-        <Row className="d-flex flex-column-reverse flex-md-row align-items-center justify-content-center">
-          <Col className="d-flex flex-column align-items-center justify-content-center">
+        <Row className="d-flex flex-column flex-lg-row-reverse align-items-center justify-content-center">
+          <Col lg={6} md={12} className="d-flex flex-column align-items-center justify-content-center">
+            <LogoImage
+              alt="Chat Viewer"
+              src={ImgLogo}
+            />
+          </Col>
+          <Col lg={6} md={12} className="d-flex flex-column align-items-center justify-content-center">
             <Paragraph>
               Missing the feel while reading Exported chats don't
               worry chat viewer comes to rescue
             </Paragraph>
-            <Button onClick={() => setIsDialogOpen(true)} variant="outlined">
+            <Button
+              onClick={() => setIsDialogOpen(true)}
+              variant="outlined"
+            >
               Import
             </Button>
           </Col>
-          <Col className="d-flex flex-column align-items-center justify-content-center">
-            <LogoImage alt="Chat Viewer" src={ImgLogo} />
-          </Col>
         </Row>
+        <ImportChat
+          onClose={() => setIsDialogOpen(false)}
+          isOpen={isDialogOpen}
+          onImport={handleImport}
+        />
       </Container>
-      <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-        <DialogTitle>Import Chat From File</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Import your chat from a file it should be either .txt or .zip.
-          </DialogContentText>
-          <Form className="mt-3">
-            <Form.Group controlId="formBasicFile">
-              <Form.Control
-                onChange={handleFileUpload}
-                type="file"
-              />
-              <Form.Control.Feedback type="invalid">
-                Please provide a valid city.
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsDialogOpen(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleImport} color="primary">
-            Import
-          </Button>
-        </DialogActions>
-      </Dialog>
     </ContentWrapper>
   );
 

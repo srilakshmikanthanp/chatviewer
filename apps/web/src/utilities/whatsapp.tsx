@@ -6,8 +6,8 @@
 import { Message } from 'whatsapp-chat-parser/types/types';
 import { parseString } from 'whatsapp-chat-parser';
 import { IMsg } from '../interfaces';
-import JSzip, { file } from 'jszip';
 import { getMimeType } from './functions';
+import JSzip from 'jszip';
 
 export default class WhatsappParser {
   // Constant Author of System Message
@@ -27,13 +27,15 @@ export default class WhatsappParser {
     const createMsgWithMedia = async (msg: Message): Promise<IMsg> => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const fileName = msg.attachment!.fileName;
-      const zipObj = zipFile.file(fileName);
-      const medBlob = await zipObj?.async('blob');
+      const zipObj = zipFile.file(new RegExp(`${fileName}$`));
 
       // if no media found
-      if(!medBlob) {
-        throw new Error('No Media Found');
+      if(zipObj.length === 0) {
+        throw new Error(`${fileName} Media not Found`);
       }
+
+      // Get the Media
+      const medBlob = await zipObj[0].async('blob');
 
       // return Message
       return this.createMsgObject(msg, medBlob.slice(
@@ -48,8 +50,8 @@ export default class WhatsappParser {
     const files = zipFile.file(/.txt/);
 
     // Length of files
-    if (file.length !== 1) {
-      throw new Error('No or Multiple chat files found');
+    if (files.length !== 1) {
+      throw new Error('None or Multiple txt files found');
     }
 
     // Get the chat file
@@ -99,7 +101,7 @@ export default class WhatsappParser {
     }
 
     // throw error if mimetype is not supported
-    throw new Error('Mimetype not supported');
+    throw new Error('Mimetype Must be txt/zip');
   }
 
   // implement Iterable interface

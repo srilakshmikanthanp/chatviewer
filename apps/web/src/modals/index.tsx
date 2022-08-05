@@ -3,8 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { linkify } from "./functions";
+import ImportChat from "./ImportChat";
 
 export {
-  linkify
-}
+  ImportChat
+};

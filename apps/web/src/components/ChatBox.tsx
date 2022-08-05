@@ -3,12 +3,12 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { linkify } from '../utilities/functions';
 import { HtmlHTMLAttributes } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import ReactPlayer from 'react-player/youtube';
 import styled from 'styled-components';
-import { linkify } from '../utilities';
 import { IMsg } from '../interfaces';
 
 const ChatBoxWrapper = styled('div') < { isPrimary: boolean } >`
@@ -45,9 +45,8 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   font-weight: bold;
   font-size: 100%;
   margin: 10px;
-  max-width: 350px;
-  min-width: 20px;
-  padding: 8px;
+  max-width: 300px;
+  padding: 5px;
   z-index: -1;
   &:before {
     filter: drop-shadow(0px 2px 1px rgb(var(--shadow-color)));
@@ -73,13 +72,13 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
 const ChatBoxImage = styled('img')`
   border-radius: 10px;
   max-width: 100%;
-  max-height: 400px;
+  max-height: 300px;
   object-fit: cover;
 `;
 
 const ChatBoxText = styled('div')`
   word-wrap: break-word;
-  max-width: 350px;
+  max-width: 100%;
   min-width: 20px;
   padding: 5px;
   font-size: 100%;
@@ -88,6 +87,7 @@ const ChatBoxText = styled('div')`
 
 const ChatBoxMedia = styled('a')`
   color: var(--bs-body-color);
+  max-width: 100%;
   text-decoration: none;
   &:hover {
     text-decoration: underline;

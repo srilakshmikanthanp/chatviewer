@@ -6,19 +6,6 @@
 import MimeTypes from "../assets/json/mime-types.json";
 
 /**
- * Escape the html string
- *
- * @param html string
- * @return string
- */
-export function escapeHtml(html: string){
-  const text = document.createTextNode(html);
-  const p = document.createElement('p');
-  p.appendChild(text);
-  return p.innerHTML;
-}
-
-/**
  * Text Link to Anchor Tag converter
  *
  * @param inputText Input Text
@@ -44,6 +31,18 @@ export function linkify(inputText: string) {
   return replacedText;
 }
 
+/**
+ * Escape the html string
+ *
+ * @param html string
+ * @return string
+ */
+export function escapeHtml(html: string) {
+  const text = document.createTextNode(html);
+  const p = document.createElement('p');
+  p.appendChild(text);
+  return p.innerHTML;
+}
 
 /**
  * Get MIME Type from File Name
