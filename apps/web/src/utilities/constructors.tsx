@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { IViewerState } from "../interfaces/pages";
+import { IViewchatState } from "../interfaces/pagestates";
 import { IMsg } from "../interfaces";
 
 /**
@@ -15,7 +15,7 @@ import { IMsg } from "../interfaces";
 export function createViewerState(
   chatId: number | null,
   messages: IMsg[],
-): IViewerState {
+): IViewchatState {
   return {
     header: { chatId },
     body: { messages }

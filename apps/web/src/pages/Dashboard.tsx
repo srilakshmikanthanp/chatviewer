@@ -75,24 +75,29 @@ export default function Dashboard() {
     },
   ];
 
+  // body
+  const Body = () => (
+    <DashboardWrapper>
+      <UserView
+        onDelete={() => null}
+        onEdit={() => null}
+        user={user}
+      />
+      <ChatView
+        onDelete={() => null}
+        onOpen={() => null}
+        onEdit={() => null}
+        hasPrev={false}
+        chats={chats}
+        hasNext={false}
+      />
+    </DashboardWrapper>
+  );
+
   return (
     <React.Fragment>
       <Header />
-      <DashboardWrapper>
-        <UserView
-          onDelete={() => null}
-          onEdit={() => null}
-          user={user}
-        />
-        <ChatView
-          onDelete={() => null}
-          onOpen={() => null}
-          onEdit={() => null}
-          hasPrev={false}
-          chats={chats}
-          hasNext={false}
-        />
-      </DashboardWrapper>
+      <Body />
       <Footer />
     </React.Fragment>
   );

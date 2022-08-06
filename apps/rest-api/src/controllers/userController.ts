@@ -43,7 +43,7 @@ export async function userPostController(req: Request, res: Response) {
     const token = await user.createJwtToken();
 
     // send the token
-    res.status(200).json({ token });
+    res.status(200).set('Authorization', `Bearer ${token}`).json({ user });
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
   }

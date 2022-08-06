@@ -20,7 +20,7 @@ This API uses the Google sign-in button to get the work done, the token was the 
 POST {{host}}/api/v1/users/
 ```
 
-#### Body
+##### Body
 
 ```json
 {
@@ -28,11 +28,23 @@ POST {{host}}/api/v1/users/
 }
 ```
 
-### Response
+#### Response
+
+Find the User Details and JWT token in the response
+
+##### Header
+
+Authorization: Bearer {{token}}
+
+##### Body
 
 ```json
 {
-  "token": "xxx"
+  "userId": 1,
+  "name": "Sri Lakshmi Kanthan P",
+  "email": "srilakshmikanthan.p@gmail.com",
+  "createdAt": "2022-07-23T21:39:46.000Z",
+  "updatedAt": "2022-07-23T21:40:34.000Z"
 }
 ```
 
@@ -46,7 +58,7 @@ This API was used to get the user details from the Application, None of the user
 GET {{host}}/api/v1/users/1
 ```
 
-#### Auth
+###### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -74,7 +86,7 @@ This API was to update the user details currently only updatable field is the Na
 PATCH {{host}}/api/v1/users/1
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -106,7 +118,7 @@ This will remove all details of the user, so make correct use of it
 DELETE {{host}}/api/v1/users/1
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -134,7 +146,7 @@ This API is used to create a new chat for the user.
 POST {{host}}/api/v1/users/1/chats
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -168,7 +180,7 @@ This API is used to get all chats of the user
 GET {{host}}/api/v1/users/1/chats
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -214,7 +226,7 @@ This API was used to get the Specific chat if the user
 GET {{host}}/api/v1/users/1/chats/2
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -243,7 +255,7 @@ This API is used to update the chat of the user, currently, the only updatable f
 PATCH {{host}}/api/v1/users/1/chats/2
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -275,7 +287,7 @@ This API is used to delete the chat of the user
 DELETE {{host}}/api/v1/users/1/chats/3
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -299,7 +311,7 @@ This API is used to generate a JWT token for the chat, so it can be shared easil
 GET {{host}}/api/v1/users/1/chats/2/token
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>
@@ -331,7 +343,7 @@ This API is used to get the BLOB of the Chat
 GET {{host}}/api/v1/users/1/chats/2/blob
 ```
 
-#### Auth
+##### Auth
 
 ```sh
 Authorization Bearer <Token>

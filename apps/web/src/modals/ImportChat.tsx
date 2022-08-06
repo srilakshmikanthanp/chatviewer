@@ -24,76 +24,53 @@ interface IImportChatProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function ImportChat(props: IImportChatProps) {
-  // is noe able to cancel the import
-  const [isCancelable, setIsCancelable] = useState(true);
+  // File Blob State
+  const [fileBlob, setFileBlob] = useState<Blob>();
 
   // is now ready to import the chat
   const [isReady, setIsReady] = useState(false);
 
-  // is File Valid State
-  const [isValid, setIsValid] = useState(false);
-
-  // Chats Data State
-  const [chats, setChats] = useState<IMsg[]>([]);
-
   // on File Upload
   const handleFileUpload = async (evt: ChangeEvent<HTMLInputElement>) => {
-    // set cancelable to false
-    setIsCancelable(false);
-
-    // set is valid to false
-    setIsValid(false);
-
     // set is ready to false
     setIsReady(false);
 
     // get the File
-    const inputFile = evt.target.files?.[0];
+    const file = evt.target.files?.[0];
 
     // Check if the file is valid
-    if (!inputFile) {
-      return setIsCancelable(true);
+    if (!file) {
+      return;
     }
 
-    // get the Whatsapp Parser
-    const iterator = new WhatsappParser(
-      inputFile.slice(0, inputFile.size, getMimeType(inputFile.name)
-    ));
-
-    // Clear the chats data
-    setChats([]);
-
-    // iterate over the file
-    try {
-      for await (const msg of iterator)
-        setChats(chats => [...chats, msg]);
-    } catch (err) {
-      return setIsCancelable(true);
-    }
+    // set the file blob
+    setFileBlob(file.slice(0, file.size, getMimeType(file.name)));
 
     // Stop the event propagation
     evt.stopPropagation();
 
     // set is ready to true
     setIsReady(true);
-
-    // set is valid to true
-    setIsValid(true);
-
-    // set cancelable to true
-    setIsCancelable(true);
   }
 
   // on Import
-  const handleImport = () => {
-    // set cancelable to false
-    setIsCancelable(false);
+  const handleImport = async () => {
+    // if no file is selected
+    if (!fileBlob) { return; }
+
+    // get the Whatsapp Parser
+    const iterator = new WhatsappParser(fileBlob);
+
+    // chats to be imported
+    const chats: IMsg[] = [];
+
+    // iterate over the file
+    for await (const msg of iterator) {
+      chats.push(msg);
+    }
 
     // set is ready to false
     setIsReady(false);
-
-    // set is valid to false
-    setIsValid(false);
 
     // call the onImport function
     props.onImport(chats);
@@ -114,7 +91,6 @@ export default function ImportChat(props: IImportChatProps) {
               onChange={handleFileUpload}
               accept=".txt, .zip"
               type="file"
-              isValid={isValid}
             />
             <Form.Control.Feedback
               type="invalid"
@@ -126,7 +102,6 @@ export default function ImportChat(props: IImportChatProps) {
       </DialogContent>
       <DialogActions>
         <Button
-          disabled={!isCancelable}
           onClick={props.onClose}
           color="primary"
         >

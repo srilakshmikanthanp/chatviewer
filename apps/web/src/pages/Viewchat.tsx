@@ -5,7 +5,7 @@
 
 import { Header, ChatBox, Footer } from "../components";
 import { Container, Row, Col } from "react-bootstrap";
-import { IViewerState } from "../interfaces/pages";
+import { IViewchatState } from "../interfaces/pagestates";
 import { useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -90,9 +90,14 @@ const ContentWrapper = styled.div`
 `;
 
 // Message Component
-export default function Viewer() {
+export default function Viewchat() {
   // location state from the router to get data
-  const locationState = useLocation().state as IViewerState;
+  const locationState = useLocation().state as IViewchatState;
+
+  // if no data is found
+  if (!locationState) {
+    throw new Error("No Chats/Messages found");
+  }
 
   // Unique Chat id from the location state
   const chatId = locationState.header.chatId;
@@ -104,11 +109,6 @@ export default function Viewer() {
   const authors = Array.from(new Set(
     messages.map(m => m.author)
   ));
-
-  // if the message is undefined
-  if (!messages) {
-    throw new Error("Message data is undefined");
-  }
 
   // primary author of the chat
   const [primaryAuthor, setPrimaryAuthor] = useState('');

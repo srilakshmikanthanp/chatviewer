@@ -3,13 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { Dashboard, Viewchat, Welcome } from "./pages"
 import { Routes, Route } from 'react-router-dom';
 import './styles/global.module.css';
-import {
-  Dashboard,
-  Viewer,
-  Welcome
-} from "./pages"
 
 // Application
 export default function App() {
@@ -17,7 +13,7 @@ export default function App() {
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/" element={<Welcome />} />
-      <Route path="/viewer" element={<Viewer />} />
+      <Route path="/viewchat" element={<Viewchat />} />
     </Routes>
   );
 }

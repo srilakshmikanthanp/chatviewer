@@ -5,10 +5,10 @@
 
 import { Button, Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { HTMLAttributes, MouseEvent } from 'react';
-import Minus from "../assets/images/minus.svg";
 import styled from 'styled-components';
 import { IChat } from "../interfaces";
 import React from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // Horizontal Bar Props
 interface IHorizontalBarProps extends HTMLAttributes<HTMLDivElement> {
@@ -16,7 +16,6 @@ interface IHorizontalBarProps extends HTMLAttributes<HTMLDivElement> {
   onDelete?: (chat: IChat) => void;
   onOpen?: (chat: IChat) => void;
   onEdit?: (chat: IChat) => void;
-  onShare?: (chat: IChat) => void;
 }
 
 // Horizontal Bar Wrapper
@@ -52,7 +51,7 @@ const Options = styled.div`
   margin-left: auto;
 `;
 
-const ImgIcon = styled.img`
+const ImgIcon = styled(DeleteIcon)`
   max-height: 20px;
   margin: 0 auto;
   max-width: 20px;
@@ -71,7 +70,6 @@ function HorizontalBar({
   onOpen,
   chat,
   onEdit,
-  onShare
 }: IHorizontalBarProps) {
   // Click Handler o=for the Horizontal Bar
   const handleBarClick = (event: MouseEvent<HTMLDivElement>) => {
@@ -90,7 +88,7 @@ function HorizontalBar({
   }
 
   // Click Handler for the Delete Icon
-  const handleDelete = (event: MouseEvent<HTMLDivElement>) => {
+  const handleDelete = (event: MouseEvent<SVGSVGElement>) => {
     // stop the event from propagating
     event.stopPropagation();
 
@@ -103,7 +101,7 @@ function HorizontalBar({
     <HorizontalBarWrapper onClick={handleBarClick}>
       <ChatName>{chat.name}</ChatName>
       <Options>
-        <ImgIcon src={Minus} onClick={handleDelete} />
+        <ImgIcon onClick={handleDelete} />
       </Options>
     </HorizontalBarWrapper>
   );

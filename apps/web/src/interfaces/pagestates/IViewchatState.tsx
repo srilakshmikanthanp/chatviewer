@@ -5,7 +5,7 @@
 
 import IMsg from "../IMsg";
 
-export default interface IViewerState {
+export default interface IViewchatState {
   header: {
     chatId: number | null;
   },

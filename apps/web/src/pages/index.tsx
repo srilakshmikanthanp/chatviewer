@@ -4,11 +4,11 @@
 // https://opensource.org/licenses/MIT
 
 import Dashboard from "./Dashboard";
-import Viewer from "./Viewer";
+import Viewchat from "./Viewchat";
 import Welcome from "./Welcome";
 
 export {
   Dashboard,
-  Viewer,
+  Viewchat,
   Welcome,
 }

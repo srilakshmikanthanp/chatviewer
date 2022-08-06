@@ -27,28 +27,19 @@ interface ISelectorProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Selector(props: ISelectorProps) {
-  // is noe able to cancel the Selection
-  const [isCancelable, setIsCancelable] = useState(true);
+  // current selected value
+  const [selected, setSelected] = useState<string>("");
 
   // is now ready to Select the value
   const [isReady, setIsReady] = useState(false);
 
-  // current selected value
-  const [selected, setSelected] = useState<string>("");
-
   // on Selection
   const handleSelection = (evt: SelectChangeEvent) => {
-    // set cancelable to false
-    setIsCancelable(false);
-
     // set is ready to false
     setIsReady(false);
 
     // set selected value
     setSelected(evt.target.value);
-
-    // set cancelable to true
-    setIsCancelable(true);
 
     // set is ready to true
     setIsReady(true);
@@ -56,7 +47,6 @@ export default function Selector(props: ISelectorProps) {
 
   // on Cancel
   const handleCancel = () => {
-    setIsCancelable(false);
     setIsReady(false);
     props.onClose();
   }
@@ -90,7 +80,6 @@ export default function Selector(props: ISelectorProps) {
       </DialogContent>
       <DialogActions>
         <Button
-          disabled={!isCancelable}
           onClick={handleCancel}
         >
           Cancel
