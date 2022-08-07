@@ -103,8 +103,12 @@ Authorization Bearer <Token>
 #### Response
 
 ```json
-{ 
-  "userId": <id> 
+{
+  "userId": 1,
+  "name": "Sri Lakshmi Kanthan P",
+  "email": "srilakshmikanthan.p@gmail.com",
+  "createdAt": "2022-07-23T21:39:46.000Z",
+  "updatedAt": "2022-07-23T21:40:34.000Z"
 }
 ```
 
@@ -128,7 +132,7 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "message": "user deleted"
+  "message" : "ok"
 }
 ```
 
@@ -166,7 +170,12 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "chatId": <id>
+  "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+  "name": "Chat 1",
+  "chatId": 2,
+  "userId": 1,
+  "createdAt": "2022-07-23T22:16:42.000Z",
+  "updatedAt": "2022-07-23T22:16:42.000Z"
 }
 ```
 
@@ -199,19 +208,19 @@ The Query Parameters have been used for paging the results. It returns results w
 [
   {
     "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
-    "mimeType": "text/pain",
     "name": "Chat 1",
     "chatId": 2,
     "userId": 1,
-    "createdAt": "2022-07-23T22:16:42.000Z"
+    "createdAt": "2022-07-23T22:16:42.000Z",
+    "updatedAt": "2022-07-23T22:16:42.000Z"
   },
   {
     "blobUrl": "http://localhost:8000/api/v1/users/1/chats/3/blob",
-    "mimeType": "text/pain",
     "name": "Chat 2",
     "chatId": 3,
     "userId": 1,
-    "createdAt": "2022-07-24T07:16:16.000Z"
+    "createdAt": "2022-07-24T07:16:16.000Z",
+    "updatedAt": "2022-07-23T22:16:42.000Z"
   }
 ]
 ```
@@ -237,11 +246,11 @@ Authorization Bearer <Token>
 ```json
 {
   "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
-  "mimeType": "text/pain",
   "name": "Chat 1",
   "chatId": 2,
   "userId": 1,
-  "createdAt": "2022-07-23T22:16:42.000Z"
+  "createdAt": "2022-07-23T22:16:42.000Z",
+  "updatedAt": "2022-07-23T22:16:42.000Z"
 }
 ```
 
@@ -273,7 +282,12 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "chatId": <id>
+  "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+  "name": "Chat 1",
+  "chatId": 2,
+  "userId": 1,
+  "createdAt": "2022-07-23T22:16:42.000Z",
+  "updatedAt": "2022-07-23T22:16:42.000Z"
 }
 ```
 
@@ -297,8 +311,30 @@ Authorization Bearer <Token>
 
 ```json
 {
-    "chatId": <id>
+  "message" : "ok"
 }
+```
+
+### Get the BLOB of Chat
+
+This API is used to get the BLOB of the Chat
+
+#### Request
+
+```sh
+GET {{host}}/api/v1/users/1/chats/2/blob
+```
+
+##### Auth
+
+```sh
+Authorization Bearer <Token>
+```
+
+#### Response
+
+```
+Raw data, identify with the ContentType
 ```
 
 ### Token for a chat of user
@@ -327,32 +363,10 @@ Authorization Bearer <Token>
 
 #### Response
 
-```json
-{
-    "token": "xxx"
-}
-```
-
-### Get the BLOB of Chat
-
-This API is used to get the BLOB of the Chat
-
-#### Request
-
-```sh
-GET {{host}}/api/v1/users/1/chats/2/blob
-```
-
-##### Auth
+The header will contain the token
 
 ```sh
 Authorization Bearer <Token>
-```
-
-#### Response
-
-```
-Raw data, identify with the ContentType
 ```
 
 ## Util
@@ -374,11 +388,11 @@ GET {{host}}/api/v1/utils/chats/<token>
 ```json
 {
     "blobUrl": "http://localhost:8000/api/v1/utils/chats/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
-    "mimeType": "text/pain",
     "name": "Chat 1",
     "chatId": 2,
     "userId": 1,
-    "createdAt": "2022-07-23T22:16:42.000Z"
+    "createdAt": "2022-07-23T22:16:42.000Z",
+    "updatedAt": "2022-07-23T22:16:42.000Z"
 }
 ```
 

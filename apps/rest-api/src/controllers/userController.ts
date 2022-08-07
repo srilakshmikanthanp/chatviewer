@@ -3,9 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { OAuth2Client } from "google-auth-library";
-import { Request, Response } from "express";
-import { User } from "../models";
+import { OAuth2Client } from 'google-auth-library';
+import { Request, Response } from 'express';
+import { User } from '../models';
 
 // create a user controller function
 export async function userPostController(req: Request, res: Response) {
@@ -25,7 +25,8 @@ export async function userPostController(req: Request, res: Response) {
   try {
     // get the required data from the token
     const google_ticket = await oauth2Client.verifyIdToken({
-      idToken: googleToken, audience: googleClientId
+      audience: googleClientId,
+      idToken: googleToken
     });
     const payload = google_ticket.getPayload();
     const name = payload.name;
@@ -42,21 +43,28 @@ export async function userPostController(req: Request, res: Response) {
     // create a jwt token
     const token = await user.createJwtToken();
 
+    // set the token in the response
+    res.setHeader('Authorization', `Bearer ${token}`);
+
     // send the token
-    res.status(200).set('Authorization', `Bearer ${token}`).json({ user });
+    res.status(200).json({ user });
   } catch (error) {
-    return res.status(401).json({ message: "Invalid token" });
+    // send the error
+    return res.status(401).json({ message: 'Invalid token' });
   }
 }
 
 // get the user details from the database
 export async function userGetController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID =
+    res.locals.user_auth_payload?.userId === +req.params.user_id
+      ? +req.params.user_id
+      : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: "Not a valid token" });
+    return res.status(401).json({ message: 'Not a valid token' });
   }
 
   // get the user details from the database
@@ -64,7 +72,7 @@ export async function userGetController(req: Request, res: Response) {
 
   // if user is not found
   if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    return res.status(404).json({ message: 'User not found' });
   }
 
   // send the user details
@@ -74,11 +82,14 @@ export async function userGetController(req: Request, res: Response) {
 // update the user details in the database
 export async function userPatchController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID =
+    res.locals.user_auth_payload?.userId === +req.params.user_id
+      ? +req.params.user_id
+      : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: "Not a valid token" });
+    return res.status(401).json({ message: 'Not a valid token' });
   }
 
   // get the user details from the database
@@ -86,7 +97,7 @@ export async function userPatchController(req: Request, res: Response) {
 
   // if user is not found
   if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    return res.status(404).json({ message: 'User not found' });
   }
 
   // get the new name
@@ -96,17 +107,20 @@ export async function userPatchController(req: Request, res: Response) {
   await user.update({ name });
 
   // send the user details
-  res.status(200).json({ userId: user.userId });
+  res.status(200).json(user);
 }
 
 // delete the user details from the database
 export async function userDeleteController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID =
+    res.locals.user_auth_payload?.userId === +req.params.user_id
+      ? +req.params.user_id
+      : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: "Not a valid token" });
+    return res.status(401).json({ message: 'Not a valid token' });
   }
 
   // get the user details from the database
@@ -114,12 +128,12 @@ export async function userDeleteController(req: Request, res: Response) {
 
   // if user is not found
   if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    return res.status(404).json({ message: 'User not found' });
   }
 
   // delete the user details from the database
   await user.destroy();
 
   // send the user details
-  res.status(200).json({ userId: user.userId });
+  res.status(200).json(user);
 }

@@ -30,19 +30,13 @@ export async function postChatController(req: Request, res: Response) {
 
   // get the chat data from the request body
   const data = Buffer.from(req.body.data, "base64");
-  const mimeType = req.body.mimeType;
 
   // set the chat id in the user data
-  const chat = await user.createChat({
-    mimeType: mimeType,
-    data: data,
-    name: req.body.name,
-  });
+  const chat = await user.createChat({mimeType: req.body.mimeType, data: data, name: req.body.name});
 
   // send the success response
-  res.status(200).json({ charId: chat.chatId });
+  res.status(200).json( chat );
 }
-
 
 // get all chats controller function
 export async function getAllChatsController(req: Request, res: Response) {
@@ -69,7 +63,7 @@ export async function getAllChatsController(req: Request, res: Response) {
   const page = +req.query.page;
 
   // query string
-  let ChatQuery = 'SELECT chatId, userId, mimeType, createdAt FROM Chats WHERE userId = ?';
+  let ChatQuery = 'SELECT chatId, userId, name, createdAt, updatedAt FROM Chats WHERE userId = ?';
 
   // if per_page is not null and page is not null
   if (per_page && page) {
@@ -80,17 +74,23 @@ export async function getAllChatsController(req: Request, res: Response) {
   const results = await sequelize.query(ChatQuery, {
     type: QueryTypes.SELECT,
     replacements: [userID],
-  }) as Chat[];
+  }) as [{
+    chatId: number;
+    userId: number;
+    name: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }];
 
   // add the blob url
   const chats = results.map(chat => {
     return {
       blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}${chat.chatId}/blob`,
-      mimeType: chat.mimeType,
       chatId: chat.chatId,
       userId: chat.userId,
       name: chat.name,
       createdAt: chat.createdAt,
+      updatedAt: chat.updatedAt,
     }
   });
 
@@ -101,7 +101,10 @@ export async function getAllChatsController(req: Request, res: Response) {
   const total = +(await sequelize.query(countQuery, {
     type: QueryTypes.SELECT,
     replacements: [userID],
-  }) as [ { total: number} ] )[0].total;
+    plain: true,
+  }) as {
+    total: number
+  }).total;
 
   // construct the link header
   if (per_page && page) {
@@ -143,17 +146,22 @@ export async function getChatByIdController(req: Request, res: Response) {
   }
 
   // query string
-  const query = 'SELECT chatId, userId, mimeType, createdAt FROM chats WHERE userId = ? AND chatId = ?';
+  const query = 'SELECT chatId, userId, name, createdAt, updatedAt FROM chats WHERE userId = ? AND chatId = ?';
 
   // chat id
   const chatId = +req.params.chat_id;
 
   // get chat with raw query
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const chat = <any[]>await sequelize.query(query, {
+  const chat = await sequelize.query(query, {
     replacements: [userID, chatId],
     type: QueryTypes.SELECT,
-  });
+  }) as [{
+    chatId    : number;
+    userId    : number;
+    name      : string;
+    createdAt : Date;
+    updatedAt : Date;
+  }];
 
   // if chat is not found
   if (!chat.length) {
@@ -163,11 +171,11 @@ export async function getChatByIdController(req: Request, res: Response) {
   // send the success response
   res.status(200).json({
     blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}/blob`,
-    mimeType: chat[0].mimeType,
     chatId: chat[0].chatId,
     userId: chat[0].userId,
     name: chat[0].name,
     createdAt: chat[0].createdAt,
+    updatedAt: chat[0].updatedAt,
   });
 }
 
@@ -196,11 +204,10 @@ export async function patchChatByIdController(req: Request, res: Response) {
   const name = req.body.name;
 
   // query string
-  const query = 'UPDATE chats SET name = ? WHERE userId = ? AND chatId = ?';
+  const updateQuery = 'UPDATE chats SET name = ? WHERE userId = ? AND chatId = ?';
 
   // update the chat name with raw query
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const result = <any[]>await sequelize.query(query, {
+  const result = await sequelize.query(updateQuery, {
     replacements: [name, userID, chatId],
     type: QueryTypes.UPDATE,
   });
@@ -210,8 +217,23 @@ export async function patchChatByIdController(req: Request, res: Response) {
     return res.status(404).json({ message: "Chat not found" });
   }
 
+  // get the chat with raw query
+  const getQuery = 'SELECT chatId, userId, name, createdAt, updatedAt FROM chats WHERE userId = ? AND chatId = ?';
+
+  // get the chat with raw query
+  const chat = await sequelize.query(getQuery, {
+    replacements: [userID, chatId],
+    type: QueryTypes.SELECT,
+  }) as [{
+    chatId    : number;
+    userId    : number;
+    name      : string;
+    createdAt : Date;
+    updatedAt : Date;
+  }];
+
   // send the success response
-  res.status(200).json({ chatId: chatId });
+  res.status(200).json(chat[0]);
 }
 
 // delete chat by id controller function
@@ -247,7 +269,7 @@ export async function deleteChatByIdController(req: Request, res: Response) {
   await chat.destroy();
 
   // send the success response
-  res.status(200).json({ chatId: chatId });
+  res.status(200).json({ message: "ok" });
 }
 
 // get the chat blob controller function
@@ -326,6 +348,9 @@ export async function getTokenByIdController(req: Request, res: Response) {
     expiresIn: expiry
   });
 
+  // set the header
+  res.setHeader('Authorization', `Bearer ${token}`);
+
   // send the success response
-  res.status(200).json({ token });
+  res.status(200);
 }

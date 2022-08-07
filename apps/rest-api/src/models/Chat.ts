@@ -14,6 +14,7 @@ class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
   declare data: Buffer;
   declare mimeType: string;
   declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 }
 
 // Initialize the Chat model
@@ -43,11 +44,13 @@ Chat.init({
     type: DataTypes.DATE,
     allowNull: false
   },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  }
 }, {
   sequelize: sequelize,
   timestamps: true,
-  createdAt: true,
-  updatedAt: false,
 });
 
 // export the Chat model
