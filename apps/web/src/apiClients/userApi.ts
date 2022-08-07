@@ -19,9 +19,7 @@ export const useGetUser = ({
   const queryKey = ['user', userId];
 
   // Response Type
-  type ResponseType = {
-    user: IUser;
-  };
+  type ResponseType = IUser
 
   // Query
   return useQuery(queryKey, async () => {
@@ -39,15 +37,18 @@ export const useCreateUser = () => {
     token: string;
   };
 
-  // Response Type
-  type ResponseType = {
-    token: string;
+  // MutationResult
+  type MutationResult = {
+    jwt: string;
+    user: IUser;
   };
 
   // Query
   return useMutation(async ({ token }: MutationParams) => {
     const response = await axios.post('/api/v1/users', { token });
-    return response.data as ResponseType;
+    const jwt = response.headers['authorization'][0].split(' ')[1];
+    const user = response.data as IUser;
+    return { user: user, jwt: jwt } as MutationResult;
   });
 };
 
@@ -59,26 +60,24 @@ export const usePatchUser = () => {
   // Mutation Params
   type MutationParams = {
     userId: number;
-    token: string;
+    jwt: string;
     options: {
       name?: string;
     };
   };
 
-  // Response Type
-  type ResponseType = {
-    userId: number;
-  };
+  // MutationResult
+  type MutationResult = IUser;
 
   // Query
   return useMutation(
-    async ({ userId, token, options }: MutationParams) => {
+    async ({ userId, jwt: token, options }: MutationParams) => {
       const response = await axios.patch(
         `/api/v1/users/${userId}`,
         { name: options.name },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      return response.data as ResponseType;
+      return response.data as MutationResult;
     },
     {
       onSuccess: (data, variables) => {
@@ -93,19 +92,17 @@ export const useDeleteUser = () => {
   // Mutation Params
   type MutationParams = {
     userId: number;
-    token: string;
+    jwt: string;
   };
 
-  // Response Type
-  type ResponseType = {
-    userId: number;
-  };
+  // MutationResult
+  type MutationResult = IUser;
 
   // Query
-  return useMutation(async ({ userId, token }: MutationParams) => {
+  return useMutation(async ({ userId, jwt: token }: MutationParams) => {
     const response = await axios.delete(`/api/v1/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    return response.data as ResponseType;
+    return response.data as MutationResult;
   });
 };

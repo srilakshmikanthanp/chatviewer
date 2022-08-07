@@ -35,6 +35,7 @@ export default function Dashboard() {
   const chats: IChat[] = [
     {
       createdAt: new Date(),
+      updatedAt: new Date(),
       blobUrl: "http://localhost:3000",
       mimeType: "text/plain",
       name: "Chat With John Deo",
@@ -43,6 +44,7 @@ export default function Dashboard() {
     },
     {
       createdAt: new Date(),
+      updatedAt: new Date(),
       blobUrl: "http://localhost:3000",
       mimeType: "text/plain",
       name: "Chat With John Deo",
@@ -51,6 +53,7 @@ export default function Dashboard() {
     },
     {
       createdAt: new Date(),
+      updatedAt: new Date(),
       blobUrl: "http://localhost:3000",
       mimeType: "text/plain",
       name: "Chat With John Deo",
@@ -59,6 +62,7 @@ export default function Dashboard() {
     },
     {
       createdAt: new Date(),
+      updatedAt: new Date(),
       blobUrl: "http://localhost:3000",
       mimeType: "text/plain",
       name: "Chat With John Deo",
@@ -67,6 +71,7 @@ export default function Dashboard() {
     },
     {
       createdAt: new Date(),
+      updatedAt: new Date(),
       blobUrl: "http://localhost:3000",
       mimeType: "text/plain",
       name: "Chat With John Deo",

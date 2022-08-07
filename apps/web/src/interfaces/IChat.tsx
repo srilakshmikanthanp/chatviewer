@@ -10,4 +10,5 @@ export default interface IChat {
   name: string;
   chatId: number;
   userId: number;
+  updatedAt: Date;
 }

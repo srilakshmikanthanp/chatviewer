@@ -203,8 +203,16 @@ export default function ChatView({
 
   // sort the chats
   const sortedChats = chats.sort((a, b) => {
-    if (sortBy === 'date') {
+    if (sortBy === 'createdAt') {
       return a.createdAt.getTime() - a.createdAt.getTime();
+    }
+
+    if (sortBy === 'name') {
+      return a.name.localeCompare(b.name);
+    }
+
+    if (sortBy === 'updatedAt') {
+      return a.updatedAt.getTime() - a.updatedAt.getTime();
     }
 
     return a.name.localeCompare(b.name);
@@ -221,8 +229,9 @@ export default function ChatView({
         label="Sort By"
         id="sort-by-select"
       >
+        <MenuItem value="createdAt">Created At</MenuItem>
         <MenuItem value="name">Name</MenuItem>
-        <MenuItem value="date">Date</MenuItem>
+        <MenuItem value="updatedAt">Updated At</MenuItem>
       </Select>
     </FormControl>
   )
