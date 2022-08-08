@@ -19,15 +19,18 @@ export const useGetUser = ({
   const queryKey = ['user', userId];
 
   // Response Type
-  type ResponseType = IUser
+  type ResponseType = IUser;
 
-  // Query
-  return useQuery(queryKey, async () => {
-    const response = await axios.get(`/api/v1/users/${userId}`, {
+  // Fetcher
+  const fetcher = async () => {
+    const QueryUrl = `/api/v1/users/${userId}`;
+    return await axios.get<ResponseType>(QueryUrl, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    return response.data as ResponseType;
-  });
+  };
+
+  // Query
+  return useQuery(queryKey, fetcher);
 };
 
 // To sign up or sign in a user
@@ -38,18 +41,16 @@ export const useCreateUser = () => {
   };
 
   // MutationResult
-  type MutationResult = {
-    jwt: string;
-    user: IUser;
+  type MutationResult = IUser;
+
+  // Mutator
+  const mutator = async ({ token }: MutationParams) => {
+    const QueryUrl = '/api/v1/users';
+    return await axios.post<MutationResult>(QueryUrl, { token });
   };
 
   // Query
-  return useMutation(async ({ token }: MutationParams) => {
-    const response = await axios.post('/api/v1/users', { token });
-    const jwt = response.headers['authorization'][0].split(' ')[1];
-    const user = response.data as IUser;
-    return { user: user, jwt: jwt } as MutationResult;
-  });
+  return useMutation(mutator);
 };
 
 // To patch the user details
@@ -69,22 +70,23 @@ export const usePatchUser = () => {
   // MutationResult
   type MutationResult = IUser;
 
-  // Query
-  return useMutation(
-    async ({ userId, jwt: token, options }: MutationParams) => {
-      const response = await axios.patch(
-        `/api/v1/users/${userId}`,
-        { name: options.name },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      return response.data as MutationResult;
-    },
-    {
-      onSuccess: (data, variables) => {
-        client.invalidateQueries(['user', variables.userId]);
+  // Mutator
+  const mutator = async ({ userId, jwt: token, options }: MutationParams) => {
+    const mutationUrl = `/api/v1/users/${userId}`;
+    return await axios.patch<MutationResult>(mutationUrl,{
+        name: options.name
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       }
+    );
+  };
+
+  // Query
+  return useMutation(mutator, {
+    onSuccess: (data, variables) => {
+      client.invalidateQueries(['user', variables.userId]);
     }
-  );
+  });
 };
 
 // To delete the user
@@ -96,13 +98,18 @@ export const useDeleteUser = () => {
   };
 
   // MutationResult
-  type MutationResult = IUser;
+  type MutationResult = {
+    message: string;
+  };
 
-  // Query
-  return useMutation(async ({ userId, jwt: token }: MutationParams) => {
-    const response = await axios.delete(`/api/v1/users/${userId}`, {
+  // Query Function
+  const mutator = async ({ userId, jwt: token }: MutationParams) => {
+    const mutationUrl = `/api/v1/users/${userId}`;
+    return await axios.delete<MutationResult>(mutationUrl, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    return response.data as MutationResult;
-  });
+  };
+
+  // Query
+  return useMutation(mutator);
 };

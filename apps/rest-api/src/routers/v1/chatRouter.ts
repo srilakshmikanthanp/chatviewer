@@ -7,7 +7,7 @@ import {
   deleteChatByIdController, getTokenByIdController, getChatBlobController ,
   postChatController, getAllChatsController, getChatByIdController
 } from "../../controllers";
-import { postChatValidator, getTokenByIdValidator, patchChatValidator } from "../../validators";
+import { postChatValidator, patchChatValidator } from "../../validators";
 import { authenticator } from "../../middlewares";
 import { Router } from "express";
 
@@ -33,7 +33,7 @@ router.patch("/:chat_id", authenticator, patchChatValidator);
 router.get("/:chat_id/blob", authenticator, getChatBlobController);
 
 // get share link
-router.get("/:chat_id/token", authenticator, getTokenByIdValidator, getTokenByIdController);
+router.get("/:chat_id/token", authenticator, getTokenByIdController);
 
 // export the router
 export default router;

@@ -43,21 +43,3 @@ export async function patchChatValidator (req: Request, res: Response, next: Nex
     });
   }
 }
-
-// share link validation function
-export async function getTokenByIdValidator (req: Request, res: Response, next: NextFunction) {
-  // create a schema for the share link request
-  const schema = yup.object().shape({
-    expiresIn: yup.string().required(),
-  });
-
-  // validate the request body
-  try {
-    await schema.validate(req.body);
-    next();
-  } catch (err) {
-    res.status(400).json({
-      error: err.message
-    });
-  }
-}

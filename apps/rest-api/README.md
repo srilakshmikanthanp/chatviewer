@@ -353,13 +353,9 @@ GET {{host}}/api/v1/users/1/chats/2/token
 Authorization Bearer <Token>
 ```
 
-#### Body
+#### Params
 
-```json
-{
-  "expiresIn": "expressed in seconds or a string describing a time span zeit/ms. Eg: 60, 2 days, 10h, 7d"
-}
-```
+* `expiresIn`: The valid time for the token (default: 30d)
 
 #### Response
 

@@ -341,7 +341,7 @@ export async function getTokenByIdController(req: Request, res: Response) {
   const payload: IJwtChatPayload = { chatId: chatId };
 
   // get the expiry
-  const expiry = req.body.expiresIn;
+  const expiry = req.query.expiresIn ? +req.query.expiresIn : "30d";
 
   // generate a jwt
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
