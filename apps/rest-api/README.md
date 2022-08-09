@@ -34,7 +34,7 @@ Find the User Details and JWT token in the response
 
 ##### Header
 
-Authorization: Bearer {{token}}
+auth-token {{token}}
 
 ##### Body
 
@@ -362,7 +362,7 @@ Authorization Bearer <Token>
 The header will contain the token
 
 ```sh
-Authorization Bearer <Token>
+chat-token <Token>
 ```
 
 ## Util

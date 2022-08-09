@@ -349,7 +349,7 @@ export async function getTokenByIdController(req: Request, res: Response) {
   });
 
   // set the header
-  res.setHeader('Authorization', `Bearer ${token}`);
+  res.setHeader('chat-token', token);
 
   // send the success response
   res.status(200);

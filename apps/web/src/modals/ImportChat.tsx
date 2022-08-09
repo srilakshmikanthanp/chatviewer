@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 
 interface IImportChatProps extends HTMLAttributes<HTMLDivElement> {
-  onImport: (msgs: IMsg[]) => void;
+  onImport: (msgs: IMsg[], chatId: number | null) => void;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -73,7 +73,7 @@ export default function ImportChat(props: IImportChatProps) {
     setIsReady(false);
 
     // call the onImport function
-    props.onImport(chats);
+    props.onImport(chats, null);
   }
 
   // Render

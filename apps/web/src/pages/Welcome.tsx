@@ -70,8 +70,12 @@ export default function Welcome() {
   const navigate = useNavigate();
 
   // Handle Import
-  const handleImport = (msgs: IMsg[]) => {
-    navigate("/viewchat", { state: createViewerState(null, msgs) });
+  const handleImport = (msgs: IMsg[], chatId: number | null) => {
+    // Navigate to the chat view page
+    navigate("/viewchat", { state: createViewerState(chatId, msgs) });
+
+    // Close the dialog
+    setIsDialogOpen(false);
   }
 
   // body component

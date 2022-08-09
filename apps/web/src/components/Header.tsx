@@ -5,6 +5,7 @@
 // https://opensource.org/licenses/MIT
 
 import { setUser, selectUser } from "../redux/slices/userSlice";
+import { createViewerState } from "../utilities/constructors";
 import { MenuItem, Menu, Divider } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useCreateUser } from "../apiClients/userApi";
@@ -16,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IUser } from "../interfaces";
+import { ImportChat } from "../modals";
+import { IMsg } from "../interfaces";
 
 const HeaderContent = styled.div`
   background-color: var(--bs-body-bg);
@@ -44,11 +47,14 @@ const SignIn = styled.div`
 
 // Navbar component
 export default function Header() {
+  // is Import model is in view or not state
+  const [isImportModalVisible, SetIsImportModalVisible] = useState(false);
+
   // ref for Menu Button to open the menu
   const [menuRef, setMenuRef] = useState<SVGSVGElement | null>(null);
 
   // Is the side bar hidden or not
-  const [isHidden, setIsHidden] = useState<boolean>(true);
+  const [isMenuHidden, setIsMenuHidden] = useState(true);
 
   // ref for the sign in sutton
   const signInRef = React.createRef<HTMLDivElement>();
@@ -68,7 +74,7 @@ export default function Header() {
   // Sign Handler
   const signHandler = async (token: string) => {
     const response = await createUser.mutateAsync({ token });
-    const jwt = response.headers["auth-token"].split(" ")[1];
+    const jwt = response.headers["auth-token"];
     const user = response.data;
     dispatch(setUser({ userDetails: { user, jwt } }));
   }
@@ -76,8 +82,8 @@ export default function Header() {
   // dynamic right side component
   const RightSideComponent = user ? (
     <MenuIcon
-      style={{ cursor: "pointer", marginLeft: "auto" }}
-      onClick={() => setIsHidden(!isHidden)}
+      style={{ cursor: "pointer", margin: "0 10px 0 auto" }}
+      onClick={() => setIsMenuHidden(!isMenuHidden)}
       ref={setMenuRef}
     />
   ) : (
@@ -100,8 +106,12 @@ export default function Header() {
   });
 
   // handle the Import Chat
-  const handleImportChat = () => {
-    console.log("Import Chat");
+  const handleImportChat = (msgs: IMsg[], chatId: number | null) => {
+    // Navigate to the chat view Page
+    navigate("/viewchat", { state: createViewerState(chatId, msgs) });
+
+    // Hide the Import Chat modal
+    SetIsImportModalVisible(false);
   }
 
   // handle the Dashboard
@@ -119,14 +129,10 @@ export default function Header() {
     <HeaderContent>
       <Link to="/"><LogoImg src={AppLogo} alt="logo" /></Link>
       {RightSideComponent}
-      {user && <Menu
-        anchorEl={menuRef}
-        open={!isHidden}
-        onClose={() => setIsHidden(true)}
-      >
+      {user && <Menu anchorEl={menuRef} open={!isMenuHidden} onClose={() => setIsMenuHidden(true)} >
         <MenuItem
           sx={{ justifyContent: "center" }}
-          onClick={handleImportChat}
+          onClick={() => SetIsImportModalVisible(true)}
         >
           Import Chat
         </MenuItem>
@@ -144,6 +150,11 @@ export default function Header() {
           Sign Out
         </MenuItem>
       </Menu>}
+      <ImportChat
+        onClose={() => SetIsImportModalVisible(false)}
+        isOpen={isImportModalVisible}
+        onImport={handleImportChat}
+      />
     </HeaderContent>
   );
 }

@@ -3,13 +3,17 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { selectUser, selectJwt } from "../redux/slices/userSlice";
+import { IViewchatState } from "../interfaces/pagestates";
 import { Header, ChatBox, Footer } from "../components";
 import { Container, Row, Col } from "react-bootstrap";
-import { IViewchatState } from "../interfaces/pagestates";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Selector } from "../modals";
+import { IUser } from "../interfaces";
+import axios from "axios";
 import {
   SpeedDialAction,
   SpeedDial,
@@ -91,27 +95,36 @@ const ContentWrapper = styled.div`
 
 // Message Component
 export default function Viewchat() {
+  // Is Author Selector Open or not to select Primary Author
+  const [isSelectorOpen, setIsSelectorOpen] = useState(false);
+
+  // primary author of the chat
+  const [primaryAuthor, setPrimaryAuthor] = useState('');
+
   // location state from the router to get data
   const locationState = useLocation().state as IViewchatState;
+
+  // user details
+  const user: IUser | null = useSelector(selectUser);
+
+  // jwt token
+  const jwt: string | null = useSelector(selectJwt);
 
   // if no data is found
   if (!locationState) {
     throw new Error("No Chats/Messages found");
   }
 
-  // Unique Chat id from the location state
-  const chatId = locationState.header.chatId;
-
   // messages from the location state
   const messages = locationState.body.messages;
+
+  // Unique Chat id from the location state
+  const chatId = locationState.header.chatId;
 
   // author list of chats
   const authors = Array.from(new Set(
     messages.map(m => m.author)
   ));
-
-  // primary author of the chat
-  const [primaryAuthor, setPrimaryAuthor] = useState('');
 
   // to component
   const chats = messages.map((message) => (
@@ -123,28 +136,55 @@ export default function Viewchat() {
     </Col>
   ));
 
-  // Is Author Selector Open
-  const [isSelectorOpen, setIsSelectorOpen] = useState(false);
-
-  // handle author selection
-  const handleAuthorSelection = (author: string) => {
-    setPrimaryAuthor(author);
-    setIsSelectorOpen(false);
-  }
-
   // handle download
-  const handleDownload = () => {
-    console.log("Downloading...");
+  const handleDownload = async () => {
+    // if no user is found or no jwt is found
+    if (!user || !jwt) {
+      throw new Error("Something Went Wrong: Can't Download the chat at the Moment");
+    }
+
+    // Query Url
+    const QueryUrl = `/api/v1/users/${user.userId}/chats/${chatId}/blob`;
+
+    // axios request
+    const resp = await axios.get<Blob>(QueryUrl, {
+      headers: { Authorization: `Bearer ${jwt}`},
+      responseType: "blob",
+    });
+
+    // Blob Url
+    const url = window.URL.createObjectURL(resp.data);
+
+    // Download Link
+    window.open(url, "_blank");
   }
 
   // handle share
-  const handleShare = () => {
-    console.log("Sharing...");
+  const handleShare = async () => {
+    // if no user is found or no jwt is found
+    if (!user || !jwt) {
+      throw new Error("Something Went Wrong: Can't Share the chat at the Moment");
+    }
+
+    // Query Url
+    const QueryUrl = `/api/v1/users/${user.userId}/chats/${chatId}/token`;
+
+    // axios request
+    const resp = await axios.get(QueryUrl, {
+      headers: { Authorization: `Bearer ${jwt}`},
+    });
+
+    // token
+    const token = resp.headers["chat-token"];
   }
 
-  // handle author
-  const handleAuthor = () => {
-    setIsSelectorOpen(true);
+  // handle author selection
+  const handleAuthorSelection = (author: string) => {
+    // change the primary author
+    setPrimaryAuthor(author);
+
+    // close the selector
+    setIsSelectorOpen(false);
   }
 
   // Body
@@ -166,7 +206,7 @@ export default function Viewchat() {
         shareable={chatId !== null}
         onDownload={handleDownload}
         onShare={handleShare}
-        onAuthor={handleAuthor}
+        onAuthor={() => setIsSelectorOpen(true)}
       />
     </ContentWrapper>
   );
