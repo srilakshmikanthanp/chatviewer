@@ -4,18 +4,18 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { setUser, selectUser } from "../redux/slices/userSlice";
+import { MenuItem, Menu, Divider } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { useCreateUser } from "../apiClients/userApi";
+import React, { useState, useEffect } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import AppLogo from "../assets/images/logo.png";
 import { GOOGLE_CLIENT_ID } from "../constants";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IUser } from "../interfaces";
-import React, { useState, useEffect } from "react";
-import {
-  MenuItem,
-  Menu,
-  Divider,
-} from "@mui/material";
 
 const HeaderContent = styled.div`
   background-color: var(--bs-body-bg);
@@ -53,29 +53,42 @@ export default function Header() {
   // ref for the sign in sutton
   const signInRef = React.createRef<HTMLDivElement>();
 
+  // create use mutation hook for creating a user
+  const createUser = useCreateUser();
+
+  // use Dispatch to dispatch actions
+  const dispatch = useDispatch();
+
+  // navigate hook
+  const navigate = useNavigate();
+
   // user details
-  const user : IUser | null = null;
+  const user: IUser | null = useSelector(selectUser);
+
+  // Sign Handler
+  const signHandler = async (token: string) => {
+    const response = await createUser.mutateAsync({ token });
+    const jwt = response.headers["auth-token"].split(" ")[1];
+    const user = response.data;
+    dispatch(setUser({ userDetails: { user, jwt } }));
+  }
 
   // dynamic right side component
-  let RightSideComponent = (<SignIn ref={signInRef} />);
-
-  // is signed in
-  if (user) {
-    RightSideComponent = (
-      <MenuIcon
-        style={{ cursor: "pointer", marginLeft: "auto" }}
-        onClick={() => setIsHidden(!isHidden)}
-        ref={setMenuRef}
-      />
-    );
-  }
+  const RightSideComponent = user ? (
+    <MenuIcon
+      style={{ cursor: "pointer", marginLeft: "auto" }}
+      onClick={() => setIsHidden(!isHidden)}
+      ref={setMenuRef}
+    />
+  ) : (
+    <SignIn ref={signInRef} />
+  );
 
   // attach the google sign in button
   // @ts-ignore
   google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID, callback: (res) => {
-      console.log(res);
-    }
+    callback: (res) => signHandler(res.credential),
+    client_id: GOOGLE_CLIENT_ID,
   });
 
   // render the sign in button
@@ -93,14 +106,13 @@ export default function Header() {
 
   // handle the Dashboard
   const handleDashboard = () => {
-    console.log("Dashboard");
+    navigate("/dashboard");
   }
 
   // handle the Sign Out
   const handleSignOut = () => {
-    console.log("Sign Out");
+    dispatch(setUser({userDetails: null}));
   }
-
 
   // render the component
   return (

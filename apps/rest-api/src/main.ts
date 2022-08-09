@@ -31,7 +31,7 @@ async function main() {
   app.use(express.json());
 
   // middleware to handle CORS
-  app.use(cors());
+  app.use(cors({ exposedHeaders: 'auth-token' }));
 
   // add the user router
   app.use('/api/v1/users', userRouter);

@@ -44,7 +44,7 @@ export async function userPostController(req: Request, res: Response) {
     const token = await user.createJwtToken();
 
     // set the token in the response
-    res.setHeader('Authorization', `Bearer ${token}`);
+    res.setHeader('auth-token', token);
 
     // send the token
     res.status(200).json({ user });
