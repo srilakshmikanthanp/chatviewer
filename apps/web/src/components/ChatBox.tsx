@@ -42,8 +42,6 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   )};
   border-radius: 10px;
   position: relative;
-  font-weight: bold;
-  font-size: 100%;
   margin: 10px;
   max-width: 300px;
   padding: 5px;
@@ -81,8 +79,8 @@ const ChatBoxText = styled('div')`
   max-width: 100%;
   min-width: 20px;
   font-size: 100%;
-  font-weight: bold;
-  padding: 2px;
+  font-weight: 550;
+  padding: 5px;
 `;
 
 const ChatBoxMedia = styled('a')`
@@ -156,9 +154,11 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
   const ChatBoxBody = (
     <ChatBoxCover isPrimary={isPrimary}>
       {mediaBodyComponent}
-      <ChatBoxText dangerouslySetInnerHTML={{
-        __html: linkify(message.message)
-      }} />
+      {message.message !== "" && (
+        <ChatBoxText dangerouslySetInnerHTML={{
+          __html: linkify(message.message)
+        }} />
+      )}
     </ChatBoxCover>
   );
 

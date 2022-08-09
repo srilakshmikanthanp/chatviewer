@@ -22,9 +22,9 @@ import {
 
 const ContentWrapper = styled.div`
   justify-content: center;
-  height: 100vh;
   width: 100vw;
   display: flex;
+  margin-top: 100px;
   align-items: center;
   flex-direction: column;
 `;

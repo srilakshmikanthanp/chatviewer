@@ -24,8 +24,7 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "rest-api:build",
-        "port": 8000
+        "buildTarget": "rest-api:build"
       },
       "configurations": {
         "production": {

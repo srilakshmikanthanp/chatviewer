@@ -10,8 +10,7 @@ import React from "react";
 
 // Dashboard Wrapper
 const DashboardWrapper = styled.div`
-  justify-content: center;
-  height: 100%;
+  justify-content: space-between;
   width: 100%;
   margin-top: 100px;
   margin-bottom: 60px;

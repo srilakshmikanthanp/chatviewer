@@ -66,7 +66,7 @@ export default function Selector(props: ISelectorProps) {
     <Dialog open={props.isOpen} onClose={handleClose}>
       <DialogTitle>{props.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>Select one of the value from the list</DialogContentText>
+        <DialogContentText>Select one of the value from the following list</DialogContentText>
         <FormControl fullWidth className="mt-3">
           <InputLabel id="selector-label">Select</InputLabel>
           <Select onChange={handleSelection} value={selected}
@@ -88,7 +88,7 @@ export default function Selector(props: ISelectorProps) {
           onClick={handleSubmit}
           disabled={!isReady}
         >
-          Submit
+          Select
         </Button>
       </DialogActions>
     </Dialog>

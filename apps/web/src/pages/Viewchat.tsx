@@ -87,10 +87,9 @@ const ContentWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   display: flex;
-  height: 100%;
   width: 100%;
-  margin-top: 100px;
-  margin-bottom: 60px;
+  margin-top: 90px;
+  margin-bottom: 120px;
 `;
 
 // Message Component
