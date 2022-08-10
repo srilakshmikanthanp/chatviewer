@@ -72,7 +72,10 @@ export const useCreateChat = () => {
   type MutationParams = {
     userId: number;
     jwt: string;
-    chat: IChat;
+    chat: {
+      base64: string;
+      name: string;
+    };
   };
 
   // MutationResult
@@ -81,7 +84,7 @@ export const useCreateChat = () => {
   // Mutator
   const mutator = async ({ userId, jwt, chat }: MutationParams) => {
     const QueryUrl = `/api/v1/users/${userId}/chats`;
-    return await axios.post<MutationResult>(QueryUrl, { chat }, {
+    return await axios.post<MutationResult>(QueryUrl, { ...chat }, {
       headers: { Authorization: `Bearer ${jwt}` }
     });
   };
@@ -116,7 +119,7 @@ export const usePatchChat = () => {
     options
   }: MutationParams) => {
     const QueryUrl = `/api/v1/users/${userId}/chats/${chatId}`;
-    return await axios.patch<MutationResult>(QueryUrl, { options }, {
+    return await axios.patch<MutationResult>(QueryUrl, { ...options }, {
       headers: { Authorization: `Bearer ${jwt}` }
     });
   }

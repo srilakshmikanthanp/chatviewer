@@ -63,3 +63,23 @@ export function getMimeType(fileName: string) {
     'application/octet-stream'
   );
 }
+
+
+/**
+ * Blob to Base64 Converter
+ *
+ * @param blob Blob
+ * @return Base64 String
+ */
+export function blobToBase64(blob: Blob): Promise<string> {
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
+  return new Promise((resolve, reject) => {
+    reader.onloadend = () => {
+      if (!reader.result) {
+        reject(new Error('Failed: blobToBase64'));
+      }
+      resolve(reader.result as string);
+    };
+  });
+}

@@ -31,6 +31,7 @@ const HeaderContent = styled.div`
   padding: 0px 10px;
   position: fixed;
   align-items: center;
+  z-index: 1;
 `;
 
 const LogoImg = styled.img`

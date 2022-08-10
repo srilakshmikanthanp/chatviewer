@@ -28,14 +28,24 @@ export async function postChatController(req: Request, res: Response) {
     return res.status(404).json({ message: "User not found" });
   }
 
+  // get mime type from base64 data
+  const mimeType = req.body.base64.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];
+
   // get the chat data from the request body
-  const data = Buffer.from(req.body.data, "base64");
+  const data = Buffer.from(req.body.base64, "base64");
 
   // set the chat id in the user data
-  const chat = await user.createChat({mimeType: req.body.mimeType, data: data, name: req.body.name});
+  const chat = await user.createChat({mimeType: mimeType, data: data, name: req.body.name});
 
   // send the success response
-  res.status(200).json( chat );
+  res.status(200).json({
+    blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}${chat.chatId}/blob`,
+    chatId: chat.chatId,
+    userId: chat.userId,
+    name: chat.name,
+    createdAt: chat.createdAt,
+    updatedAt: chat.updatedAt,
+  });
 }
 
 // get all chats controller function
@@ -113,14 +123,18 @@ export async function getAllChatsController(req: Request, res: Response) {
     const links = [];
 
     if (page > 1) {
-      links.push(`<${topMostUrl}?page=${page - 1}&per_page=${per_page}>; rel="prev"`);
+      links.push(
+        `<${topMostUrl}?page=${page - 1}&per_page=${per_page}>; rel="prev"`
+      );
     }
 
     if (page < totalPages) {
-      links.push(`<${topMostUrl}?page=${page + 1}&per_page=${per_page}>; rel="next"`);
+      links.push(
+        `<${topMostUrl}?page=${page + 1}&per_page=${per_page}>; rel="next"`
+      );
     }
 
-    res.set('Link', links.join(', '));
+    res.setHeader('Link', links.join(', '));
   }
 
   // send the success response
@@ -233,7 +247,14 @@ export async function patchChatByIdController(req: Request, res: Response) {
   }];
 
   // send the success response
-  res.status(200).json(chat[0]);
+  res.status(200).json({
+    blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}/blob`,
+    chatId: chat[0].chatId,
+    userId: chat[0].userId,
+    name: chat[0].name,
+    createdAt: chat[0].createdAt,
+    updatedAt: chat[0].updatedAt,
+  });
 }
 
 // delete chat by id controller function

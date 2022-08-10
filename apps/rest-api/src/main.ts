@@ -1,9 +1,7 @@
 import userRouter from './routers/v1/userRouter';
 import chatRouter from "./routers/v1/chatRouter";
 import utilRouter from "./routers/v1/utilRouter";
-
 import { db_initializer } from './utilities';
-
 import * as express from 'express';
 import * as cors from "cors";
 
@@ -27,11 +25,11 @@ async function main() {
   // create a new express application
   const app = express();
 
-  // middleware to handle json body
-  app.use(express.json());
-
   // middleware to handle CORS
-  app.use(cors({ exposedHeaders: ['auth-token', 'chat-token'] }));
+  app.use(cors({ exposedHeaders: ['auth-token', 'chat-token', 'Link'] }));
+
+  // middleware to handle json body
+  app.use(express.json({limit: '50mb'}));
 
   // add the user router
   app.use('/api/v1/users', userRouter);

@@ -43,9 +43,7 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   border-radius: 10px;
   position: relative;
   margin: 10px;
-  max-width: 300px;
   padding: 5px;
-  z-index: -1;
   &:before {
     filter: drop-shadow(0px 2px 1px rgb(var(--shadow-color)));
     border-top: 10px solid ${props => props.isPrimary ? (
@@ -69,7 +67,7 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
 
 const ChatBoxImage = styled('img')`
   border-radius: 10px;
-  max-width: 100%;
+  max-width: fit-content;
   max-height: 300px;
   object-fit: cover;
 `;
@@ -123,7 +121,8 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
     case 'audio':
       mediaBodyComponent = (
         <AudioPlayer
-          style={{ minWidth: '320px' }}
+          style={{ minWidth: '350px', zIndex: 1000 }}
+          autoPlay={false}
           src={URL.createObjectURL(message.media)}
         />
       );

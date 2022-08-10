@@ -160,9 +160,8 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "mimeType": "text/pain",
-  "data": "base64",
-  "name": "Chat 1",
+  "base64" :  "Encoded in base64 with mime type",
+  "name"   :  "Name of the chat",
 }
 ```
 

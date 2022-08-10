@@ -47,7 +47,7 @@ export async function userPostController(req: Request, res: Response) {
     res.setHeader('auth-token', token);
 
     // send the token
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (error) {
     // send the error
     return res.status(401).json({ message: 'Invalid token' });

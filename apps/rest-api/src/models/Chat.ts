@@ -33,7 +33,7 @@ Chat.init({
     allowNull: false
   },
   data: {
-    type: DataTypes.BLOB,
+    type: DataTypes.BLOB('long'),
     allowNull: false
   },
   mimeType: {

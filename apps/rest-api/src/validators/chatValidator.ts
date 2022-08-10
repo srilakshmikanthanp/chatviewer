@@ -10,8 +10,7 @@ import * as yup from "yup";
 export async function postChatValidator (req: Request, res: Response, next: NextFunction) {
   // create a schema for the post chat request
   const schema = yup.object().shape({
-    mimeType: yup.string().required(),
-    data: yup.string().required(),
+    base64: yup.string().required(),
     name: yup.string().required(),
   });
 

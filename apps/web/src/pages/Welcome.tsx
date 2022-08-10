@@ -21,10 +21,11 @@ import {
 } from "@mui/material";
 
 const ContentWrapper = styled.div`
+  min-height: calc(100vh - 50px);
   justify-content: center;
+  margin-top: 50px;
   width: 100vw;
   display: flex;
-  margin-top: 100px;
   align-items: center;
   flex-direction: column;
 `;
