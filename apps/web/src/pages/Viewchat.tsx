@@ -8,6 +8,7 @@ import { IViewchatState } from "../interfaces/pagestates";
 import { Header, ChatBox, Footer } from "../components";
 import { Container, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -100,6 +101,9 @@ export default function Viewchat() {
   // primary author of the chat
   const [primaryAuthor, setPrimaryAuthor] = useState('');
 
+  // is snackbar open
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+
   // location state from the router to get data
   const locationState = useLocation().state as IViewchatState;
 
@@ -142,20 +146,20 @@ export default function Viewchat() {
       throw new Error("Something Went Wrong: Can't Download the chat at the Moment");
     }
 
-    // Query Url
-    const QueryUrl = `/api/v1/users/${user.userId}/chats/${chatId}/blob`;
+    // Query Url to get token
+    const QueryUrl = `/api/v1/users/${user.userId}/chats/${chatId}/token`;
 
     // axios request
-    const resp = await axios.get<Blob>(QueryUrl, {
+    const resp = await axios.get(QueryUrl, {
       headers: { Authorization: `Bearer ${jwt}`},
-      responseType: "blob",
+      params: { expiresIn: "1h" },
     });
 
-    // Blob Url
-    const url = window.URL.createObjectURL(resp.data);
+    // get the token
+    const token = resp.headers["chat-token"];
 
-    // Download Link
-    window.open(url, "_blank");
+    // download the chat
+    window.open(`${axios.defaults.baseURL}/api/v1/utils/chats/${token}/blob`);
   }
 
   // handle share
@@ -165,7 +169,7 @@ export default function Viewchat() {
       throw new Error("Something Went Wrong: Can't Share the chat at the Moment");
     }
 
-    // Query Url
+    // Query Url to get token
     const QueryUrl = `/api/v1/users/${user.userId}/chats/${chatId}/token`;
 
     // axios request
@@ -175,6 +179,15 @@ export default function Viewchat() {
 
     // token
     const token = resp.headers["chat-token"];
+
+    // generate url
+    const url = `${window.location.origin}/chatshared/${token}`;
+
+    // copy to clipboard
+    await navigator.clipboard.writeText(url);
+
+    // set snackbar open
+    setIsSnackbarOpen(true);
   }
 
   // handle author selection
@@ -192,6 +205,12 @@ export default function Viewchat() {
       <Container fluid={true} >
         <Row> {chats} </Row>
       </Container>
+      <Snackbar
+        message="Link copied, valid for 30 days"
+        onClose={() => setIsSnackbarOpen(false)}
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+      />
       <Selector
         onClose={() => setIsSelectorOpen(false)}
         title="Select Primary Author"

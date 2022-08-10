@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Dashboard, Viewchat, Welcome } from "./pages"
+import { Chatshared, Dashboard, Viewchat, Welcome } from "./pages"
 import { Routes, Route } from 'react-router-dom';
 import './styles/global.module.css';
 
@@ -11,9 +11,10 @@ import './styles/global.module.css';
 export default function App() {
   return (
     <Routes>
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/" element={<Welcome />} />
+      <Route path="/chatshared/:token" element={<Chatshared />} />
       <Route path="/viewchat" element={<Viewchat />} />
+      <Route path="/" element={<Welcome />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
