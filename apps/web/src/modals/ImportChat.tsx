@@ -7,7 +7,7 @@ import { selectUser, selectJwt } from "../redux/slices/userSlice";
 import { ChangeEvent, HTMLAttributes, useState } from "react";
 import { getMimeType } from "../utilities/functions";
 import WhatsappParser from "../utilities/whatsapp";
-import { IMsg, IUser } from "../interfaces";
+import { IChat, IMsg, IUser } from "../interfaces";
 import { Form } from "react-bootstrap";
 import { useCreateChat } from "../apiClients/chatApi";
 import { blobToBase64 } from "../utilities/functions";
@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 
 interface IImportChatProps extends HTMLAttributes<HTMLDivElement> {
-  onImport: (msgs: IMsg[], chatId: number | null) => void;
+  onImport: (msgs: IMsg[], chat: IChat | null) => void;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -90,9 +90,9 @@ export default function ImportChat(props: IImportChatProps) {
     if (!mimeType) { return; }
 
     // create blob
-    const chatBlob = new Blob([selectedFile], {
-      type: mimeType
-    });
+    const chatBlob = selectedFile.slice(
+      0, selectedFile.size, mimeType
+    );
 
     // parse the file
     const iterator = new WhatsappParser(chatBlob);
@@ -134,13 +134,8 @@ export default function ImportChat(props: IImportChatProps) {
       chat: chat,
     });
 
-    // get the chat id
-    const chatId = response.data.chatId;
-
-    console.log(response.data);
-
     // import the chat
-    props.onImport(chats, chatId);
+    props.onImport(chats, response.data);
   }
 
   // on Close

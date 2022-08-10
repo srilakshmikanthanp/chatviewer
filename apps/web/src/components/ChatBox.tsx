@@ -67,7 +67,8 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
 
 const ChatBoxImage = styled('img')`
   border-radius: 10px;
-  max-width: fit-content;
+  max-width: 100%;
+  width: fit-content;
   max-height: 300px;
   object-fit: cover;
 `;

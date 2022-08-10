@@ -16,7 +16,7 @@ import { GOOGLE_CLIENT_ID } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { IUser } from "../interfaces";
+import { IChat, IUser } from "../interfaces";
 import { ImportChat } from "../modals";
 import { IMsg } from "../interfaces";
 
@@ -107,9 +107,9 @@ export default function Header() {
   });
 
   // handle the Import Chat
-  const handleImportChat = (msgs: IMsg[], chatId: number | null) => {
+  const handleImportChat = (msgs: IMsg[], chat: IChat | null) => {
     // Navigate to the chat view Page
-    navigate("/viewchat", { state: createViewerState(chatId, msgs) });
+    navigate("/viewchat", { state: createViewerState(chat, msgs) });
 
     // Hide the Import Chat modal
     SetIsImportModalVisible(false);

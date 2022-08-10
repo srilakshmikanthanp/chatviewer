@@ -8,7 +8,7 @@ import axios from 'axios';
 import { IChat } from '../interfaces';
 
 // To get the chat with token
-export const useGetChatWithToken = ({ token }: { token: string }) => {
+export const useChatWithToken = ({ token }: { token: string }) => {
   // Query Key for the get chat
   const queryKey = ['chats', token];
 
@@ -28,7 +28,7 @@ export const useGetChatWithToken = ({ token }: { token: string }) => {
 };
 
 // To get Blob with token
-export const useGetBlobWithToken = ({ token }: { token: string }) => {
+export const useBlobWithToken = ({ token }: { token: string }) => {
   // Query Key for the get chat
   const queryKey = ['chats', token, 'blob'];
 
@@ -39,7 +39,8 @@ export const useGetBlobWithToken = ({ token }: { token: string }) => {
   const fetcher = async () => {
     const QueryUrl = `/api/v1/utils/chats/${token}/blob`;
     return await axios.get<ResponseType>(QueryUrl, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'blob'
     });
   };
 

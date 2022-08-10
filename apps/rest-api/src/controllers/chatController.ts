@@ -31,8 +31,11 @@ export async function postChatController(req: Request, res: Response) {
   // get mime type from base64 data
   const mimeType = req.body.base64.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];
 
+  // get base64
+  const base64 = req.body.base64.split(",")[1];
+
   // get the chat data from the request body
-  const data = Buffer.from(req.body.base64, "base64");
+  const data = Buffer.from(base64, "base64");
 
   // set the chat id in the user data
   const chat = await user.createChat({mimeType: mimeType, data: data, name: req.body.name});
@@ -362,7 +365,14 @@ export async function getTokenByIdController(req: Request, res: Response) {
   const payload: IJwtChatPayload = { chatId: chatId };
 
   // get the expiry
-  const expiry = req.query.expiresIn ? +req.query.expiresIn : "30d";
+  const expiry = req.query.expiresIn ? req.query.expiresIn : "30d";
+
+  // if it is not a string
+  if(typeof expiry !== "string" ) {
+    return res.status(400).json({
+      message: "expiresIn Should be string"
+    });
+  }
 
   // generate a jwt
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -373,5 +383,5 @@ export async function getTokenByIdController(req: Request, res: Response) {
   res.setHeader('chat-token', token);
 
   // send the success response
-  res.status(200);
+  res.status(200).send({ message: "ok" });
 }

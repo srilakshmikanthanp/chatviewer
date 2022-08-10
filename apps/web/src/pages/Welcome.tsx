@@ -9,7 +9,7 @@ import { Header, Footer } from "../components";
 import ImgLogo from "../assets/images/logo.png";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IMsg } from "../interfaces";
+import { IChat, IMsg } from "../interfaces";
 import { ImportChat } from "../modals";
 import {
   Container,
@@ -71,9 +71,9 @@ export default function Welcome() {
   const navigate = useNavigate();
 
   // Handle Import
-  const handleImport = (msgs: IMsg[], chatId: number | null) => {
+  const handleImport = (msgs: IMsg[], chat: IChat | null) => {
     // Navigate to the chat view page
-    navigate("/viewchat", { state: createViewerState(chatId, msgs) });
+    navigate("/viewchat", { state: createViewerState(chat, msgs) });
 
     // Close the dialog
     setIsDialogOpen(false);

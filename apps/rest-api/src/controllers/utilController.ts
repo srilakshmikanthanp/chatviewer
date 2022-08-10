@@ -24,17 +24,21 @@ export async function getChatWithJwtController(req: Request, res: Response) {
     const decoded: IJwtChatPayload = jwt.verify(JwtToken, JwtSecret) as IJwtChatPayload;
 
     // query string
-    const query = 'SELECT chatId, userId, mimeType, createdAt FROM chats WHERE chatId = ?';
+    const query = 'SELECT chatId, userId, createdAt, updatedAt FROM chats WHERE chatId = ?';
 
     // chat id
     const chatId = decoded.chatId;
 
     // get chat with raw query
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const chat = <any[]>await sequelize.query(query, {
+    const chat = await sequelize.query(query, {
       replacements: [chatId],
       type: QueryTypes.SELECT,
-    });
+    }) as [{
+      chatId    : number,
+      userId    : number,
+      createdAt : Date,
+      updatedAt : Date,
+    }];
 
     // if chat is not found
     if (!chat.length) {
@@ -44,10 +48,10 @@ export async function getChatWithJwtController(req: Request, res: Response) {
     // send the success response
     res.status(200).json({
       blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}/blob`,
-      mimeType: chat[0].mimeType,
       chatId: chat[0].chatId,
       userId: chat[0].userId,
       createdAt: chat[0].createdAt,
+      updatedAt: chat[0].updatedAt,
     });
   } catch (error) {
     res.status(401).json({ message: "Invalid token" });
