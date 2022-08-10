@@ -5,10 +5,9 @@
 
 import { IViewchatState } from "../interfaces/pagestates";
 import { Container, Row, Col } from "react-bootstrap";
+import React, { useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import Snackbar from "@mui/material/Snackbar";
 import { useSelector } from "react-redux";
-import React, { useState } from "react";
 import styled from "styled-components";
 import { Selector } from "../modals";
 import { IUser } from "../interfaces";
@@ -25,7 +24,6 @@ import {
 } from "../components";
 import {
   SpeedDialAction,
-  Alert,
   SpeedDial,
   SpeedDialIcon,
 } from "@mui/material";
@@ -66,25 +64,25 @@ function ChatOptions(props: IChatBoxProps) {
       open={isOpen}
       openIcon={<Close />}
     >
+      {props.authorable && (
+        <SpeedDialAction
+          tooltipTitle="Choose Primary Author"
+          icon={<Person />}
+          onClick={props.onAuthor}
+        />
+      )}
       {props.downloadable && (
         <SpeedDialAction
-          onClick={props.onDownload}
+          tooltipTitle="Download Chat File"
           icon={<CloudDownload />}
-          tooltipTitle="Download"
+          onClick={props.onDownload}
         />
       )}
       {props.shareable && (
         <SpeedDialAction
-          onClick={props.onShare}
+          tooltipTitle="Copy Link for Chat"
           icon={<Share />}
-          tooltipTitle="Share"
-        />
-      )}
-      {props.authorable && (
-        <SpeedDialAction
-          onClick={props.onAuthor}
-          icon={<Person />}
-          tooltipTitle="Author"
+          onClick={props.onShare}
         />
       )}
     </SpeedDial>
@@ -109,9 +107,6 @@ export default function Viewchat() {
 
   // primary author of the chat
   const [primaryAuthor, setPrimaryAuthor] = useState('');
-
-  // is snackbar open
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   // location state from the router to get data
   const locationState = useLocation().state as IViewchatState;
@@ -139,11 +134,14 @@ export default function Viewchat() {
   ));
 
   // to component
-  const chats = messages.map((message) => (
+  const chats = useMemo(() => messages.map((message) => (
     <Col xs={12}>
-      <ChatBox isPrimary={message.author === primaryAuthor} message={message} />
+      <ChatBox
+        isPrimary={message.author === primaryAuthor}
+        message={message}
+      />
     </Col>
-  ));
+  )), [messages, primaryAuthor]);
 
   // handle download
   const handleDownload = async () => {
@@ -196,9 +194,6 @@ export default function Viewchat() {
 
     // copy to clipboard
     await navigator.clipboard.writeText(url);
-
-    // set snackbar open
-    setIsSnackbarOpen(true);
   }
 
   // handle author selection
@@ -210,19 +205,9 @@ export default function Viewchat() {
     setIsSelectorOpen(false);
   }
 
-  // handle snackbar close
-  const handleSnackbarClose = () => {
-    setIsSnackbarOpen(false);
-  }
-
   // Body
   const Body = () => (
     <ContentWrapper>
-      <Snackbar onClose={handleSnackbarClose} open={isSnackbarOpen} autoHideDuration={3000} >
-        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }} >
-          Link copied, valid for 30 days
-        </Alert>
-      </Snackbar>
       <Container fluid={true} >
         <Row> {chats} </Row>
       </Container>

@@ -4,50 +4,25 @@
 // https://opensource.org/licenses/MIT
 
 import { useChatWithToken, useBlobWithToken } from "../apiClients/utilApi";
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { createViewerState } from "../utilities/constructors";
-import styled, { keyframes } from "styled-components";
 import WhatsappParser from "../utilities/whatsapp";
 import { LinearProgress } from "@mui/material";
 import { Header, Footer } from "../components";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { IChat, IMsg } from "../interfaces";
+import styled from "styled-components";
 import React from "react";
 
 const ChatSharedContainer = styled.div`
   height: calc(100vh - 200px);
-  width: 100%;
-  padding: 0 20%;
-  margin: 100px 0px;
+  width: 250px;
+  margin: 100px auto;
   justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
-`;
-
-const Oscillator = keyframes`
-  0% {
-    transform: translateY(-10px);
-  }
-  25% {
-    transform: translateY(10px);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-  75% {
-    transform: translateY(5px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-`;
-
-const NoticeText = styled.div`
-  animation: ${Oscillator} 1s linear infinite;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 10px;
 `;
 
 /**
@@ -79,8 +54,6 @@ export default function Chatshared() {
       messages.push(msg);
     }
 
-    console.log(messages);
-
     // navigate to the view chat page
     return navigate('/viewchat', { state: createViewerState(chat, messages) });
   }
@@ -98,7 +71,7 @@ export default function Chatshared() {
   // Body
   const Body = () => (
     <ChatSharedContainer>
-      <NoticeText>It does't take a while !</NoticeText>
+      <CloudDownloadIcon sx={{width: "50px", height: "50px",}}/>
       <LinearProgress sx={{ width: "100%" }} />
     </ChatSharedContainer>
   );
