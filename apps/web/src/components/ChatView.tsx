@@ -3,9 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { HTMLAttributes, MouseEvent, useState } from 'react';
+import { HTMLAttributes, MouseEvent } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import styled from 'styled-components';
+import EditIcon from '@mui/icons-material/Edit';
+import FileOpenIcon from '@mui/icons-material/FileOpen';
+import styled, { css } from 'styled-components';
 import { IChat } from "../interfaces";
 import React from 'react';
 import {
@@ -43,9 +45,22 @@ const HorizontalBarWrapper = styled.div`
   }
 `;
 
+// File Details
+const FileDetails = styled.div`
+  margin-right: auto;
+  display: flex;
+  width: 100%;
+`;
+
+// chat icon css
+const FileIcon = styled(FileOpenIcon)`
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+`;
+
 // Chat Name Css
 const ChatName = styled.div`
-  margin-right: auto;
   font-size: 1.0rem;
   max-width: 70%;
   overflow-y: hidden;
@@ -60,17 +75,23 @@ const Options = styled.div`
   margin-left: auto;
 `;
 
-const ImgIcon = styled(DeleteIcon)`
-  max-height: 20px;
-  margin: 0 auto;
-  max-width: 20px;
-  width: 20px;
+// Icon Styles
+const ImgIcon = css`
+  margin-right: 10px;
   height: 20px;
-  margin: 0px 10px;
+  width: 20px;
   cursor: pointer;
   &:hover {
     transform: scale(1.2);
   }
+`;
+
+const DelIcon = styled(DeleteIcon)`
+  ${ImgIcon}
+`;
+
+const PenIcon = styled(EditIcon)`
+  ${ImgIcon}
 `;
 
 // Horizontal Bar
@@ -80,15 +101,8 @@ function HorizontalBar({ onDelete, onOpen, chat, onEdit }: IHorizontalBarProps) 
     // stop the event from propagating
     event.stopPropagation();
 
-    // if single click
-    if (event.detail === 1) {
-      onEdit && onEdit(chat);
-    }
-
-    // if double click
-    if (event.detail === 2) {
-      onOpen && onOpen(chat);
-    }
+    // if onOpen is defined
+    onOpen && onOpen(chat);
   }
 
   // Click Handler for the Delete Icon
@@ -100,12 +114,27 @@ function HorizontalBar({ onDelete, onOpen, chat, onEdit }: IHorizontalBarProps) 
     onDelete && onDelete(chat);
   }
 
+  // Click Handler for the Edit Icon
+  const handleEdit = (event: MouseEvent<SVGSVGElement>) => {
+    // stop the event from propagating
+    event.stopPropagation();
+
+    // call the onEdit function
+    onEdit && onEdit(chat);
+  }
+
   // render
   return (
     <HorizontalBarWrapper onClick={handleBarClick}>
-      <ChatName>{chat.name}</ChatName>
+      <FileDetails>
+        <FileIcon />
+        <ChatName>
+          {chat.name}
+        </ChatName>
+      </FileDetails>
       <Options>
-        <ImgIcon onClick={handleDelete} />
+        <PenIcon onClick={handleEdit} />
+        <DelIcon onClick={handleDelete} />
       </Options>
     </HorizontalBarWrapper>
   );
@@ -113,17 +142,17 @@ function HorizontalBar({ onDelete, onOpen, chat, onEdit }: IHorizontalBarProps) 
 
 // Chat View Props
 interface IChatViewProps extends HTMLAttributes<HTMLDivElement> {
-  setSortBy   : (shortBy: "name" | "createdAt" | "updatedAt") => void;
-  sortBy      : "name" | "createdAt" | "updatedAt";
-  isFetching  : boolean;
-  onPrev?     : () => void;
-  onNext?     : () => void;
-  hasPrev     : boolean;
-  hasNext     : boolean;
-  chats       : IChat[] | null;
-  onDelete?   : (chat: IChat) => void;
-  onOpen?     : (chat: IChat) => void;
-  onEdit?     : (chat: IChat) => void;
+  setSortBy: (shortBy: "name" | "createdAt" | "updatedAt") => void;
+  sortBy: "name" | "createdAt" | "updatedAt";
+  isFetching: boolean;
+  onPrev?: () => void;
+  onNext?: () => void;
+  hasPrev: boolean;
+  hasNext: boolean;
+  chats: IChat[] | null;
+  onDelete?: (chat: IChat) => void;
+  onOpen?: (chat: IChat) => void;
+  onEdit?: (chat: IChat) => void;
 }
 
 // Chat View Wrapper
@@ -204,6 +233,7 @@ export default function ChatView({
   onDelete,
   onOpen,
   onEdit,
+  className,
 }: IChatViewProps) {
   // sort change handler
   const handleSortChange = (event: SelectChangeEvent<"name" | "createdAt" | "updatedAt">) => {
@@ -212,7 +242,7 @@ export default function ChatView({
 
   // if chats are loading
   if (chats === null) {
-    return <CircularProgress sx={{margin: "auto"}}/>;
+    return <CircularProgress sx={{ margin: "auto" }} />;
   }
 
   // select Component for the sortBy
@@ -257,7 +287,7 @@ export default function ChatView({
   // fetching status
   const Fetching = isFetching ? (
     <CircularProgress
-      sx={{margin: "8px auto 0 7px"}}
+      sx={{ margin: "8px auto 0 7px" }}
       size={"1rem"}
     />
   ) : (
@@ -266,7 +296,7 @@ export default function ChatView({
 
   // render
   return (
-    <ChatViewWrapper>
+    <ChatViewWrapper className={className}>
       <Header>
         <Title>Your Chats List</Title>
         {Fetching}

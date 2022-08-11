@@ -38,7 +38,7 @@ async function main() {
   app.use('/api/v1/users/:user_id/chats', chatRouter);
 
   // add util Router
-  app.use('/api/v1/utils', utilRouter);
+  app.use('/api/v1/util', utilRouter);
 
   // add welcome handler
   app.get('/', (req, res) => {

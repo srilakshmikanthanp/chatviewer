@@ -376,7 +376,7 @@ You can generate a token for a specific chat with that token, and use this API t
 #### Request
 
 ```sh
-GET {{host}}/api/v1/utils/chats/<token>
+GET {{host}}/api/v1/util/chats/<token>
 ```
 
 #### Response
@@ -399,7 +399,7 @@ You can generate a token for a specific chat with that token, and use this API t
 #### Request
 
 ```sh
-GET {{host}}/api/v1/utils/chats/<token>/blob
+GET {{host}}/api/v1/util/chats/<token>/blob
 ```
 
 #### Response

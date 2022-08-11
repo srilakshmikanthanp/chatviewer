@@ -31,13 +31,9 @@ const UserViewWrapper = styled(Container)`
   flex-direction: column;
 `;
 
-export default function UserView({
-  onDelete,
-  user,
-  onEdit
-}: IUserViewProps) {
+export default function UserView({ onDelete, user, onEdit, className }: IUserViewProps) {
   return (
-    <UserViewWrapper>
+    <UserViewWrapper className={className}>
       <Row className="d-flex align-items-center justify-content-center">
         <Col xs={12} className="d-flex justify-content-center">
           <h3>{user.name}</h3>
@@ -50,7 +46,7 @@ export default function UserView({
             onClick={() => onEdit && onEdit(user)}
             variant="contained"
           >
-            Edit
+            Edit Details
           </Button>
         </Col>
         <Col xs={6} className="d-flex justify-content-start">
@@ -59,7 +55,7 @@ export default function UserView({
             variant="contained"
             color="error"
           >
-            Delete
+            Remove Me
           </Button>
         </Col>
       </Row>

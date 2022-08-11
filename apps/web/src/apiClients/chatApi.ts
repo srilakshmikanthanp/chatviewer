@@ -22,7 +22,7 @@ export const useGetChats = ({
   };
 }) => {
   // Query Key
-  const queryKey = ['users', userId, 'chats'];
+  const queryKey = ['users', userId, 'chats', params.perPage, params.page, params.sortBy];
 
   // Response
   type ResponseType = IChat[];

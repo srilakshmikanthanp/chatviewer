@@ -125,7 +125,11 @@ export default function Header() {
 
   // handle the Sign Out
   const handleSignOut = () => {
+    // dispatch the sign out action
     dispatch(setUser({userDetails: null}));
+
+    // navigate to the sign in page
+    navigate("/");
   }
 
   // render the component
@@ -144,7 +148,7 @@ export default function Header() {
           sx={{ justifyContent: "center" }}
           onClick={handleDashboard}
         >
-          My account
+          Dashboard
         </MenuItem>
         <Divider />
         <MenuItem

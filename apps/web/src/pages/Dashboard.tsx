@@ -24,6 +24,17 @@ const DashboardWrapper = styled.div`
   flex-direction: column;
 `;
 
+// user view wrapper
+const UserViewWrapper = styled(UserView)`
+  margin-bottom: auto;
+`;
+
+// Chat View Wrapper
+const ChatViewWrapper = styled(ChatView)`
+  margin-top: auto;
+  margin-bottom: auto;
+`;
+
 export default function Dashboard() {
   // sort by state
   const [sortBy, setSortBy] = useState<"name" | "createdAt" | "updatedAt">("name");
@@ -82,12 +93,12 @@ export default function Dashboard() {
   // body
   const Body = () => (
     <DashboardWrapper>
-      <UserView
+      <UserViewWrapper
         onDelete={() => null}
         onEdit={() => null}
         user={user}
       />
-      <ChatView
+      <ChatViewWrapper
         onDelete={() => null}
         onOpen={() => null}
         onEdit={() => null}

@@ -17,7 +17,7 @@ export const useChatWithToken = ({ token }: { token: string }) => {
 
   // Fetcher
   const fetcher = async () => {
-    const QueryUrl = `/api/v1/utils/chats/${token}`;
+    const QueryUrl = `/api/v1/util/chats/${token}`;
     return await axios.get<ResponseType>(QueryUrl, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -37,7 +37,7 @@ export const useBlobWithToken = ({ token }: { token: string }) => {
 
   // Fetcher
   const fetcher = async () => {
-    const QueryUrl = `/api/v1/utils/chats/${token}/blob`;
+    const QueryUrl = `/api/v1/util/chats/${token}/blob`;
     return await axios.get<ResponseType>(QueryUrl, {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob'
