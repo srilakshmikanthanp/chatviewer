@@ -383,7 +383,7 @@ GET {{host}}/api/v1/util/chats/<token>
 
 ```json
 {
-    "blobUrl": "http://localhost:8000/api/v1/utils/chats/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
+    "blobUrl": "http://localhost:8000/api/v1/util/chats/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
     "name": "Chat 1",
     "chatId": 2,
     "userId": 1,
