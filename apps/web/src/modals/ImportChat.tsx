@@ -3,20 +3,19 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { blobToMsg, getMimeType } from "../utilities/functions";
 import { ChangeEvent, HTMLAttributes, useState } from "react";
-import { getMimeType } from "../utilities/functions";
-import WhatsappParser from "../utilities/whatsapp";
 import { IChat, IMsg, IUser } from "../interfaces";
 import { Form } from "react-bootstrap";
 import { useCreateChat } from "../apiClients/chatApi";
 import { blobToBase64 } from "../utilities/functions";
 import {
   DialogContentText,
+  DialogActions,
+  DialogContent,
   Button,
   Dialog,
   Box,
-  DialogActions,
-  DialogContent,
   DialogTitle,
   CircularProgress,
 } from "@mui/material";
@@ -88,16 +87,8 @@ export default function ImportChat(props: IImportChatProps) {
       0, selectedFile.size, mimeType
     );
 
-    // parse the file
-    const iterator = new WhatsappParser(chatBlob);
-
     // chats to be imported
-    const chats: IMsg[] = [];
-
-    // iterate over the file
-    for await (const msg of iterator) {
-      chats.push(msg);
-    }
+    const chats: IMsg[] = await blobToMsg(chatBlob);
 
     // if there are no chats to import
     if (chats.length === 0) { return; }

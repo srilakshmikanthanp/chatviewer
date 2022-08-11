@@ -4,6 +4,8 @@
 // https://opensource.org/licenses/MIT
 
 import MimeTypes from "../assets/json/mime-types.json";
+import { IMsg } from "../interfaces";
+import WhatsappParser from "./whatsapp";
 
 /**
  * Text Link to Anchor Tag converter
@@ -64,7 +66,6 @@ export function getMimeType(fileName: string) {
   );
 }
 
-
 /**
  * Blob to Base64 Converter
  *
@@ -82,4 +83,26 @@ export function blobToBase64(blob: Blob): Promise<string> {
       resolve(reader.result as string);
     };
   });
+}
+
+/**
+ * Blob to IMsg Converter
+ *
+ * @param blob Blob
+ * @return IMsg[]
+ */
+export async function blobToMsg(blob: Blob): Promise<IMsg[]> {
+  // parse the file as a whatsapp parser
+  const iterator = new WhatsappParser(blob);
+
+  // chats to be imported
+  const chats: IMsg[] = [];
+
+  // iterate over the file
+  for await (const msg of iterator) {
+    chats.push(msg);
+  }
+
+  // return the chats
+  return chats;
 }

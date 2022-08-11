@@ -5,11 +5,15 @@
 
 import { Header, Footer, UserView, ChatView } from "../components";
 import { selectUser, selectJwt } from "../redux/slices/userSlice";
+import { useGetChats } from "../apiClients/chatApi";
+import { blobToMsg } from "../utilities/functions";
+import { useNavigate } from "react-router-dom";
 import { IUser, IChat } from "../interfaces";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import React, { useState } from "react";
-import { useGetChats } from "../apiClients/chatApi";
+import axios from "axios";
+import { createViewerState } from "../utilities/constructors";
 
 // Dashboard Wrapper
 const DashboardWrapper = styled.div`
@@ -47,6 +51,9 @@ export default function Dashboard() {
 
   // jwt token
   const jwt: string | null = useSelector(selectJwt);
+
+  // navigate hook
+  const navigate = useNavigate();
 
   // if no user throw
   if (!user || !jwt) {
@@ -90,6 +97,23 @@ export default function Dashboard() {
     }
   };
 
+  // on Open Handler
+  const onOpen = async (chat: IChat) => {
+    // get the blob from the server
+    const blob = await axios.get(chat.blobUrl, {
+      headers: { Authorization: "Bearer " + jwt },
+      responseType: "blob"
+    });
+
+    // convert the blob to msg
+    const msgs = await blobToMsg(blob.data);
+
+    // Navigate to the chat view page
+    navigate("/viewchat", {
+      state: createViewerState(chat, msgs)
+    });
+  }
+
   // body
   const Body = () => (
     <DashboardWrapper>
@@ -100,7 +124,7 @@ export default function Dashboard() {
       />
       <ChatViewWrapper
         onDelete={() => null}
-        onOpen={() => null}
+        onOpen={onOpen}
         onEdit={() => null}
         isFetching={isFetching}
         setSortBy={setSortBy}
