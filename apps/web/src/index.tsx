@@ -4,33 +4,50 @@
 // https://opensource.org/licenses/MIT
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
+import ReactLoading from 'react-loading';
 import { Provider } from "react-redux";
 import { BASE_URL } from "./constants";
-import store from "./redux/store";
 import ReactDOM from "react-dom";
 import App from "./App";
 import axios from "axios";
 
+// root element to render the application
+const root = document.getElementById("root");
+
 // set the base url for the axios requests
 axios.defaults.baseURL = BASE_URL;
 
-// new query client for the app
+// new query client for the application
 const queryClient = new QueryClient();
 
-// root element
-const root = document.getElementById("root");
+// Loading Component while the loading
+const Loading = (
+  <div style={{
+    justifyContent: "center",
+    display: "flex",
+    height: "100vh",
+    width: "100vw",
+    alignItems: "center"
+  }}>
+    <ReactLoading
+      color="#0051ff"
+    />
+  </div>
+);
 
-// Application
-const Main = (
+// Application Wrapper
+const Application = (
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <PersistGate persistor={persistor} loading={Loading} >
+        <BrowserRouter> <App /> </BrowserRouter>
+      </PersistGate>
     </Provider>
   </QueryClientProvider>
 );
 
 // react root
-ReactDOM.render(Main, root);
+ReactDOM.render(Application, root);
