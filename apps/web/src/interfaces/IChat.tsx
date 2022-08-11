@@ -4,11 +4,11 @@
 // https://opensource.org/licenses/MIT
 
 export default interface IChat {
-  createdAt: Date;
+  createdAt: string;
   blobUrl: string;
   mimeType: string;
   name: string;
   chatId: number;
   userId: number;
-  updatedAt: Date;
+  updatedAt: string;
 }

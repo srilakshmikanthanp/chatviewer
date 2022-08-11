@@ -4,7 +4,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { setUser, selectUser } from "../redux/slices/userSlice";
+import { setUser, selectUser, selectJwt } from "../redux/slices/userSlice";
 import { createViewerState } from "../utilities/constructors";
 import { MenuItem, Menu, Divider } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
@@ -71,6 +71,9 @@ export default function Header() {
 
   // user details
   const user: IUser | null = useSelector(selectUser);
+
+  // jwt token
+  const jwt: string | null = useSelector(selectJwt);
 
   // Sign Handler
   const signHandler = async (token: string) => {
@@ -153,6 +156,8 @@ export default function Header() {
       </Menu>}
       <ImportChat
         onClose={() => SetIsImportModalVisible(false)}
+        user={user}
+        jwt={jwt}
         isOpen={isImportModalVisible}
         onImport={handleImportChat}
       />

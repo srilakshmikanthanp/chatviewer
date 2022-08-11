@@ -69,18 +69,37 @@ export async function getAllChatsController(req: Request, res: Response) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  // get the per_page from query
-  const per_page = +req.query.per_page;
+  // get the per-page from query
+  const perPage = +req.query["perPage"];
 
   // get the page from query
-  const page = +req.query.page;
+  const page = +req.query["page"];
+
+  // get the sort-by
+  const sortBy = req.query["sortBy"];
+
+  // if it is not a string
+  if( typeof sortBy !== "string"  ||
+      sortBy !== 'createdAt' &&
+      sortBy !== 'name' &&
+      sortBy !== 'updatedAt'
+    ) {
+    return res.status(400).json({
+      message: "shortBy Should be name, createdAt, updatedAt",
+    });
+  }
 
   // query string
   let ChatQuery = 'SELECT chatId, userId, name, createdAt, updatedAt FROM Chats WHERE userId = ?';
 
-  // if per_page is not null and page is not null
-  if (per_page && page) {
-    ChatQuery += ` LIMIT ${per_page} OFFSET ${per_page * (page - 1)}`;
+  // if has short by then add it to the query string
+  if (sortBy) {
+    ChatQuery += ` ORDER BY ${sortBy}`;
+  }
+
+  // if per_page is present and page is present
+  if (perPage && page) {
+    ChatQuery += ` LIMIT ${perPage} OFFSET ${perPage * (page - 1)}`;
   }
 
   // get chats with raw query
@@ -120,20 +139,20 @@ export async function getAllChatsController(req: Request, res: Response) {
   }).total;
 
   // construct the link header
-  if (per_page && page) {
+  if (perPage && page) {
     const topMostUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-    const totalPages = Math.ceil(total / per_page);
+    const totalPages = Math.ceil(total / perPage);
     const links = [];
 
     if (page > 1) {
       links.push(
-        `<${topMostUrl}?page=${page - 1}&per_page=${per_page}>; rel="prev"`
+        `<${topMostUrl}?page=${page - 1}&per_page=${perPage}>; rel="prev"`
       );
     }
 
     if (page < totalPages) {
       links.push(
-        `<${topMostUrl}?page=${page + 1}&per_page=${per_page}>; rel="next"`
+        `<${topMostUrl}?page=${page + 1}&per_page=${perPage}>; rel="next"`
       );
     }
 

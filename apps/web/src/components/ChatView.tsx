@@ -3,12 +3,21 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Button, Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { HTMLAttributes, MouseEvent } from 'react';
+import { HTMLAttributes, MouseEvent, useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 import styled from 'styled-components';
 import { IChat } from "../interfaces";
 import React from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  CircularProgress,
+  Button,
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent
+} from "@mui/material";
 
 // Horizontal Bar Props
 interface IHorizontalBarProps extends HTMLAttributes<HTMLDivElement> {
@@ -65,12 +74,7 @@ const ImgIcon = styled(DeleteIcon)`
 `;
 
 // Horizontal Bar
-function HorizontalBar({
-  onDelete,
-  onOpen,
-  chat,
-  onEdit,
-}: IHorizontalBarProps) {
+function HorizontalBar({ onDelete, onOpen, chat, onEdit }: IHorizontalBarProps) {
   // Click Handler o=for the Horizontal Bar
   const handleBarClick = (event: MouseEvent<HTMLDivElement>) => {
     // stop the event from propagating
@@ -109,14 +113,17 @@ function HorizontalBar({
 
 // Chat View Props
 interface IChatViewProps extends HTMLAttributes<HTMLDivElement> {
-  onPrev?: () => void;
-  onNext?: () => void;
-  hasPrev: boolean;
-  hasNext: boolean;
-  chats: IChat[];
-  onDelete?: (chat: IChat) => void;
-  onOpen?: (chat: IChat) => void;
-  onEdit?: (chat: IChat) => void;
+  setSortBy   : (shortBy: "name" | "createdAt" | "updatedAt") => void;
+  sortBy      : "name" | "createdAt" | "updatedAt";
+  isFetching  : boolean;
+  onPrev?     : () => void;
+  onNext?     : () => void;
+  hasPrev     : boolean;
+  hasNext     : boolean;
+  chats       : IChat[] | null;
+  onDelete?   : (chat: IChat) => void;
+  onOpen?     : (chat: IChat) => void;
+  onEdit?     : (chat: IChat) => void;
 }
 
 // Chat View Wrapper
@@ -131,8 +138,7 @@ const ChatViewWrapper = styled.div`
 
 // header css
 const Header = styled.div`
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   display: flex;
   flex-direction: row;
   margin: 10px 10px;
@@ -142,13 +148,11 @@ const Header = styled.div`
 
 // Title Css
 const Title = styled.div`
-  margin-right: auto;
   font-size: 1.2rem;
 `;
 
 // Sort Css
 const Sort = styled.div`
-  margin-left: auto;
 `;
 
 // Body css
@@ -189,6 +193,9 @@ const Footer = styled.div`
 
 // Chat View
 export default function ChatView({
+  isFetching,
+  setSortBy,
+  sortBy,
   hasPrev,
   hasNext,
   chats,
@@ -198,47 +205,42 @@ export default function ChatView({
   onOpen,
   onEdit,
 }: IChatViewProps) {
-  // short by state to sort the chats
-  const [sortBy, setSortBy] = React.useState('name');
+  // sort change handler
+  const handleSortChange = (event: SelectChangeEvent<"name" | "createdAt" | "updatedAt">) => {
+    setSortBy(event.target.value as typeof sortBy);
+  }
 
-  // sort the chats
-  const sortedChats = chats.sort((a, b) => {
-    if (sortBy === 'createdAt') {
-      return a.createdAt.getTime() - a.createdAt.getTime();
-    }
-
-    if (sortBy === 'name') {
-      return a.name.localeCompare(b.name);
-    }
-
-    if (sortBy === 'updatedAt') {
-      return a.updatedAt.getTime() - a.updatedAt.getTime();
-    }
-
-    return a.name.localeCompare(b.name);
-  });
+  // if chats are loading
+  if (chats === null) {
+    return <CircularProgress sx={{margin: "auto"}}/>;
+  }
 
   // select Component for the sortBy
   const SelectSort = (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
       <InputLabel id="sort-by-label">Sort By</InputLabel>
       <Select
-        onChange={e => setSortBy(e.target.value)}
+        onChange={handleSortChange}
         labelId="sort-by-label"
         value={sortBy}
         label="Sort By"
         id="sort-by-select"
       >
-        <MenuItem value="createdAt">Created At</MenuItem>
-        <MenuItem value="name">Name</MenuItem>
-        <MenuItem value="updatedAt">Updated At</MenuItem>
+        <MenuItem value={"createdAt" as typeof sortBy}>
+          Created At
+        </MenuItem>
+        <MenuItem value={"name" as typeof sortBy}>
+          Name
+        </MenuItem>
+        <MenuItem value={"updatedAt" as typeof sortBy}>
+          Updated At
+        </MenuItem>
       </Select>
     </FormControl>
   )
 
-
   // chats component to render
-  const UserChats = sortedChats.map((chat: IChat) => {
+  const UserChats = chats.map((chat: IChat) => {
     return (
       <React.Fragment>
         <HorizontalBar
@@ -252,11 +254,22 @@ export default function ChatView({
     );
   });
 
+  // fetching status
+  const Fetching = isFetching ? (
+    <CircularProgress
+      sx={{margin: "8px auto 0 7px"}}
+      size={"1rem"}
+    />
+  ) : (
+    null
+  );
+
   // render
   return (
     <ChatViewWrapper>
       <Header>
         <Title>Your Chats List</Title>
+        {Fetching}
         <Sort>{SelectSort}</Sort>
       </Header>
       <Body>
@@ -267,13 +280,13 @@ export default function ChatView({
         )}
       </Body>
       <Footer>
-        <Button disabled={!hasPrev}
+        <Button disabled={!hasPrev || isFetching}
           variant="outlined"
           onClick={onPrev}
         >
           Prev
         </Button>
-        <Button disabled={!hasNext}
+        <Button disabled={!hasNext || isFetching}
           variant="outlined"
           onClick={onNext}
         >

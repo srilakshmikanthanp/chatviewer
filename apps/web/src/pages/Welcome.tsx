@@ -3,14 +3,16 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { selectUser, selectJwt } from "../redux/slices/userSlice";
 import { createViewerState } from "../utilities/constructors";
 import styled, { keyframes } from "styled-components";
 import { Header, Footer } from "../components";
 import ImgLogo from "../assets/images/logo.png";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IChat, IMsg } from "../interfaces";
+import { IChat, IMsg, IUser } from "../interfaces";
 import { ImportChat } from "../modals";
+import { useSelector } from "react-redux";
 import {
   Container,
   Row,
@@ -70,6 +72,12 @@ export default function Welcome() {
   // Navigation Tool
   const navigate = useNavigate();
 
+  // user details
+  const user: IUser | null = useSelector(selectUser);
+
+  // jwt token
+  const jwt: string | null = useSelector(selectJwt);
+
   // Handle Import
   const handleImport = (msgs: IMsg[], chat: IChat | null) => {
     // Navigate to the chat view page
@@ -106,6 +114,8 @@ export default function Welcome() {
         <ImportChat
           onClose={() => setIsDialogOpen(false)}
           isOpen={isDialogOpen}
+          user={user}
+          jwt={jwt}
           onImport={handleImport}
         />
       </Container>

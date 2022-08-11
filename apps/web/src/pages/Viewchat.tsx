@@ -153,6 +153,8 @@ export default function Viewchat() {
     // Query Url to get token
     const tokenUrl = `/api/v1/users/${user.userId}/chats/${chat.chatId}/token`;
 
+    console.log(chat.createdAt);
+
     // axios request
     const resp = await axios.get(tokenUrl, {
       headers: { Authorization: `Bearer ${jwt}` },

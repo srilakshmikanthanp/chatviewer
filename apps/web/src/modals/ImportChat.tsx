@@ -3,7 +3,6 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { selectUser, selectJwt } from "../redux/slices/userSlice";
 import { ChangeEvent, HTMLAttributes, useState } from "react";
 import { getMimeType } from "../utilities/functions";
 import WhatsappParser from "../utilities/whatsapp";
@@ -11,7 +10,6 @@ import { IChat, IMsg, IUser } from "../interfaces";
 import { Form } from "react-bootstrap";
 import { useCreateChat } from "../apiClients/chatApi";
 import { blobToBase64 } from "../utilities/functions";
-import { useSelector } from "react-redux";
 import {
   DialogContentText,
   Button,
@@ -26,6 +24,8 @@ import {
 interface IImportChatProps extends HTMLAttributes<HTMLDivElement> {
   onImport: (msgs: IMsg[], chat: IChat | null) => void;
   isOpen: boolean;
+  user: IUser | null;
+  jwt: string | null;
   onClose: () => void;
 }
 
@@ -41,12 +41,6 @@ export default function ImportChat(props: IImportChatProps) {
 
   // is now ready to import the chat
   const [isImportable, setIsImportable] = useState(false);
-
-  // user details
-  const user: IUser | null = useSelector(selectUser);
-
-  // jwt token
-  const jwt: string | null = useSelector(selectJwt);
 
   // create chat hook
   const createChat = useCreateChat();
@@ -109,12 +103,25 @@ export default function ImportChat(props: IImportChatProps) {
     if (chats.length === 0) { return; }
 
     // if not uploadable
-    if (!isUploadable || (!user || !jwt)) {
+    if (!isUploadable || (!props.user || !props.jwt)) {
+      // set the file blob to null
+      setSelectedFile(undefined);
+
+      // set is uploadable to true
+      setIsUploadable(true);
+
+      // set is importing to false
+      setIsImporting(false);
+
+      // set is ready to false
+      setIsImportable(false);
+
+      // return
       return props.onImport(chats, null);
     }
 
     // Check if the user is valid
-    if ((!user || !jwt)) {
+    if ((!props.user || !props.jwt)) {
       throw new Error("Can't Upload: User is not valid");
     }
 
@@ -129,13 +136,25 @@ export default function ImportChat(props: IImportChatProps) {
 
     // create the chat
     const response = await createChat.mutateAsync({
-      userId: user.userId,
-      jwt: jwt,
+      userId: props.user.userId,
+      jwt: props.jwt,
       chat: chat,
     });
 
+    // set the file blob to null
+    setSelectedFile(undefined);
+
+    // set is uploadable to true
+    setIsUploadable(true);
+
+    // set is importing to false
+    setIsImporting(false);
+
+    // set is ready to false
+    setIsImportable(false);
+
     // import the chat
-    props.onImport(chats, response.data);
+    return props.onImport(chats, response.data);
   }
 
   // on Close
@@ -208,7 +227,7 @@ export default function ImportChat(props: IImportChatProps) {
               checked={isUploadable}
               type="checkbox"
               label="Upload the Chat"
-              disabled={user === null || jwt === null}
+              disabled={!props.user && !props.jwt}
             />
           </Form.Group>
         </Form>

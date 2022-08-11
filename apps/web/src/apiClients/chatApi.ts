@@ -13,11 +13,12 @@ export const useGetChats = ({
   jwt,
   params,
 }: {
-  userId: string;
+  userId: number;
   jwt: string;
   params: {
-    per_page: number;
+    perPage: number;
     page: number;
+    sortBy: string;
   };
 }) => {
   // Query Key
@@ -28,14 +29,15 @@ export const useGetChats = ({
 
   // Fetcher
   const fetcher = async () => {
-    const QueryUrl = `/api/v1/users/${userId}/chats?per_page=${params.per_page}?page=${params.page}`;
+    const QueryUrl = `/api/v1/users/${userId}/chats?perPage=${params.perPage}` +
+    `&page=${params.page}&sortBy=${params.sortBy}`
     return await axios.get<ResponseType>(QueryUrl, {
       headers: { Authorization: `Bearer ${jwt}` }
     });
   };
 
   // Query
-  return useQuery(queryKey, fetcher);
+  return useQuery(queryKey, fetcher, { keepPreviousData: true });
 };
 
 // To get the chat details

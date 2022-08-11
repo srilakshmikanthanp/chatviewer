@@ -4,9 +4,9 @@
 // https://opensource.org/licenses/MIT
 
 export default interface IUser {
-  createdAt: Date;
+  createdAt: string;
   userId: number;
   name: string;
   email: string;
-  updatedAt: Date;
+  updatedAt: string;
 }

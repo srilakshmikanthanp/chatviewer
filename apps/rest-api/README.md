@@ -198,8 +198,9 @@ Authorization Bearer <Token>
 
 The Query Parameters have been used for paging the results. It returns results with a link header.
 
-* `per_page`: Number of chats per page
+* `perPage`: Number of chats per page
 * `page`: Number of Page
+* `sortBy`: Sort by field either `createdAt` or `updatedAt` or `name`
   
 #### Response
 
