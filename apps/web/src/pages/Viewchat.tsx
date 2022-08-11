@@ -166,7 +166,7 @@ export default function Viewchat() {
 
     // download the chat
     const downloadUrl = (
-      `${axios.defaults.baseURL}/api/v1/utils/chats/${token}/blob`
+      `${axios.defaults.baseURL}/api/v1/util/chats/${token}/blob`
     );
 
     // download the chat

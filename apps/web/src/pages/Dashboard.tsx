@@ -123,9 +123,7 @@ export default function Dashboard() {
         user={user}
       />
       <ChatViewWrapper
-        onDelete={() => null}
-        onOpen={onOpen}
-        onEdit={() => null}
+        hasNext={!isPrevData && link?.includes("next") || false}
         isFetching={isFetching}
         setSortBy={setSortBy}
         sortBy={sortBy}
@@ -133,7 +131,9 @@ export default function Dashboard() {
         onNext={onNext}
         hasPrev={pageNumber > 1}
         chats={data?.data || null}
-        hasNext={!isPrevData && link?.includes("next") || false}
+        onDelete={() => null}
+        onOpen={onOpen}
+        onEdit={() => null}
       />
     </DashboardWrapper>
   );
