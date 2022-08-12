@@ -3,10 +3,18 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Sequelize } from "sequelize";
+import { Sequelize } from 'sequelize';
 
 // create the sqlite database
-const sequelize: Sequelize = new Sequelize(process.env.DATABASE_URL);
+const sequelize: Sequelize = new Sequelize(process.env.DATABASE_URL, {
+  ssl: true,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
+});
 
 // export the sequelize object
 export { sequelize };
