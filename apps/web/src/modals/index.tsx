@@ -5,8 +5,10 @@
 
 import ImportChat from "./ImportChat";
 import Selector from "./Selector";
+import UserEditor from "./UserEditor";
 
 export {
   ImportChat,
-  Selector
+  Selector,
+  UserEditor,
 };

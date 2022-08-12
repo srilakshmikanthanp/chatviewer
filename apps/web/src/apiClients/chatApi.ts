@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useQuery, useMutation, QueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, QueryClient, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { IChat } from '../interfaces';
 
@@ -51,7 +51,7 @@ export const useGetChat = ({
   jwt: string;
 }) => {
   // Query Key for the get chat
-  const queryKey = ['users', userId, 'chat', chatId];
+  const queryKey = ['users', userId, 'chats', chatId];
 
   // Response Type
   type ResponseType = IChat;
@@ -70,6 +70,9 @@ export const useGetChat = ({
 
 // To create a new chat
 export const useCreateChat = () => {
+  // Query Client Hook
+  const queryClient = useQueryClient();
+
   // MutationParams
   type MutationParams = {
     userId: number;
@@ -92,7 +95,13 @@ export const useCreateChat = () => {
   };
 
   // Mutation
-  return useMutation(mutator);
+  return useMutation(mutator, {
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries([
+        'users', variables.userId, 'chats'
+      ]);
+    }
+  });
 };
 
 // To patch the chat details
@@ -129,13 +138,18 @@ export const usePatchChat = () => {
   // Query
   return useMutation(mutator, {
     onSuccess: (data, params) => {
-      client.invalidateQueries(['users', params.userId, 'chat', params.chatId]);
+      client.invalidateQueries([
+        'users', params.userId, 'chats'
+      ]);
     }
   });
 }
 
 // To delete the chat
 export const useDeleteChat = () => {
+  // Query Client Hook
+  const queryClient = useQueryClient();
+
   // Mutation Params
   type MutationParams = {
     userId: number;
@@ -157,7 +171,13 @@ export const useDeleteChat = () => {
   }
 
   // Query
-  return useMutation(mutator);
+  return useMutation(mutator, {
+    onSuccess: (data, params) => {
+      queryClient.invalidateQueries([
+        'users', params.userId, 'chats'
+      ]);
+    }
+  });
 }
 
 // Get blob of the chat

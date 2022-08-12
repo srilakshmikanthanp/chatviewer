@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useQuery, useMutation, QueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { IUser } from '../interfaces';
 
@@ -16,7 +16,7 @@ export const useGetUser = ({
   token: string;
 }) => {
   // Query Key for the get user
-  const queryKey = ['user', userId];
+  const queryKey = ['users', userId];
 
   // Response Type
   type ResponseType = IUser;
@@ -35,7 +35,7 @@ export const useGetUser = ({
 
 // To sign up or sign in a user
 export const useCreateUser = () => {
-  // Mutation Params
+// Mutation Params
   type MutationParams = {
     token: string;
   };
@@ -56,7 +56,7 @@ export const useCreateUser = () => {
 // To patch the user details
 export const usePatchUser = () => {
   /// client for the query
-  const client = new QueryClient();
+  const client = useQueryClient();
 
   // Mutation Params
   type MutationParams = {
