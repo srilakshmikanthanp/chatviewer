@@ -1,1 +1,1 @@
-web: npx nx serve rest-api --configuration=production
+web: node dist/apps/rest-api/main.js
