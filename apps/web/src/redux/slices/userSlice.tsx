@@ -11,34 +11,33 @@ import { IUser } from "../../interfaces"
  * State Interface   *
  ********************/
 interface UserState {
-  userDetails: {
-    user: IUser;
-    jwt: string;
-  } | null;
+  user: IUser | null;
+  jwt: string | null;
 }
 
 /**********************
  *     Selectors      *
  *********************/
 export const selectUser = (state: { user: UserState }) =>{
-  return state.user.userDetails?.user ?? null;
+  return state.user.user;
 }
 
 export const selectJwt = (state: { user: UserState }) =>{
-  return state.user.userDetails?.jwt ?? null;
+  return state.user.jwt;
 }
 
 /**********************
  *  Internal Actions  *
  *********************/
 const _setUser = (state: UserState , action: PayloadAction<UserState>) => {
-  state.userDetails = action.payload.userDetails;
+  state.user  =   action.payload.user;
+  state.jwt   =   action.payload.jwt;
 }
 
 /**********************
  * Initial State      *
  * *******************/
-const initialState: UserState = { userDetails: null };
+const initialState: UserState = { user: null, jwt: null };
 
 /**********************
  * Slice Definition   *

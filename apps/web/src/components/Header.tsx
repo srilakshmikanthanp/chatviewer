@@ -80,7 +80,7 @@ export default function Header() {
     const response = await createUser.mutateAsync({ token });
     const jwt = response.headers["auth-token"];
     const user = response.data;
-    dispatch(setUser({ userDetails: { user, jwt } }));
+    dispatch(setUser({ user, jwt }));
   }
 
   // dynamic right side component
@@ -94,19 +94,19 @@ export default function Header() {
     <SignIn ref={signInRef} />
   );
 
-  // attach the google sign in button
-  // @ts-ignore
-  google.accounts.id.initialize({
-    callback: (res) => signHandler(res.credential),
-    client_id: GOOGLE_CLIENT_ID,
-  });
-
   // render the sign in button
   useEffect(() => {
     // @ts-ignore
     signInRef.current && google.accounts.id.renderButton(
       signInRef.current, { theme: 'outline', size: "medium" }
     );
+  });
+
+  // attach the google sign in button
+  // @ts-ignore
+  google.accounts.id.initialize({
+    callback: (res) => signHandler(res.credential),
+    client_id: GOOGLE_CLIENT_ID,
   });
 
   // handle the Import Chat
@@ -126,7 +126,10 @@ export default function Header() {
   // handle the Sign Out
   const handleSignOut = () => {
     // dispatch the sign out action
-    dispatch(setUser({userDetails: null}));
+    dispatch(setUser({
+      user: null,
+      jwt: null,
+    }));
 
     // navigate to the sign in page
     navigate("/");

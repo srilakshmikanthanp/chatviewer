@@ -4,12 +4,14 @@
 // https://opensource.org/licenses/MIT
 
 import { Header, Footer, UserView, ChatView } from "../components";
+import { AccountCloser, UserEditor, ChatEditor } from "../modals";
 import { selectUser, selectJwt } from "../redux/slices/userSlice";
 import { createViewerState } from "../utilities/constructors";
 import { useDeleteChat } from "../apiClients/chatApi";
 import { useGetChats } from "../apiClients/chatApi";
 import { blobToMsg } from "../utilities/functions";
-import { UserEditor, ChatEditor } from "../modals";
+import { setUser } from "../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IUser, IChat } from "../interfaces";
 import { useSelector } from "react-redux";
@@ -45,6 +47,9 @@ export default function Dashboard() {
   // sort by state selector
   const [sortBy, setSortBy] = useState<"name" | "createdAt" | "updatedAt">("name");
 
+  // account closer open
+  const [isAccountCloserOpen, setISAccountCloserOpen] = useState<boolean>(false);
+
   // user editor open
   const [isUserEditorOpen, setIsUserEditorOpen] = useState<boolean>(false);
 
@@ -68,6 +73,9 @@ export default function Dashboard() {
 
   // navigate hook
   const navigate = useNavigate();
+
+  // dispatch hook
+  const dispatch = useDispatch();
 
   // if no user throw
   if (!user || !jwt) {
@@ -103,20 +111,30 @@ export default function Dashboard() {
    *   User Handlers     *
    **********************/
 
-  // On User Delete
-  const onUserDelete = (user: IUser) => {
-    //
+  // on Delete User
+  const onUserDeleted = () => {
+    // Set new state
+    dispatch(setUser({ user: null, jwt: null }));
+
+    // navigate
+    navigate("/");
   }
 
+  // onClose Edit
+  const onUserEdited = (user: IUser) => {
+    // dispatch user details
+    dispatch(setUser({
+      user: user,
+      jwt: jwt
+    }));
+
+    // close user editor
+    setIsUserEditorOpen(false);
+  }
 
   /***********************
    *   Chat Handlers     *
    **********************/
-
-  // on prev handler
-  const onPrevChat = () => {
-    setPageNumber(Math.max(pageNumber - 1, 0));
-  }
 
   // on next handler
   const onNextChat = () => {
@@ -124,6 +142,11 @@ export default function Dashboard() {
       setPageNumber(pageNumber + 1);
     }
   };
+
+  // on prev handler
+  const onPrevChat = () => {
+    setPageNumber(Math.max(pageNumber - 1, 0));
+  }
 
   // on Open Handler
   const onOpenChat = async (chat: IChat) => {
@@ -170,7 +193,7 @@ export default function Dashboard() {
   const Body = () => (
     <DashboardWrapper>
       <UserViewWrapper
-        onDelete={onUserDelete}
+        onDelete={() => setISAccountCloserOpen(true)}
         onEdit={ () => setIsUserEditorOpen(true)}
         user={user}
       />
@@ -187,8 +210,16 @@ export default function Dashboard() {
         onEdit={onEditChat}
         onDelete={onDeleteChat}
       />
+      <AccountCloser
+        onClose={() => setISAccountCloserOpen(false)}
+        onDeleted={onUserDeleted}
+        user={user}
+        jwt={jwt}
+        isOpen={isAccountCloserOpen}
+      />
       <UserEditor
         onClose={() => setIsUserEditorOpen(false)}
+        onEdited={onUserEdited}
         user={user}
         jwt={jwt}
         isOpen={isUserEditorOpen}

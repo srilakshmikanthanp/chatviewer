@@ -53,7 +53,7 @@ export default function UserView({ onDelete, user, onEdit, className }: IUserVie
           <Button
             onClick={() => onDelete && onDelete(user)}
             variant="contained"
-            color="error"
+            color="warning"
           >
             Remove Me
           </Button>

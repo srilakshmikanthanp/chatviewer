@@ -4,8 +4,6 @@
 // https://opensource.org/licenses/MIT
 
 import React, { HTMLAttributes, useState } from "react";
-import { setUser } from "../redux/slices/userSlice";
-import { useDispatch } from "react-redux";
 import { usePatchUser } from "../apiClients/userApi";
 import { IUser } from "../interfaces";
 import {
@@ -21,6 +19,7 @@ import {
 
 // User Editor Props
 interface UserEditorProps extends HTMLAttributes<HTMLDivElement> {
+  onEdited?: (user: IUser) => void;
   onClose: () => void;
   user: IUser;
   jwt: string;
@@ -38,9 +37,6 @@ export default function UserEditor(props: UserEditorProps) {
   // editor hook
   const patchUser = usePatchUser();
 
-  // dispatch hook
-  const dispatch = useDispatch();
-
   // Handle Change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Set is ready false
@@ -50,8 +46,10 @@ export default function UserEditor(props: UserEditorProps) {
     setUserName(event.target.value);
 
     // check valid
-    if (userName.length > 0) {
+    if (event.target.value.length > 0) {
       setIsReady(true);
+    } else {
+      setIsReady(false);
     }
   }
 
@@ -66,16 +64,11 @@ export default function UserEditor(props: UserEditorProps) {
       }
     });
 
-    // dispatch user
-    dispatch(setUser({
-      userDetails: {
-        user: resp.data,
-        jwt: props.jwt
-      }
-    }));
-
     // set is ready false
     setIsReady(false);
+
+    // event
+    props.onEdited && props.onEdited(resp.data);
 
     // close modal
     props.onClose();

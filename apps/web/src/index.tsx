@@ -11,6 +11,7 @@ import ReactLoading from 'react-loading';
 import { Provider } from "react-redux";
 import { BASE_URL } from "./constants";
 import ReactDOM from "react-dom";
+import AppError from "./AppError";
 import App from "./App";
 import axios from "axios";
 
@@ -43,7 +44,9 @@ const Application = (
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={Loading} >
-        <BrowserRouter> <App /> </BrowserRouter>
+        <BrowserRouter>
+          <AppError><App /></AppError>
+        </BrowserRouter>
       </PersistGate>
     </Provider>
   </QueryClientProvider>

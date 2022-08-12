@@ -24,6 +24,7 @@ import {
 
 // User Editor Props
 interface UserEditorProps extends HTMLAttributes<HTMLDivElement> {
+  onEdited?: (chat: IChat) => void;
   onClose: () => void;
   user: IUser;
   chat: IChat;
@@ -51,15 +52,17 @@ export default function ChatEditor(props: UserEditorProps) {
     setChatName(event.target.value);
 
     // check valid
-    if (chatName.length > 0) {
+    if (event.target.value.length > 0) {
       setIsReady(true);
+    } else {
+      setIsReady(false);
     }
   }
 
   // Handle save
   const handleSave = async () => {
     // patch user details
-    await patchChat.mutateAsync({
+    const resp = await patchChat.mutateAsync({
       userId: props.user.userId,
       chatId: props.chat.chatId,
       jwt: props.jwt,
@@ -70,6 +73,9 @@ export default function ChatEditor(props: UserEditorProps) {
 
     // set is ready false
     setIsReady(false);
+
+    // Event
+    props.onEdited && props.onEdited(resp.data);
 
     // close modal
     props.onClose();
