@@ -1,32 +1,38 @@
+<div id="top"></div>
 <!--
- Copyright (c) 2021 Sri Lakshmi Kanthan P
- 
- This software is released under the MIT License.
- https://opensource.org/licenses/MIT
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
 -->
 
-<p align="center">
-  <a href="https://github.com/srilakshmikanthanp/charviewer">
-    <img src="assets/image/logo.ico" alt="Logo" width="80" height="80">
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/srilakshmikanthanp/chatviewer">
+    <img src="assets/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Chat Viewer</h3>
+<h3 align="center">Chat Viewer</h3>
 
   <p align="center">
-    View Whatsapp exported chats looks like on messenger
+    View The chat exporter from Whatsapp as it looks like in Whatsapp
     <br />
-    <a href="https://chatviewer.netlify.app/">View Demo</a>
+    <a href="https://github.com/srilakshmikanthanp/chatviewer">View Demo</a>
     ·
-    <a href="https://github.com/srilakshmikanthanp/charviewer/issues">Report Bug</a>
+    <a href="https://github.com/srilakshmikanthanp/chatviewer/issues">Report Bug</a>
     ·
-    <a href="https://github.com/srilakshmikanthanp/charviewer/issues">Request Feature</a>
+    <a href="https://github.com/srilakshmikanthanp/chatviewer/issues">Request Feature</a>
   </p>
-</p>
+</div>
+
 
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+<details>
+  <summary>Table of Contents</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -34,10 +40,19 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -46,37 +61,80 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-View Whatsapp exported chats looks like on messenger, Supports txt and zip files.
+This Project was initiated to view the WhatsApp exported chat as it like in WhatsApp
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-* HTML
-* CSS
-* BootStrap
-* Javascript
-* Jquery
-* Jquery-UI
+* Express.js
+* React.js
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+This is a Web interface application to view the exported chat you optionally create an account to maintain the copy of the chat in the cloud and make it easy to share.
 
-~~~shell
-git clone https://github.com/srilakshmikantanp/chatviewer
-~~~
+### Prerequisites
+
+To run the project local install npm and node js
+
+* npm
+
+### Installation
+
+1. Clone the repo from github
+   ```sh
+   git clone https://github.com/srilakshmikanthanp/chatviewer.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Start the server using Nx
+   ```sh
+   npx nx serve rest-api 
+   ```
+4. Start the React using nx
+   ```sh
+   npx nx serve web [❌] 
+   ```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Just goto [chatviewer](https://chatviewer.netlify.app/) and select whatsapp exported chat. File extensions should be `.txt` if chat exported as without media `.zip` if chat is exported as with media.
+For REST API documentation go to the following link
 
-**Note : This file is never uploaded any server just processed in your own system with js.**
+  * [REST API](apps/rest-api)
+
+For Web UI documentation go to the following link
+
+  * [Web UI](apps/web)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+See the [open issues](https://github.com/srilakshmikanthanp/chatviewer/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -84,12 +142,29 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 <!-- CONTACT -->
 ## Contact
 
 Project Link: [https://github.com/srilakshmikanthanp/chatviewer](https://github.com/srilakshmikanthanp/chatviewer)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Nx](https://nx.dev/)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
