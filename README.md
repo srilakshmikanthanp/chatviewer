@@ -99,7 +99,7 @@ To run the project local install npm and node js
    ```
 4. Start the React using nx
    ```sh
-   npx nx serve web [❌] 
+   npx nx serve web
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
