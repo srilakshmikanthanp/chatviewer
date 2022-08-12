@@ -49,7 +49,6 @@ export async function userPostController(req: Request, res: Response) {
     // send the token
     res.status(200).json(user);
   } catch (error) {
-    console.log(error); // to dubug
     // send the error
     return res.status(401).json({ message: 'Invalid token' });
   }
