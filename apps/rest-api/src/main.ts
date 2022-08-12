@@ -10,17 +10,12 @@ import * as cors from "cors";
  */
 async function main() {
   // initialize the database and sync models
-  try {
-    console.log('Initializing the database... ↻');
-    await db_initializer();
-    console.log('Database initialized ✓');
-  } catch (error) {
-    console.log(`Failed ❌ ${error}\n`);
-    process.exit(1);
-  }
+  console.log('Initializing the database... ↻');
+  await db_initializer();
+  console.log('Database initialized ✓');
 
   // get the server port from variable
-  const port = process.env.SERVER_PORT || 3000;
+  const port = process.env.PORT || 8000;
 
   // create a new express application
   const app = express();

@@ -26,6 +26,8 @@
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.10.1",
     "mysql2": "^2.3.3",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
     "react": "18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "18.2.0",

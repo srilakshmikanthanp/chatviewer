@@ -5,7 +5,8 @@
 
 import {
   deleteChatByIdController, getTokenByIdController, getChatBlobController ,
-  postChatController, getAllChatsController, getChatByIdController
+  postChatController, getAllChatsController, getChatByIdController,
+  patchChatByIdController,
 } from "../../controllers";
 import { postChatValidator, patchChatValidator } from "../../validators";
 import { authenticator } from "../../middlewares";
@@ -27,7 +28,7 @@ router.get("/", authenticator, getAllChatsController);
 router.get("/:chat_id", authenticator, getChatByIdController);
 
 // patch a chat by id
-router.patch("/:chat_id", authenticator, patchChatValidator);
+router.patch("/:chat_id", authenticator, patchChatValidator, patchChatByIdController);
 
 // get blob
 router.get("/:chat_id/blob", authenticator, getChatBlobController);

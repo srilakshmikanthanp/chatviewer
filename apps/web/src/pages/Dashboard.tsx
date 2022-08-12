@@ -9,7 +9,7 @@ import { createViewerState } from "../utilities/constructors";
 import { useDeleteChat } from "../apiClients/chatApi";
 import { useGetChats } from "../apiClients/chatApi";
 import { blobToMsg } from "../utilities/functions";
-import { UserEditor } from "../modals";
+import { UserEditor, ChatEditor } from "../modals";
 import { useNavigate } from "react-router-dom";
 import { IUser, IChat } from "../interfaces";
 import { useSelector } from "react-redux";
@@ -45,11 +45,17 @@ export default function Dashboard() {
   // sort by state selector
   const [sortBy, setSortBy] = useState<"name" | "createdAt" | "updatedAt">("name");
 
+  // user editor open
+  const [isUserEditorOpen, setIsUserEditorOpen] = useState<boolean>(false);
+
+  // chat editor open
+  const [isChatEditorOpen, setIsChatEditorOpen] = useState<boolean>(false);
+
+  // Editing chat
+  const [editingChat, setEditingChat] = useState<IChat | null>(null);
+
   // page number
   const [pageNumber, setPageNumber] = useState<number>(1);
-
-  // user editor open
-  const [userEditorOpen, setUserEditorOpen] = useState<boolean>(false);
 
   // Chat Delete hook
   const chatDelete = useDeleteChat();
@@ -153,7 +159,11 @@ export default function Dashboard() {
 
   // on Edit Handler
   const onEditChat = (chat: IChat) => {
-    //
+    // set the editing chat
+    setEditingChat(chat);
+
+    // open the chat editor
+    setIsChatEditorOpen(true);
   }
 
   // body
@@ -161,7 +171,7 @@ export default function Dashboard() {
     <DashboardWrapper>
       <UserViewWrapper
         onDelete={onUserDelete}
-        onEdit={ () => setUserEditorOpen(true)}
+        onEdit={ () => setIsUserEditorOpen(true)}
         user={user}
       />
       <ChatViewWrapper
@@ -178,11 +188,18 @@ export default function Dashboard() {
         onDelete={onDeleteChat}
       />
       <UserEditor
-        onClose={() => setUserEditorOpen(false)}
+        onClose={() => setIsUserEditorOpen(false)}
         user={user}
         jwt={jwt}
-        isOpen={userEditorOpen}
+        isOpen={isUserEditorOpen}
       />
+      {editingChat && <ChatEditor
+        onClose={() => setIsChatEditorOpen(false)}
+        user={user}
+        chat={editingChat}
+        jwt={jwt}
+        isOpen={isChatEditorOpen}
+      />}
     </DashboardWrapper>
   );
 

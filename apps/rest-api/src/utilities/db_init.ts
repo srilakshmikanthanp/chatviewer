@@ -4,12 +4,16 @@
 // https://opensource.org/licenses/MIT
 
 import { sequelize } from "../database";
+import { User, Chat } from "../models";
 
 // initialize the database
 export default async function db_initializer() {
   // test the database connection
   await sequelize.authenticate();
 
-  // sync the database
-  await sequelize.sync();
+  // sync the user
+  await User.sync();
+
+  // sync the chat
+  await Chat.sync();
 }

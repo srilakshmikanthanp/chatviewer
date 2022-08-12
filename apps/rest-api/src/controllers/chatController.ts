@@ -10,13 +10,11 @@ import { User, Chat } from '../models';
 import { QueryTypes } from 'sequelize';
 import * as jwt from 'jsonwebtoken';
 
+
 // post chat controller function
 export async function postChatController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID =
-    res.locals.user_auth_payload?.userId === +req.params.user_id
-      ? +req.params.user_id
-      : null;
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -61,10 +59,7 @@ export async function postChatController(req: Request, res: Response) {
 // get all chats controller function
 export async function getAllChatsController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID =
-    res.locals.user_auth_payload?.userId === +req.params.user_id
-      ? +req.params.user_id
-      : null;
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -88,28 +83,32 @@ export async function getAllChatsController(req: Request, res: Response) {
   // get the sort-by
   const sortBy = req.query['sortBy'];
 
+  // if per page, page are not a number
+  if (!perPage || !page) {
+    return res.status(400).json({ message: 'Invalid perPage or page' });
+  }
+
   // if it is not a string
-  if (
-    typeof sortBy !== 'string' ||
-    (sortBy !== 'createdAt' && sortBy !== 'name' && sortBy !== 'updatedAt')
-  ) {
+  if (typeof sortBy !== 'string' || !['createdAt', "name" , 'updatedAt'].includes(sortBy)) {
     return res.status(400).json({
       message: 'shortBy Should be name, createdAt, updatedAt'
     });
   }
 
   // query string
-  let ChatQuery =
-    'SELECT chatId, userId, name, createdAt, updatedAt FROM Chats WHERE userId = ?';
+  let ChatQuery = `
+    SELECT "chatId", "userId", "name", "createdAt", "updatedAt"
+    FROM "${Chat.tableName}" WHERE "userId" = ?
+  `;
 
   // if has short by then add it to the query string
   if (sortBy) {
-    ChatQuery += ` ORDER BY ${sortBy}`;
+    ChatQuery += ` ORDER BY "${sortBy}"`;
   }
 
   // if per_page is present and page is present
   if (perPage && page) {
-    ChatQuery += ` LIMIT ${perPage} OFFSET ${perPage * (page - 1)}`;
+    ChatQuery += ` LIMIT '${perPage}' OFFSET '${perPage * (page - 1)}'`;
   }
 
   // get chats with raw query
@@ -139,7 +138,7 @@ export async function getAllChatsController(req: Request, res: Response) {
   });
 
   // query to count the total number of chats
-  const countQuery = 'SELECT COUNT(*) as total FROM Chats WHERE userId = ?';
+  const countQuery = `SELECT COUNT(*) as total FROM "${Chat.tableName}" WHERE "userId" = ?`;
 
   // get the total number of chats
   const total = +(
@@ -180,10 +179,7 @@ export async function getAllChatsController(req: Request, res: Response) {
 // get chat by id controller function
 export async function getChatByIdController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID =
-    res.locals.user_auth_payload?.userId === +req.params.user_id
-      ? +req.params.user_id
-      : null;
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -199,8 +195,10 @@ export async function getChatByIdController(req: Request, res: Response) {
   }
 
   // query string
-  const query =
-    'SELECT chatId, userId, name, createdAt, updatedAt FROM chats WHERE userId = ? AND chatId = ?';
+  const query = `
+    SELECT "chatId", "userId", "name", "createdAt", "updatedAt"
+    FROM ${Chat.tableName} WHERE "userId" = ? AND "chatId" = ?
+  `;
 
   // chat id
   const chatId = +req.params.chat_id;
@@ -238,10 +236,7 @@ export async function getChatByIdController(req: Request, res: Response) {
 // patch chat by id controller function
 export async function patchChatByIdController(req: Request, res: Response) {
   // get the user id from JWt and url and validate it
-  const userID =
-    res.locals.user_auth_payload?.userId === +req.params.user_id
-      ? +req.params.user_id
-      : null;
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -263,8 +258,7 @@ export async function patchChatByIdController(req: Request, res: Response) {
   const name = req.body.name;
 
   // query string
-  const updateQuery =
-    'UPDATE chats SET name = ? WHERE userId = ? AND chatId = ?';
+  const updateQuery = `UPDATE "${Chat.tableName}" SET "name" = ? WHERE "userId" = ? AND "chatId" = ?`;
 
   // update the chat name with raw query
   const result = await sequelize.query(updateQuery, {
@@ -278,8 +272,10 @@ export async function patchChatByIdController(req: Request, res: Response) {
   }
 
   // get the chat with raw query
-  const getQuery =
-    'SELECT chatId, userId, name, createdAt, updatedAt FROM chats WHERE userId = ? AND chatId = ?';
+  const getQuery = `
+    SELECT "chatId", "userId", "name", "createdAt", "updatedAt"
+    FROM "${Chat.tableName}" WHERE "userId" = ? AND "chatId" = ?
+  `;
 
   // get the chat with raw query
   const chat = (await sequelize.query(getQuery, {
@@ -309,10 +305,7 @@ export async function patchChatByIdController(req: Request, res: Response) {
 // delete chat by id controller function
 export async function deleteChatByIdController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID =
-    res.locals.user_auth_payload?.userId === +req.params.user_id
-      ? +req.params.user_id
-      : null;
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -348,10 +341,7 @@ export async function deleteChatByIdController(req: Request, res: Response) {
 // get the chat blob controller function
 export async function getChatBlobController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID =
-    res.locals.user_auth_payload?.userId === +req.params.user_id
-      ? +req.params.user_id
-      : null;
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -390,10 +380,7 @@ export async function getChatBlobController(req: Request, res: Response) {
 // share chat by id controller function
 export async function getTokenByIdController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID =
-    res.locals.user_auth_payload?.userId === +req.params.user_id
-      ? +req.params.user_id
-      : null;
+  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
 
   // id from the url should be same as the id from the jwt
   if (!userID) {

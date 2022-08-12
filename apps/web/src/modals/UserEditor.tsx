@@ -50,7 +50,7 @@ export default function UserEditor(props: UserEditorProps) {
     setUserName(event.target.value);
 
     // check valid
-    if (userName.length > 0 && userName !== props.user.name) {
+    if (userName.length > 0) {
       setIsReady(true);
     }
   }

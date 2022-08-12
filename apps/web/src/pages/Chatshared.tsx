@@ -60,7 +60,7 @@ export default function Chatshared() {
 
   // if error in fetching the chat
   if (chat.error || blob.error) {
-    throw new Error("Please get new token");
+    throw chat.error || blob.error;
   }
 
   // if data is fetched

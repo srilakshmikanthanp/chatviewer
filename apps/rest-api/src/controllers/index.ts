@@ -9,7 +9,8 @@ import {
   getAllChatsController,
   getChatByIdController,
   getTokenByIdController,
-  getChatBlobController
+  getChatBlobController,
+  patchChatByIdController,
 } from "./chatController";
 import {
   userPostController,
@@ -35,4 +36,5 @@ export {
   deleteChatByIdController,
   getTokenByIdController,
   getChatBlobController,
+  patchChatByIdController,
 };

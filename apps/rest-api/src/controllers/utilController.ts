@@ -24,7 +24,10 @@ export async function getChatWithJwtController(req: Request, res: Response) {
     const decoded: IJwtChatPayload = jwt.verify(JwtToken, JwtSecret) as IJwtChatPayload;
 
     // query string
-    const query = 'SELECT chatId, userId, createdAt, updatedAt FROM chats WHERE chatId = ?';
+    const query = `
+      SELECT "chatId", "userId", "createdAt", "updatedAt"
+      FROM "${Chat.tableName}" WHERE "chatId" = ?
+    `;
 
     // chat id
     const chatId = decoded.chatId;
@@ -54,7 +57,7 @@ export async function getChatWithJwtController(req: Request, res: Response) {
       updatedAt: chat[0].updatedAt,
     });
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: error.message });
   }
 }
 
@@ -73,6 +76,6 @@ export async function getBlobWithJwtController(req: Request, res: Response) {
     res.set('Content-Type', chat.mimeType);
     res.send(chat.data);
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: error.message });
   }
 }

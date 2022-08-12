@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useQuery, useMutation, QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { IChat } from '../interfaces';
 
@@ -107,7 +107,7 @@ export const useCreateChat = () => {
 // To patch the chat details
 export const usePatchChat = () => {
   // client for the query
-  const client = new QueryClient();
+  const client = useQueryClient();
 
   // Mutation Params
   type MutationParams = {
