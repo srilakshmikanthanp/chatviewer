@@ -21,26 +21,30 @@ import axios from "axios";
 
 // Dashboard Wrapper
 const DashboardWrapper = styled.div`
-  justify-content: space-between;
-  min-height: calc(100vh - 200px);
+  min-height: 100%;
   width: 100%;
-  margin-top: 100px;
-  margin-bottom: 60px;
-  display: flex;
-  gap: 20px;
-  align-items: center;
+  margin: 0 auto;
   flex-direction: column;
+  display: flex;
 `;
 
 // user view wrapper
-const UserViewWrapper = styled(UserView)`
-  margin-bottom: auto;
+const UserViewWrapper = styled.div`
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  margin-top: 100px;
 `;
 
 // Chat View Wrapper
-const ChatViewWrapper = styled(ChatView)`
-  margin-top: auto;
-  margin-bottom: auto;
+const ChatViewWrapper = styled.div`
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  flex-grow: 1;
+  margin-bottom: 60px;
 `;
 
 export default function Dashboard() {
@@ -192,24 +196,28 @@ export default function Dashboard() {
   // body
   const Body = () => (
     <DashboardWrapper>
-      <UserViewWrapper
-        onDelete={() => setISAccountCloserOpen(true)}
-        onEdit={ () => setIsUserEditorOpen(true)}
-        user={user}
-      />
-      <ChatViewWrapper
-        hasNext={!isPrevData && link?.includes("next") || false}
-        isFetching={isFetching}
-        setSortBy={setSortBy}
-        sortBy={sortBy}
-        onPrev={onPrevChat}
-        onNext={onNextChat}
-        hasPrev={pageNumber > 1}
-        chats={data?.data || null}
-        onOpen={onOpenChat}
-        onEdit={onEditChat}
-        onDelete={onDeleteChat}
-      />
+      <UserViewWrapper>
+        <UserView
+          onDelete={() => setISAccountCloserOpen(true)}
+          onEdit={() => setIsUserEditorOpen(true)}
+          user={user}
+        />
+      </UserViewWrapper>
+      <ChatViewWrapper>
+        <ChatView
+          hasNext={!isPrevData && link?.includes("next") || false}
+          isFetching={isFetching}
+          setSortBy={setSortBy}
+          sortBy={sortBy}
+          onPrev={onPrevChat}
+          onNext={onNextChat}
+          hasPrev={pageNumber > 1}
+          chats={data?.data || null}
+          onOpen={onOpenChat}
+          onEdit={onEditChat}
+          onDelete={onDeleteChat}
+        />
+      </ChatViewWrapper>
       <AccountCloser
         onClose={() => setISAccountCloserOpen(false)}
         onDeleted={onUserDeleted}

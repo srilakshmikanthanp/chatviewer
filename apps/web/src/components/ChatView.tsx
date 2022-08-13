@@ -160,7 +160,6 @@ const ChatViewWrapper = styled.div`
   flex-direction: column;
   display: flex;
   width: 90%;
-  padding: 15px;
   justify-content: center;
   border-radius: 10px;
 `;

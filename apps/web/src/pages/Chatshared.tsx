@@ -16,11 +16,10 @@ import styled from "styled-components";
 import React from "react";
 
 const ChatSharedContainer = styled.div`
-  height: calc(100vh - 200px);
-  width: 250px;
-  margin: 100px auto;
   justify-content: center;
   align-items: center;
+  min-height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -55,7 +54,7 @@ export default function Chatshared() {
     }
 
     // navigate to the view chat page
-    return navigate('/viewchat', { state: createViewerState(chat, messages) });
+   return navigate('/viewchat', { state: createViewerState(chat, messages) });
   }
 
   // if error in fetching the chat
@@ -72,7 +71,7 @@ export default function Chatshared() {
   const Body = () => (
     <ChatSharedContainer>
       <CloudDownloadIcon sx={{width: "50px", height: "50px",}}/>
-      <LinearProgress sx={{ width: "100%" }} />
+      <LinearProgress sx={{ width: "250px" }} />
     </ChatSharedContainer>
   );
 

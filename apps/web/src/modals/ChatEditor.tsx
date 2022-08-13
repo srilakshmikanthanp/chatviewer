@@ -34,8 +34,14 @@ interface UserEditorProps extends HTMLAttributes<HTMLDivElement> {
 
 // User Editor
 export default function ChatEditor(props: UserEditorProps) {
+  // Get the filename and extension
+  const matched = props.chat.name.match(/(.*)\.(.*)$/g);
+
+  // if no match found, return the original name
+  if (!matched) { throw new Error("Invalid filename"); }
+
   // user name state
-  const [chatName, setChatName] = useState(props.chat.name.split(".")[0]);
+  const [chatName, setChatName] = useState(matched[0]);
 
   // is Ready
   const [isReady, setIsReady] = useState(false);
@@ -44,7 +50,7 @@ export default function ChatEditor(props: UserEditorProps) {
   const patchChat = usePatchChat();
 
   // File Ext
-  const fileExt = props.chat.name.split(".")[1];
+  const fileExt = matched[1];
 
   // Handle Change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

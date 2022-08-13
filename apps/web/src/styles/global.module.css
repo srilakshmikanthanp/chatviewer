@@ -27,16 +27,24 @@
   font: Roboto, sans-serif;
 }
 
-body, #root {
+html, body, #root {
+  min-height: 100%;
   height: 100%;
   width: 100%;
   margin: 0%;
   padding: 0%;
+  position: fixed;
+  display: block;
+  overflow: auto;
+}
+
+#root  {
+  background-color: indigo;
 }
 
 ::-webkit-scrollbar {
-  width: 7px;
   background: var(--background-color);
+  width: 7px;
 }
 
 ::-webkit-scrollbar-thumb {
