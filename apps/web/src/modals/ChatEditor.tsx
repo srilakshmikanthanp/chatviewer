@@ -34,23 +34,23 @@ interface UserEditorProps extends HTMLAttributes<HTMLDivElement> {
 
 // User Editor
 export default function ChatEditor(props: UserEditorProps) {
-  // Get the filename and extension
-  const matched = props.chat.name.match(/(.*)\.(.*)$/g);
+  // Get the file extension
+  const extension = props.chat.name.split(".").pop();
+
+  // get the filename
+  const filename = props.chat.name.split(".").shift();
 
   // if no match found, return the original name
-  if (!matched) { throw new Error("Invalid filename"); }
+  if (!extension || !filename) { throw new Error("Invalid filename"); }
 
   // user name state
-  const [chatName, setChatName] = useState(matched[0]);
+  const [chatName, setChatName] = useState(filename);
 
   // is Ready
   const [isReady, setIsReady] = useState(false);
 
   // editor hook
   const patchChat = usePatchChat();
-
-  // File Ext
-  const fileExt = matched[1];
 
   // Handle Change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +73,7 @@ export default function ChatEditor(props: UserEditorProps) {
       chatId: props.chat.chatId,
       jwt: props.jwt,
       options: {
-        name: chatName + "." + fileExt,
+        name: chatName + "." + extension,
       }
     });
 
