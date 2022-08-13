@@ -26,6 +26,9 @@ async function main() {
   // middleware to handle json body
   app.use(express.json({limit: '50mb'}));
 
+  // For https
+  app.enable('trust proxy');
+
   // add the user router
   app.use('/api/v1/users', userRouter);
 

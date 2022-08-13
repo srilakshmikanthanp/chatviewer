@@ -20,6 +20,7 @@ window.addEventListener("unhandledrejection", (event) => {
   window.alert(event.reason);
   event.preventDefault();
   event.stopPropagation();
+  console.log(event.reason);
 });
 
 // Window Error
@@ -27,6 +28,7 @@ window.addEventListener("error", (event) => {
   window.alert(event.message);
   event.preventDefault();
   event.stopPropagation();
+  console.log(event.error);
 });
 
 
