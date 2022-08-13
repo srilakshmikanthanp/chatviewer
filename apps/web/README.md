@@ -7,4 +7,4 @@
 
 # Web - chatviewer
 
-This is the web application for the chatviewer.
+This is the web application for the chatviewer. Visit the [chatviewer](https://chatviewer.netlify.app) to see the application.
