@@ -24,7 +24,6 @@ import {
 
 const ContentWrapper = styled.div`
   min-height: 100%;
-  margin-top: 25px;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -90,7 +89,7 @@ export default function Welcome() {
   // body component
   const Body = () => (
     <ContentWrapper>
-      <Container fluid={true} style={{ margin: "80px 0px" }}>
+      <Container fluid={true}>
         <Row className="d-flex flex-column flex-lg-row-reverse align-items-center justify-content-center">
           <Col lg={6} md={12} className="d-flex flex-column align-items-center justify-content-center">
             <LogoImage
