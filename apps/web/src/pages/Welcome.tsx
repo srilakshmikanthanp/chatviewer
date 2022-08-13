@@ -23,13 +23,13 @@ import {
 } from "@mui/material";
 
 const ContentWrapper = styled.div`
-  min-height: calc(100vh - 50px);
+  min-height: 100%;
+  margin-top: 25px;
+  width: 100%;
   justify-content: center;
-  margin-top: 50px;
-  width: 100vw;
-  display: flex;
   align-items: center;
   flex-direction: column;
+  display: flex;
 `;
 
 const ImgOscillator = keyframes`
@@ -69,14 +69,14 @@ export default function Welcome() {
   // is Dialog Open State
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-  // Navigation Tool
-  const navigate = useNavigate();
-
   // user details
   const user: IUser | null = useSelector(selectUser);
 
   // jwt token
   const jwt: string | null = useSelector(selectJwt);
+
+  // Navigation Tool
+  const navigate = useNavigate();
 
   // Handle Import
   const handleImport = (msgs: IMsg[], chat: IChat | null) => {

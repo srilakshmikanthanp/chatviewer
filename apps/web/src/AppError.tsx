@@ -5,7 +5,6 @@
 
 import React, { HTMLAttributes, ErrorInfo } from "react";
 import { Typography, Button } from "@mui/material";
-import { Link } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import styled from "styled-components";
 
@@ -13,12 +12,13 @@ import styled from "styled-components";
  * Css for Error Component
  */
 const ErrorContent = styled.div`
+  width: calc(100vw - 30px);
   height: 100vh;
-  width: 100vw;
+  display: flex;
+  margin: 15px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  display: flex;
 `;
 
 /**
@@ -113,7 +113,7 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
         <Alert severity="error">
           Opps! Something went wrong. Please try again later.
         </Alert>
-        <Typography mt={3} sx={{ maxWidth: "350px" }}>
+        <Typography align="center" mt={3} sx={{ maxWidth: "350px" }}>
           Sorry for the inconvenience. We are working on it.
           If you want to Inform us up, Please Issue a Bug
           Report at&nbsp;
@@ -124,25 +124,25 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
             Github
           </a>
           &nbsp;With the Trace. You Can copy the trace to
-          clipboard by Clicking Button Below
+          clipboard by Clicking Button Below. Thank you
+          for using our Application.
         </Typography>
         <Actions className="mt-3">
           <Button
             onClick={this.copyComponentTrace}
             variant="outlined"
+            size="small"
           >
             Copy Component Trace
           </Button>
           <Button
             onClick={this.copyErrorTrace}
             variant="outlined"
+            size="small"
           >
             Copy Error Trace
           </Button>
         </Actions>
-        <Link to="/" className="mt-3">
-          Go Home
-        </Link>
       </ErrorContent>
     );
   }

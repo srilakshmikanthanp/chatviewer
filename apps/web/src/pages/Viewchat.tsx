@@ -210,9 +210,6 @@ export default function Viewchat() {
   // Body
   const Body = () => (
     <ContentWrapper>
-      <Container fluid={true} >
-        <Row> {chats} </Row>
-      </Container>
       <Selector
         onClose={() => setIsSelectorOpen(false)}
         title="Select Primary Author"
@@ -221,13 +218,16 @@ export default function Viewchat() {
         onSelected={handleAuthorSelection}
       />
       <ChatOptions
-        downloadable={chat !== null}
+        downloadable={chat !== null && user !== null}
         authorable={true}
-        shareable={chat !== null}
+        shareable={chat !== null && user !== null}
         onDownload={handleDownload}
         onShare={handleShare}
         onAuthor={() => setIsSelectorOpen(true)}
       />
+      <Container fluid={true} >
+        <Row> {chats} </Row>
+      </Container>
     </ContentWrapper>
   );
 

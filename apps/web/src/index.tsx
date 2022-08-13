@@ -15,6 +15,21 @@ import AppError from "./AppError";
 import App from "./App";
 import axios from "axios";
 
+// Unhandled Rejection
+window.addEventListener("unhandledrejection", (event) => {
+  window.alert(event.reason);
+  event.preventDefault();
+  event.stopPropagation();
+});
+
+// Window Error
+window.addEventListener("error", (event) => {
+  window.alert(event.message);
+  event.preventDefault();
+  event.stopPropagation();
+});
+
+
 // root element to render the application
 const root = document.getElementById("root");
 
