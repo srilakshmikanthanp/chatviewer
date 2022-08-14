@@ -45,19 +45,14 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
   /**
    * Copy the Component Trace to clip board
    */
-   copyComponentTrace = () => {
-    if(this.state.info) {
-      window.navigator.clipboard.writeText(this.state.info.componentStack);
-    }
-  }
-
-  /**
-   * Copy the Stack trace to Clip board
-   */
-  copyErrorTrace = () => {
-    if(this.state.error?.stack) {
-      console.log(this.state.error.stack);
-      window.navigator.clipboard.writeText(this.state.error.stack);
+  copyError = () => {
+    if (this.state.info && this.state.error?.stack) {
+      const errorTrace = "Component Trace:" +
+        this.state.info.componentStack +
+        "\nError Trace:\n" +
+        this.state.error?.stack
+        ;
+      window.navigator.clipboard.writeText(errorTrace);
     }
   }
 
@@ -71,9 +66,9 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
 
     // Initialize State
     this.state = {
-      hasError  : false,
-      error     : null,
-      info      : null
+      hasError: false,
+      error: null,
+      info: null
     };
   }
 
@@ -129,18 +124,11 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
         </Typography>
         <Actions className="mt-3">
           <Button
-            onClick={this.copyComponentTrace}
+            onClick={this.copyError}
             variant="outlined"
             size="small"
           >
-            Copy Component Trace
-          </Button>
-          <Button
-            onClick={this.copyErrorTrace}
-            variant="outlined"
-            size="small"
-          >
-            Copy Error Trace
+            Copy Error
           </Button>
         </Actions>
       </ErrorContent>

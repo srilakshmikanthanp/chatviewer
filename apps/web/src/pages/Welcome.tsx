@@ -51,9 +51,9 @@ const ImgOscillator = keyframes`
 
 const LogoImage = styled.img`
   animation: ${ImgOscillator} 1s linear infinite;
-  max-height: 300px;
-  max-width: 300px;
-  margin: 0 auto;
+  max-height: 250px;
+  max-width: 250px;
+  margin: 15px auto;
 `;
 
 const Paragraph = styled.p`

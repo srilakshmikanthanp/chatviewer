@@ -21,6 +21,7 @@ window.addEventListener("unhandledrejection", (event) => {
   event.preventDefault();
   event.stopPropagation();
   console.log(event.reason);
+  window.location.replace("/");
 });
 
 // Window Error
@@ -29,6 +30,7 @@ window.addEventListener("error", (event) => {
   event.preventDefault();
   event.stopPropagation();
   console.log(event.error);
+  window.location.replace("/");
 });
 
 
