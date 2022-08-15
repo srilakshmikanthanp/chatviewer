@@ -18,7 +18,7 @@ export async function postChatController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user data from the database
@@ -63,7 +63,7 @@ export async function getAllChatsController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user data from the database
@@ -183,7 +183,7 @@ export async function getChatByIdController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user data from the database
@@ -240,7 +240,7 @@ export async function patchChatByIdController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user data from the database
@@ -309,7 +309,7 @@ export async function deleteChatByIdController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user data from the database
@@ -345,7 +345,7 @@ export async function getChatBlobController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user data from the database
@@ -384,7 +384,7 @@ export async function getTokenByIdController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user data from the database

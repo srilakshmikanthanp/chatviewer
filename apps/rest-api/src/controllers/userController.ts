@@ -41,7 +41,7 @@ export async function userPostController(req: Request, res: Response) {
     }
 
     // create a jwt token
-    const token = await user.createJwtToken();
+    const token = await user.createAuthJwtToken();
 
     // set the token in the response
     res.setHeader('auth-token', token);
@@ -49,7 +49,6 @@ export async function userPostController(req: Request, res: Response) {
     // send the token
     res.status(200).json(user);
   } catch (error) {
-    // send the error
     return res.status(401).json({ message: 'Invalid token' });
   }
 }
@@ -61,7 +60,7 @@ export async function userGetController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user details from the database
@@ -83,7 +82,7 @@ export async function userPatchController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user details from the database
@@ -111,7 +110,7 @@ export async function userDeleteController(req: Request, res: Response) {
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
-    return res.status(401).json({ message: 'Not a valid token' });
+    return res.status(403).json({ message: 'Not a valid token' });
   }
 
   // get the user details from the database

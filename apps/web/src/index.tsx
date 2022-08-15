@@ -5,6 +5,7 @@
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { PersistGate } from 'redux-persist/integration/react';
+import { setUser } from "./redux/slices/userSlice";
 import { persistor, store } from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
 import ReactLoading from 'react-loading';
@@ -15,13 +16,21 @@ import AppError from "./AppError";
 import App from "./App";
 import axios from "axios";
 
+// Jwt token expired
+axios.interceptors.response.use(undefined, (error) => {
+  if (error.response.status === 401) {
+    store.dispatch(setUser({user: null, jwt: null}));
+    window.location.replace("/");
+  }
+  return Promise.reject(error);
+});
+
 // Unhandled Rejection
 window.addEventListener("unhandledrejection", (event) => {
   window.alert(event.reason);
   event.preventDefault();
   event.stopPropagation();
   console.log(event.reason);
-  window.location.replace("/");
 });
 
 // Window Error
@@ -30,9 +39,7 @@ window.addEventListener("error", (event) => {
   event.preventDefault();
   event.stopPropagation();
   console.log(event.error);
-  window.location.replace("/");
 });
-
 
 // root element to render the application
 const root = document.getElementById("root");

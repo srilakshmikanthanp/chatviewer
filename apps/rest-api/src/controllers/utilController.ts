@@ -57,7 +57,7 @@ export async function getChatWithJwtController(req: Request, res: Response) {
       updatedAt: chat[0].updatedAt,
     });
   } catch (error) {
-    res.status(401).json({ message: error.message });
+    res.status(410).json({ message: error.message });
   }
 }
 
@@ -76,6 +76,6 @@ export async function getBlobWithJwtController(req: Request, res: Response) {
     res.set('Content-Type', chat.mimeType);
     res.send(chat.data);
   } catch (error) {
-    res.status(401).json({ message: error.message });
+    res.status(410).json({ message: error.message });
   }
 }

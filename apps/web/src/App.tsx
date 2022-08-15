@@ -6,6 +6,7 @@
 import { Chatshared, Dashboard, Viewchat, Welcome } from "./pages"
 import { Routes, Route } from 'react-router-dom';
 import './styles/global.module.css';
+import App404 from "./App404";
 
 // Application
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
       <Route path="/chatshared/:token" element={<Chatshared />} />
       <Route path="/viewchat" element={<Viewchat />} />
       <Route path="/" element={<Welcome />} />
+      <Route path="*" element={<App404 />} />
       <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );

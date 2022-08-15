@@ -8,6 +8,7 @@ import {
   HasManyCountAssociationsMixin, HasManyCreateAssociationMixin, HasManyGetAssociationsMixin,
   HasManyHasAssociationMixin, HasManyRemoveAssociationMixin
 } from "sequelize";
+import { JWT_EXPIRATION_TIME } from "../constants";
 import { IJwtAuthPayload } from "../interfaces";
 import { sequelize } from "../database";
 import * as jwt from "jsonwebtoken";
@@ -16,15 +17,23 @@ import Chat from "./Chat";
 
 // Model Class for User manipulation
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  // associations
+  declare createChat  : HasManyCreateAssociationMixin<Chat>;
+  declare getChats    : HasManyGetAssociationsMixin<Chat>;
+  declare addChat     : HasManyAddAssociationMixin<Chat, number>;
+  declare removeChat  : HasManyRemoveAssociationMixin<Chat, number>;
+  declare hasChat     : HasManyHasAssociationMixin<Chat, number>;
+  declare countChats  : HasManyCountAssociationsMixin;
+
   // attributes
-  declare userId: CreationOptional<number>;
-  declare name: string;
-  declare email: string;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
+  declare userId      : CreationOptional<number>;
+  declare name        : string;
+  declare email       : string;
+  declare createdAt   : CreationOptional<Date>;
+  declare updatedAt   : CreationOptional<Date>;
 
   // methods
-  createJwtToken = async (): Promise<string> => {
+  createAuthJwtToken = async (): Promise<string> => {
     // get the secret from the environment variables
     const secret = process.env.JWT_SECRET;
 
@@ -38,16 +47,10 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     };
 
     // return the jwt token
-    return jwt.sign(payload, secret, { expiresIn: "1h" });
+    return jwt.sign(payload, secret, {
+      expiresIn: JWT_EXPIRATION_TIME
+    });
   }
-
-  // associations
-  declare createChat: HasManyCreateAssociationMixin<Chat>;
-  declare getChats: HasManyGetAssociationsMixin<Chat>;
-  declare addChat: HasManyAddAssociationMixin<Chat, number>;
-  declare removeChat: HasManyRemoveAssociationMixin<Chat, number>;
-  declare hasChat: HasManyHasAssociationMixin<Chat, number>;
-  declare countChats: HasManyCountAssociationsMixin;
 }
 
 // Initialize the User model
