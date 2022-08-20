@@ -39,20 +39,24 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
   info: ErrorInfo | null;
   hasError: boolean;
   error: Error | null;
+  isCopied: boolean;
 }> {
   #issuePage = "https://github.com/srilakshmikanthanp/Chatviewer/issues/new";
 
   /**
    * Copy the Component Trace to clip board
    */
-  copyError = () => {
+  copyErrorToClipBoard = () => {
     if (this.state.info && this.state.error?.stack) {
       const errorTrace = "Component Trace:" +
         this.state.info.componentStack +
         "\nError Trace:\n" +
         this.state.error?.stack
         ;
-      window.navigator.clipboard.writeText(errorTrace);
+      window.navigator.clipboard.writeText(
+        errorTrace
+      );
+      this.setState({ isCopied: true });
     }
   }
 
@@ -68,7 +72,8 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
     this.state = {
       hasError: false,
       error: null,
-      info: null
+      info: null,
+      isCopied: false
     };
   }
 
@@ -124,11 +129,12 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
         </Typography>
         <Actions className="mt-3">
           <Button
-            onClick={this.copyError}
+            onClick={this.copyErrorToClipBoard}
             variant="outlined"
             size="small"
+            color={this.state.isCopied ? "success" : "primary"}
           >
-            Copy Error
+            {this.state.isCopied ? "Copied" : "Copy"}
           </Button>
         </Actions>
       </ErrorContent>

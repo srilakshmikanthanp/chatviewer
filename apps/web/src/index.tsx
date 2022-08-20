@@ -18,11 +18,12 @@ import axios from "axios";
 
 // Jwt token expired
 axios.interceptors.response.use(undefined, (error) => {
-  if (error.response.status === 401) {
-    store.dispatch(setUser({user: null, jwt: null}));
-    window.location.replace("/");
+  if (error.response.status !== 401) {
+    return Promise.reject(error);
   }
-  return Promise.reject(error);
+  store.dispatch(setUser({user: null, jwt: null}));
+  window.location.replace("/");
+  return Promise.resolve();
 });
 
 // Unhandled Rejection
