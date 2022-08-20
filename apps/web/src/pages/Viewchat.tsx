@@ -96,6 +96,10 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   display: flex;
   width: 100%;
+`;
+
+// Chat Wrapper Css
+const ChatWrapper = styled(Container)`
   margin-top: 90px;
   margin-bottom: 120px;
 `;
@@ -225,9 +229,9 @@ export default function Viewchat() {
         onShare={handleShare}
         onAuthor={() => setIsSelectorOpen(true)}
       />
-      <Container fluid={true} >
+      <ChatWrapper fluid={true} >
         <Row> {chats} </Row>
-      </Container>
+      </ChatWrapper>
     </ContentWrapper>
   );
 
