@@ -10,6 +10,7 @@ import './styles/global.module.css';
 import App404 from "./App404";
 
 const AppContainer = styled.main`
+  max-width: 100%;
   height: 100vh;
   width: 100vw;
   margin: 0%;

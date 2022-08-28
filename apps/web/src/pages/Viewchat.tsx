@@ -54,7 +54,7 @@ function ChatOptions(props: IChatBoxProps) {
   // Render Speed Dial
   return (
     <SpeedDial
-      sx={{ position: 'fixed', bottom: 70, right: 20 }}
+      sx={{ position: 'fixed', bottom: 55, right: 20 }}
       onMouseLeave={() => setIsOpen(false)}
       onMouseEnter={() => setIsOpen(true)}
       ariaLabel="Chat Options"
@@ -95,15 +95,12 @@ const ContentWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   display: flex;
-  width: 100%;
 `;
 
 // Chat Wrapper Css
 const ChatWrapper = styled(Container)`
-  margin-bottom: 120px;
-  margin-top: 90px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-bottom: 110px;
+  margin-top: 80px;
 `;
 
 // Message Component
@@ -141,7 +138,7 @@ export default function Viewchat() {
 
   // to component
   const chats = useMemo(() => messages.map((message) => (
-    <Col xs={12}>
+    <Col xs={12} className="p-0">
       <ChatBox
         isPrimary={message.author === primaryAuthor}
         message={message}

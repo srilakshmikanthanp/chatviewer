@@ -16,8 +16,7 @@ const ChatBoxWrapper = styled('div') < { isPrimary: boolean } >`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  padding: 10px 0px;
-  margin: 5px 10px;
+  margin: 3px 5px;
   background-color: transparent;
 `;
 
@@ -42,8 +41,9 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   )};
   border-radius: 10px;
   position: relative;
-  margin: 10px;
   padding: 5px;
+  max-width: 90%;
+  margin: 0px 5px;
   &:before {
     filter: drop-shadow(0px 2px 1px rgb(var(--shadow-color)));
     border-top: 10px solid ${props => props.isPrimary ? (
