@@ -100,8 +100,10 @@ const ContentWrapper = styled.div`
 
 // Chat Wrapper Css
 const ChatWrapper = styled(Container)`
-  margin-top: 90px;
   margin-bottom: 120px;
+  margin-top: 90px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 // Message Component
@@ -214,13 +216,6 @@ export default function Viewchat() {
   // Body
   const Body = () => (
     <ContentWrapper>
-      <Selector
-        onClose={() => setIsSelectorOpen(false)}
-        title="Select Primary Author"
-        isOpen={isSelectorOpen}
-        list={authors}
-        onSelected={handleAuthorSelection}
-      />
       <ChatOptions
         downloadable={chat !== null && user !== null}
         authorable={true}
@@ -228,6 +223,13 @@ export default function Viewchat() {
         onDownload={handleDownload}
         onShare={handleShare}
         onAuthor={() => setIsSelectorOpen(true)}
+      />
+      <Selector
+        onClose={() => setIsSelectorOpen(false)}
+        title="Select Primary Author"
+        isOpen={isSelectorOpen}
+        list={authors}
+        onSelected={handleAuthorSelection}
       />
       <ChatWrapper fluid={true} >
         <Row> {chats} </Row>
