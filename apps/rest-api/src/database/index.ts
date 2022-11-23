@@ -7,13 +7,8 @@ import { Sequelize } from 'sequelize';
 
 // create the sqlite database
 const sequelize: Sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
   ssl: true,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  }
 });
 
 // export the sequelize object
