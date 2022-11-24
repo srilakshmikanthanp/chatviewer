@@ -8,5 +8,5 @@ export const GOOGLE_CLIENT_ID = "956872187563-rj6j961c7ri7u6adb3v97gk5othp01dv.a
 
 // Base URL for the API
 export const BASE_URL = process.env["NODE_ENV"] === "production" ?
-  "http://chatviewer-api.onrender.com:10000/" :
+  "https://chatviewer-api.onrender.com/" :
   "http://localhost:8000";
