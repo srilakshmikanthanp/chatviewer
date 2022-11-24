@@ -81,9 +81,8 @@ User.init({
 
 // associate the models
 User.hasMany(Chat, {
-  foreignKey: { name: "userId", allowNull: false },
-  onDelete: "cascade",
-  onUpdate: "cascade",
+  foreignKey  : { name: "userId", allowNull: false },
+  constraints : false
 });
 
 // export the User model

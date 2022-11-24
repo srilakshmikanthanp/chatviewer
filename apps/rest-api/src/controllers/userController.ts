@@ -5,7 +5,7 @@
 
 import { OAuth2Client } from 'google-auth-library';
 import { Request, Response } from 'express';
-import { User } from '../models';
+import { User, Chat } from '../models';
 
 // create a user controller function
 export async function userPostController(req: Request, res: Response) {
@@ -120,6 +120,9 @@ export async function userDeleteController(req: Request, res: Response) {
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
   }
+
+  // delete all chats for the user
+  await Chat.destroy({ where: { userId: userID } });
 
   // delete the user details from the database
   await user.destroy();
