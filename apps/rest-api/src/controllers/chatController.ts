@@ -91,24 +91,24 @@ export async function getAllChatsController(req: Request, res: Response) {
   // if it is not a string
   if (typeof sortBy !== 'string' || !['createdAt', "name" , 'updatedAt'].includes(sortBy)) {
     return res.status(400).json({
-      message: 'shortBy Should be name, createdAt, updatedAt'
+      message: 'shortBy Should be name, createdAt or updatedAt'
     });
   }
 
   // query string
   let ChatQuery = `
-    SELECT "chatId", "userId", "name", "createdAt", "updatedAt"
-    FROM "${Chat.tableName}" WHERE "userId" = ?
+    SELECT chatId, userId, name, createdAt, updatedAt
+    FROM ${Chat.tableName} WHERE userId = ?
   `;
 
   // if has short by then add it to the query string
   if (sortBy) {
-    ChatQuery += ` ORDER BY "${sortBy}"`;
+    ChatQuery += ` ORDER BY "${sortBy}" `;
   }
 
   // if per_page is present and page is present
   if (perPage && page) {
-    ChatQuery += ` LIMIT '${perPage}' OFFSET '${perPage * (page - 1)}'`;
+    ChatQuery += ` LIMIT ${perPage} OFFSET ${perPage * (page - 1)}`;
   }
 
   // get chats with raw query
@@ -138,7 +138,7 @@ export async function getAllChatsController(req: Request, res: Response) {
   });
 
   // query to count the total number of chats
-  const countQuery = `SELECT COUNT(*) as total FROM "${Chat.tableName}" WHERE "userId" = ?`;
+  const countQuery = `SELECT COUNT(*) as total FROM ${Chat.tableName} WHERE userId = ?`;
 
   // get the total number of chats
   const total = +(
@@ -153,20 +153,16 @@ export async function getAllChatsController(req: Request, res: Response) {
 
   // construct the link header
   if (perPage && page) {
-    const topMostUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-    const totalPages = Math.ceil(total / perPage);
-    const links = [];
+    const topMostUrl  =   `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    const totalPages  =   Math.ceil(total / perPage);
+    const links       =   [];
 
     if (page > 1) {
-      links.push(
-        `<${topMostUrl}?page=${page - 1}&per_page=${perPage}>; rel="prev"`
-      );
+      links.push(`<${topMostUrl}?page=${page - 1}&per_page=${perPage}>; rel="prev"`);
     }
 
     if (page < totalPages) {
-      links.push(
-        `<${topMostUrl}?page=${page + 1}&per_page=${perPage}>; rel="next"`
-      );
+      links.push(`<${topMostUrl}?page=${page + 1}&per_page=${perPage}>; rel="next"`);
     }
 
     res.setHeader('Link', links.join(', '));
@@ -194,31 +190,14 @@ export async function getChatByIdController(req: Request, res: Response) {
     return res.status(404).json({ message: 'User not found' });
   }
 
-  // query string
-  const query = `
-    SELECT "chatId", "userId", "name", "createdAt", "updatedAt"
-    FROM ${Chat.tableName} WHERE "userId" = ? AND "chatId" = ?
-  `;
-
   // chat id
   const chatId = +req.params.chat_id;
 
   // get chat with raw query
-  const chat = (await sequelize.query(query, {
-    replacements: [userID, chatId],
-    type: QueryTypes.SELECT
-  })) as [
-    {
-      chatId: number;
-      userId: number;
-      name: string;
-      createdAt: Date;
-      updatedAt: Date;
-    }
-  ];
+  const chat = await Chat.findOne({ attributes: { exclude: ['data'] },  where: { chatId: chatId } });
 
   // if chat is not found
-  if (!chat.length) {
+  if (!chat) {
     return res.status(404).json({ message: 'Chat not found' });
   }
 
@@ -257,39 +236,16 @@ export async function patchChatByIdController(req: Request, res: Response) {
   // get the chat name from the request body
   const name = req.body.name;
 
-  // query string
-  const updateQuery = `UPDATE "${Chat.tableName}" SET "name" = ? WHERE "userId" = ? AND "chatId" = ?`;
-
   // update the chat name with raw query
-  const result = await sequelize.query(updateQuery, {
-    replacements: [name, userID, chatId],
-    type: QueryTypes.UPDATE
-  });
+  const result = await Chat.update({ name: name }, { where: { userId: userID, chatId: chatId } });
 
   // if chat is not found
-  if (!result.length) {
+  if (result[0] != 1) {
     return res.status(404).json({ message: 'Chat not found' });
   }
 
   // get the chat with raw query
-  const getQuery = `
-    SELECT "chatId", "userId", "name", "createdAt", "updatedAt"
-    FROM "${Chat.tableName}" WHERE "userId" = ? AND "chatId" = ?
-  `;
-
-  // get the chat with raw query
-  const chat = (await sequelize.query(getQuery, {
-    replacements: [userID, chatId],
-    type: QueryTypes.SELECT
-  })) as [
-    {
-      chatId: number;
-      userId: number;
-      name: string;
-      createdAt: Date;
-      updatedAt: Date;
-    }
-  ];
+  const chat = Chat.findOne({ attributes: { exclude: ['data'] },  where: { userId: userID, chatId: chatId } });
 
   // send the success response
   res.status(200).json({
