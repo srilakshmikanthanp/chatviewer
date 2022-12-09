@@ -41,7 +41,7 @@ interface IChatBoxProps {
   onAuthor: () => void;
   downloadable: boolean;
   shareable: boolean;
-  authorable: boolean;
+  canChangeAuthor: boolean;
 }
 
 function ChatOptions(props: IChatBoxProps) {
@@ -50,6 +50,27 @@ function ChatOptions(props: IChatBoxProps) {
 
   // is speed dial open
   const [isOpen, setIsOpen] = useState(false);
+
+  // Speed Dial Icon
+  const selectAuthorIcon = <SpeedDialAction
+    tooltipTitle="Choose Primary Author"
+    icon={<Person />}
+    onClick={props.onAuthor}
+  />;
+
+  // Download Icon
+  const downloadIcon = <SpeedDialAction
+    tooltipTitle="Download Chat File"
+    icon={<CloudDownload />}
+    onClick={props.onDownload}
+  />;
+
+  // Share Icon
+  const shareIcon = <SpeedDialAction
+    tooltipTitle="Copy Link for Chat"
+    icon={<Share />}
+    onClick={props.onShare}
+  />;
 
   // Render Speed Dial
   return (
@@ -64,27 +85,9 @@ function ChatOptions(props: IChatBoxProps) {
       open={isOpen}
       openIcon={<Close />}
     >
-      {props.authorable && (
-        <SpeedDialAction
-          tooltipTitle="Choose Primary Author"
-          icon={<Person />}
-          onClick={props.onAuthor}
-        />
-      )}
-      {props.downloadable && (
-        <SpeedDialAction
-          tooltipTitle="Download Chat File"
-          icon={<CloudDownload />}
-          onClick={props.onDownload}
-        />
-      )}
-      {props.shareable && (
-        <SpeedDialAction
-          tooltipTitle="Copy Link for Chat"
-          icon={<Share />}
-          onClick={props.onShare}
-        />
-      )}
+      {props.canChangeAuthor && selectAuthorIcon}
+      {props.shareable && shareIcon}
+      {props.downloadable && downloadIcon}
     </SpeedDial>
   );
 }
@@ -138,7 +141,7 @@ export default function Viewchat() {
 
   // to component
   const chats = useMemo(() => messages.map((message) => (
-    <Col xs={12} className="p-0">
+    <Col xs={12} className="px-3">
       <ChatBox
         isPrimary={message.author === primaryAuthor}
         message={message}
@@ -215,7 +218,7 @@ export default function Viewchat() {
     <ContentWrapper>
       <ChatOptions
         downloadable={chat !== null && user !== null}
-        authorable={true}
+        canChangeAuthor={true}
         shareable={chat !== null && user !== null}
         onDownload={handleDownload}
         onShare={handleShare}

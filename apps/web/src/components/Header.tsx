@@ -5,8 +5,8 @@
 // https://opensource.org/licenses/MIT
 
 import { setUser, selectUser, selectJwt } from "../redux/slices/userSlice";
+import { MenuItem, Menu, Divider, CircularProgress } from "@mui/material";
 import { createViewerState } from "../utilities/constructors";
-import { MenuItem, Menu, Divider } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useCreateUser } from "../apiClients/userApi";
 import React, { useState, useEffect } from "react";
@@ -46,6 +46,11 @@ const SignIn = styled.div`
   padding: 10px;
 `;
 
+const Progress = styled(CircularProgress)`
+  margin-left: auto;
+  padding: 10px;
+`;
+
 // Navbar component
 export default function Header() {
   // is Import model is in view or not state
@@ -56,6 +61,9 @@ export default function Header() {
 
   // Is the side bar hidden or not
   const [isMenuHidden, setIsMenuHidden] = useState(true);
+
+  // is sign in progress
+  const [isSignInProgress, setIsSignInProgress] = useState(false);
 
   // ref for the sign in sutton
   const signInRef = React.createRef<HTMLDivElement>();
@@ -75,39 +83,24 @@ export default function Header() {
   // jwt token
   const jwt: string | null = useSelector(selectJwt);
 
-  // Sign Handler
-  const signHandler = async (token: string) => {
-    const response = await createUser.mutateAsync({ token });
-    const jwt = response.headers["auth-token"];
-    const user = response.data;
-    dispatch(setUser({ user, jwt }));
-  }
-
-  // dynamic right side component
-  const RightSideComponent = user ? (
-    <MenuIcon
-      style={{ cursor: "pointer", margin: "0 10px 0 auto" }}
+  // Menu Icon
+  const MenuBar = (
+    <MenuIcon style={{ cursor: "pointer", margin: "0 10px 0 auto" }}
       onClick={() => setIsMenuHidden(!isMenuHidden)}
       ref={setMenuRef}
     />
-  ) : (
-    <SignIn ref={signInRef} />
   );
 
-  // render the sign in button
-  useEffect(() => {
-    // @ts-ignore
-    signInRef.current && google.accounts.id.renderButton(
-      signInRef.current, { theme: 'outline', size: "medium" }
-    );
-  });
-
-  // attach the google sign in button
-  // @ts-ignore
-  google.accounts.id.initialize({
-    callback: (res) => signHandler(res.credential),
-    client_id: GOOGLE_CLIENT_ID,
-  });
+  // dynamic right side component
+  const RightSideComponent = (() => {
+    if (isSignInProgress) {
+      return <Progress />;
+    } else if (user !== null) {
+      return MenuBar;
+    } else {
+      return <SignIn ref={signInRef} />;
+    }
+  })();
 
   // handle the Import Chat
   const handleImportChat = (msgs: IMsg[], chat: IChat | null) => {
@@ -123,17 +116,44 @@ export default function Header() {
     navigate("/dashboard");
   }
 
+  // Sign Handler
+  const signHandler = async (token: string) => {
+    // set the sign in progress state
+    setIsSignInProgress(true);
+
+    // sign in the user
+    const res = await createUser.mutateAsync({ token });
+    const jwt = res.headers["auth-token"];
+    const user = res.data;
+    dispatch(setUser({ user, jwt }));
+
+    // set the sign in progress state
+    setIsSignInProgress(false);
+  }
+
   // handle the Sign Out
   const handleSignOut = () => {
     // dispatch the sign out action
-    dispatch(setUser({
-      user: null,
-      jwt: null,
-    }));
+    dispatch(setUser({ user: null, jwt: null, }));
 
     // navigate to the sign in page
     navigate("/");
   }
+
+  // render the sign in button
+  useEffect(() => {
+    // @ts-ignore
+    signInRef.current && google.accounts.id.renderButton(
+      signInRef.current, { theme: 'outline', size: "medium" }
+    );
+  });
+
+  // attach the google sign in button
+  // @ts-ignore
+  google.accounts.id.initialize({
+    callback: (res) => signHandler(res.credential),
+    client_id: GOOGLE_CLIENT_ID,
+  });
 
   // render the component
   return (

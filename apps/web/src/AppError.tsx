@@ -15,7 +15,7 @@ const ErrorContent = styled.div`
   width: calc(100vw - 30px);
   height: 100vh;
   display: flex;
-  margin: 15px;
+  margin: 0 15px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -48,14 +48,9 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
    */
   copyErrorToClipBoard = () => {
     if (this.state.info && this.state.error?.stack) {
-      const errorTrace = "Component Trace:" +
-        this.state.info.componentStack +
-        "\nError Trace:\n" +
-        this.state.error?.stack
-        ;
-      window.navigator.clipboard.writeText(
-        errorTrace
-      );
+      const componentTrace = "\nComponent Trace:\n" + this.state.info.componentStack;
+      const errorTrace = "\nError Trace:\n" + this.state.error?.stack;
+      window.navigator.clipboard.writeText( componentTrace + errorTrace );
       this.setState({ isCopied: true });
     }
   }
@@ -90,11 +85,7 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
    */
   override componentDidCatch(error: Error, info: ErrorInfo) {
     // Set the State
-    this.setState({
-      hasError: true,
-      error: error,
-      info: info
-    });
+    this.setState({ hasError: true, error: error, info: info });
 
     // Log the Error
     console.log(error, info);
