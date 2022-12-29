@@ -33,7 +33,7 @@ export default function ImportChat(props: IImportChatProps) {
   const [selectedFile, setSelectedFile] = useState<File>();
 
   // can upload the file
-  const [isUploadable, setIsUploadable] = useState(true);
+  const [isUploadable, setIsUploadable] = useState(false);
 
   // is now importing the chat
   const [isImporting, setIsImporting] = useState(false);
