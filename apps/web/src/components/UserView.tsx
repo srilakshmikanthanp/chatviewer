@@ -17,7 +17,7 @@ interface IUserViewProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const UserViewWrapper = styled(Container)`
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
   background-image: url(${ChatBG});
   justify-content: center;
   background-size: cover;

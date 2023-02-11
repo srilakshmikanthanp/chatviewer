@@ -91,7 +91,9 @@ export default function ImportChat(props: IImportChatProps) {
     const chats: IMsg[] = await blobToMsg(chatBlob);
 
     // if there are no chats to import
-    if (chats.length === 0) { return; }
+    if (chats.length === 0) {
+      throw new Error("No Chats to Import");
+    }
 
     // if not uploadable
     if (!isUploadable || (!props.user || !props.jwt)) {

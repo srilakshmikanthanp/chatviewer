@@ -106,3 +106,13 @@ export async function blobToMsg(blob: Blob): Promise<IMsg[]> {
   // return the chats
   return chats;
 }
+
+/**
+ * Replace unicode white space with white space
+ *
+ * @param text string
+ * @return string
+ */
+export function replaceSpace(text: string) {
+  return text.replace(/\u202F/g, " ");
+}

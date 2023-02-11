@@ -3,23 +3,25 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { PersistGate } from 'redux-persist/integration/react';
-import { setUser } from "./redux/slices/userSlice";
-import { persistor, store } from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
 import ReactLoading from 'react-loading';
 import { Provider } from "react-redux";
-import { BASE_URL } from "./constants";
 import ReactDOM from "react-dom";
+import axios from "axios";
+
+import { setUser } from "./redux/slices/userSlice";
+import { persistor, store } from "./redux/store";
+import { BASE_URL } from "./constants";
 import AppError from "./AppError";
 import App from "./App";
-import axios from "axios";
 
 // Jwt token expired
 axios.interceptors.response.use(undefined, (error) => {
   if (error.response.status !== 401) {
-    return Promise.reject(error);
+    return Promise.reject(error.response.data.message || error);
   }
   store.dispatch(setUser({user: null, jwt: null}));
   window.location.replace("/");

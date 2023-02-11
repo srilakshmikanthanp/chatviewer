@@ -372,14 +372,18 @@ export async function getTokenByIdController(req: Request, res: Response) {
     });
   }
 
-  // generate a jwt
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: expiry
-  });
+  try {
+    // generate a jwt token
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: expiry
+    });
 
-  // set the header
-  res.setHeader('chat-token', token);
-
-  // send the success response
-  res.status(200).send({ message: 'ok' });
+    // send response
+    res.setHeader('chat-token', token).status(200).send({
+      message: 'ok'
+    });
+  } catch (error) {
+    // send error response
+    res.status(400).send({ message: 'Invalid expiresIn' });
+  }
 }

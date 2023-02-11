@@ -9,7 +9,7 @@ import React, { useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { Selector } from "../modals";
+import { Selector, Input } from "../modals";
 import { IUser } from "../interfaces";
 import { saveAs } from 'file-saver';
 import axios from "axios";
@@ -26,6 +26,8 @@ import {
   SpeedDialAction,
   SpeedDial,
   SpeedDialIcon,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {
   CloudDownload,
@@ -111,6 +113,12 @@ export default function Viewchat() {
   // Is Author Selector Open or not to select Primary Author
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
 
+  // is input open for share expiring time
+  const [isInputOpen, setIsInputOpen] = useState(false);
+
+  // is snackbar open
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+
   // primary author of the chat
   const [primaryAuthor, setPrimaryAuthor] = useState('');
 
@@ -159,8 +167,6 @@ export default function Viewchat() {
     // Query Url to get token
     const tokenUrl = `/api/v1/users/${user.userId}/chats/${chat.chatId}/token`;
 
-    console.log(chat.createdAt);
-
     // axios request
     const resp = await axios.get(tokenUrl, {
       headers: { Authorization: `Bearer ${jwt}` },
@@ -180,7 +186,7 @@ export default function Viewchat() {
   }
 
   // handle share
-  const handleShare = async () => {
+  const handleShare = async (exp: string) => {
     // if no user is found or no jwt is found
     if (!user || !jwt || !chat) {
       throw new Error("Something Went Wrong: Can't Share the chat at the Moment");
@@ -191,7 +197,7 @@ export default function Viewchat() {
 
     // axios request
     const resp = await axios.get(QueryUrl, {
-      headers: { Authorization: `Bearer ${jwt}` },
+      headers: { Authorization: `Bearer ${jwt}` }, params: { expiresIn: exp },
     });
 
     // token
@@ -202,6 +208,9 @@ export default function Viewchat() {
 
     // copy to clipboard
     await navigator.clipboard.writeText(url);
+
+    // show snackbar
+    setIsSnackbarOpen(true);
   }
 
   // handle author selection
@@ -221,9 +230,29 @@ export default function Viewchat() {
         canChangeAuthor={true}
         shareable={chat !== null && user !== null}
         onDownload={handleDownload}
-        onShare={handleShare}
+        onShare={() => setIsInputOpen(true)}
         onAuthor={() => setIsSelectorOpen(true)}
       />
+      <Input
+        description="The max time for link remain valid."
+        title="Enter Expiring Time"
+        isOpen={isInputOpen}
+        onClose={() => setIsInputOpen(false)}
+        onEntered={handleShare}
+      />
+      <Snackbar
+        onClose={() => setIsSnackbarOpen(false)}
+        open={isSnackbarOpen}
+        autoHideDuration={6000}
+      >
+        <Alert
+          onClose={() => setIsSnackbarOpen(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Link Copied to Clipboard
+        </Alert>
+      </Snackbar>
       <Selector
         onClose={() => setIsSelectorOpen(false)}
         title="Select Primary Author"

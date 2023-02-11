@@ -18,6 +18,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  LinearProgress,
   SelectChangeEvent
 } from "@mui/material";
 
@@ -145,6 +146,7 @@ interface IChatViewProps extends HTMLAttributes<HTMLDivElement> {
   setSortBy: (shortBy: "name" | "createdAt" | "updatedAt") => void;
   sortBy: "name" | "createdAt" | "updatedAt";
   isFetching: boolean;
+  isProgress: boolean;
   onPrev?: () => void;
   onNext?: () => void;
   hasPrev: boolean;
@@ -222,6 +224,7 @@ const Footer = styled.div`
 // Chat View
 export default function ChatView({
   isFetching,
+  isProgress,
   setSortBy,
   sortBy,
   hasPrev,
@@ -293,6 +296,15 @@ export default function ChatView({
     null
   );
 
+  // progress bar
+  const ProgressBar = isProgress ? (
+    <LinearProgress
+      sx={{ margin: "0 10px 0 10px" }}
+    />
+  ) : (
+    null
+  );
+
   // render
   return (
     <ChatViewWrapper className={className}>
@@ -301,6 +313,7 @@ export default function ChatView({
         {Fetching}
         <Sort>{SelectSort}</Sort>
       </Header>
+      {ProgressBar}
       <Body>
         {UserChats.length === 0 ? (
           <NoChats>No Chats</NoChats>

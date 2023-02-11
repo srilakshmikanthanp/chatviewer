@@ -6,7 +6,7 @@
 import { Message } from 'whatsapp-chat-parser/types/types';
 import { parseString } from 'whatsapp-chat-parser';
 import { IMsg } from '../interfaces';
-import { getMimeType } from './functions';
+import { getMimeType, replaceSpace } from './functions';
 import JSzip from 'jszip';
 
 export default class WhatsappParser {
@@ -61,7 +61,7 @@ export default class WhatsappParser {
     const chatFile = await files[0].async('string');
 
     // create a new Whatsapp Parser
-    const messages = await parseString(chatFile, {
+    const messages = await parseString(replaceSpace(chatFile), {
       parseAttachments: true
     });
 
@@ -81,7 +81,7 @@ export default class WhatsappParser {
 
   // implement Iterable For Text File
   private async *iteratorForTextFile(): AsyncIterableIterator<IMsg> {
-    for (const msg of await parseString(await this.chatFile.text())) {
+    for (const msg of await parseString(replaceSpace(await this.chatFile.text()))) {
       if(msg.author !== this.SYSTEM_AUTHOR) {
         yield this.createMsgObject(msg);
       }

@@ -60,6 +60,9 @@ export default function Dashboard() {
   // chat editor open
   const [isChatEditorOpen, setIsChatEditorOpen] = useState<boolean>(false);
 
+  // is in progress
+  const [isInProgress, setIsInProgress] = useState<boolean>(false);
+
   // Editing chat
   const [editingChat, setEditingChat] = useState<IChat | null>(null);
 
@@ -154,6 +157,9 @@ export default function Dashboard() {
 
   // on Open Handler
   const onOpenChat = async (chat: IChat) => {
+    // set the progress to indicate loading
+    setIsInProgress(true);
+
     // get the blob from the server
     const blob = await axios.get(chat.blobUrl, {
       headers: { Authorization: "Bearer " + jwt },
@@ -207,6 +213,7 @@ export default function Dashboard() {
         <ChatView
           hasNext={!isPrevData && link?.includes("next") || false}
           isFetching={isFetching}
+          isProgress={isInProgress}
           setSortBy={setSortBy}
           sortBy={sortBy}
           onPrev={onPrevChat}

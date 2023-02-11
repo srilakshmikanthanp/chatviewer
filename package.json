@@ -3,9 +3,12 @@
   "version": "2.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test"
+    "start-api": "nx serve rest-api",
+    "build-api": "nx build rest-api",
+    "test-api": "nx test rest-api",
+    "start-web": "nx serve web",
+    "build-web": "nx build web",
+    "test-web": "nx test web"
   },
   "private": true,
   "dependencies": {
@@ -20,10 +23,10 @@
     "bcrypt": "^5.0.1",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
-    "express": "4.17.2",
+    "express": "^4.18.2",
     "file-saver": "^2.0.5",
     "google-auth-library": "^8.1.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jszip": "^3.10.1",
     "mysql2": "^2.3.3",
     "pg": "^8.7.3",
@@ -42,7 +45,7 @@
     "sequelize": "^6.21.3",
     "styled-components": "^5.3.5",
     "tslib": "^2.3.0",
-    "whatsapp-chat-parser": "^3.2.1",
+    "whatsapp-chat-parser": "^3.2.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -54,7 +57,7 @@
     "@nrwl/node": "14.4.3",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/react": "^14.4.3",
-    "@nrwl/web": "14.4.3",
+    "@nrwl/web": "^15.6.3",
     "@nrwl/workspace": "14.4.3",
     "@testing-library/react": "13.3.0",
     "@types/bcrypt": "^5.0.0",

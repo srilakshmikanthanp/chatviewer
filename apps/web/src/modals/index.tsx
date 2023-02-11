@@ -8,11 +8,13 @@ import ChatEditor from "./ChatEditor";
 import ImportChat from "./ImportChat";
 import Selector from "./Selector";
 import UserEditor from "./UserEditor";
+import Input from "./Input"
 
 export {
   AccountCloser,
   ChatEditor,
   ImportChat,
+  Input,
   Selector,
   UserEditor,
 };

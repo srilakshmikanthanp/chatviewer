@@ -108,10 +108,7 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
           Sorry for the inconvenience. We are working on it.
           If you want to Inform us up, Please Issue a Bug
           Report at&nbsp;
-          <a href={this.#issuePage}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={this.#issuePage} target="_blank" rel="noreferrer">
             Github
           </a>
           &nbsp;With the Trace. You Can copy the trace to
@@ -120,10 +117,10 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
         </Typography>
         <Actions className="mt-3">
           <Button
-            onClick={this.copyErrorToClipBoard}
-            variant="outlined"
-            size="small"
             color={this.state.isCopied ? "success" : "primary"}
+            size="small"
+            variant="outlined"
+            onClick={this.copyErrorToClipBoard}
           >
             {this.state.isCopied ? "Copied" : "Copy"}
           </Button>
