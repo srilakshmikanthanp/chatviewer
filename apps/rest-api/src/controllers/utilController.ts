@@ -25,8 +25,8 @@ export async function getChatWithJwtController(req: Request, res: Response) {
 
     // query string
     const query = `
-      SELECT "chatId", "userId", "createdAt", "updatedAt"
-      FROM "${Chat.tableName}" WHERE "chatId" = ?
+      SELECT chatId, userId, createdAt, updatedAt
+      FROM ${Chat.tableName} WHERE chatId = ?
     `;
 
     // chat id
