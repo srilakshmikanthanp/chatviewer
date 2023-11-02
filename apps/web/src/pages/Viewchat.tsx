@@ -77,7 +77,7 @@ function ChatOptions(props: IChatBoxProps) {
   // Render Speed Dial
   return (
     <SpeedDial
-      sx={{ position: 'fixed', bottom: 55, right: 20 }}
+      sx={{ position: 'fixed', bottom: 55, left: 20 }}
       onMouseLeave={() => setIsOpen(false)}
       onMouseEnter={() => setIsOpen(true)}
       ariaLabel="Chat Options"
