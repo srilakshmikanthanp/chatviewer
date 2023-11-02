@@ -30,14 +30,14 @@ const ChatBoxAuthor = styled('div')`
 const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   box-shadow: var(--bs-border-color) 0px 2px 8px 0px;
   background-color: ${props => props.isPrimary ? (
-    "var(--pri-msg-bg-color)"
+    "var(--pri-msg-bg-color) !important"
   ) : (
-    "var(--sec-msg-bg-color)"
+    "var(--sec-msg-bg-color) !important"
   )};
   color: ${props => props.isPrimary ? (
-    "var(--pri-msg-fg-color)"
+    "var(--pri-msg-fg-color) !important"
   ) : (
-    "var(--sec-msg-fg-color)"
+    "var(--sec-msg-fg-color) !important"
   )};
   border-radius: 10px;
   position: relative;
@@ -47,9 +47,9 @@ const ChatBoxCover = styled('div') < { isPrimary: boolean } >`
   &:before {
     filter: drop-shadow(0px 2px 1px rgb(var(--shadow-color)));
     border-top: 10px solid ${props => props.isPrimary ? (
-      "var(--pri-msg-bg-color)"
+      "var(--pri-msg-bg-color) !important"
     ) : (
-      "var(--sec-msg-bg-color)"
+      "var(--sec-msg-bg-color) !important"
     )};
     border-right: 10px solid transparent;
     border-left: 10px solid transparent;
@@ -80,12 +80,21 @@ const ChatBoxText = styled('div')`
   font-size: 100%;
   font-weight: 550;
   padding: 5px;
+
+  a {
+    color: white !important;
+    max-width: 100%;
+    text-decoration: none !important;
+    &:hover {
+      text-decoration: underline !important;
+    }
+  }
 `;
 
-const ChatBoxMedia = styled('a')`
-  color: var(--bs-body-color);
+const ChatBoxMedia = styled.a`
+  color: white !important;
   max-width: 100%;
-  text-decoration: none;
+  text-decoration: none !important;
   &:hover {
     text-decoration: underline;
   }
