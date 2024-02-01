@@ -10,11 +10,10 @@ import { User, Chat } from '../models';
 import { QueryTypes } from 'sequelize';
 import * as jwt from 'jsonwebtoken';
 
-
 // post chat controller function
 export async function postChatController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -59,7 +58,7 @@ export async function postChatController(req: Request, res: Response) {
 // get all chats controller function
 export async function getAllChatsController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -103,7 +102,7 @@ export async function getAllChatsController(req: Request, res: Response) {
 
   // if has short by then add it to the query string
   if (sortBy) {
-    ChatQuery += ` ORDER BY "${sortBy}" `;
+    ChatQuery += ` ORDER BY ${sortBy == "updatedAt" ? sortBy  + " DESC" : sortBy} `;
   }
 
   // if per_page is present and page is present
@@ -119,7 +118,7 @@ export async function getAllChatsController(req: Request, res: Response) {
     {
       chatId: number;
       userId: number;
-      name: number;
+      name: string;
       createdAt: Date;
       updatedAt: Date;
     }
@@ -175,7 +174,7 @@ export async function getAllChatsController(req: Request, res: Response) {
 // get chat by id controller function
 export async function getChatByIdController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -215,7 +214,7 @@ export async function getChatByIdController(req: Request, res: Response) {
 // patch chat by id controller function
 export async function patchChatByIdController(req: Request, res: Response) {
   // get the user id from JWt and url and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -245,23 +244,23 @@ export async function patchChatByIdController(req: Request, res: Response) {
   }
 
   // get the chat with raw query
-  const chat = Chat.findOne({ attributes: { exclude: ['data'] },  where: { userId: userID, chatId: chatId } });
+  const chat = await Chat.findOne({ attributes: { exclude: ['data'] },  where: { userId: userID, chatId: chatId } });
 
   // send the success response
   res.status(200).json({
     blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}/blob`,
-    chatId: chat[0].chatId,
-    userId: chat[0].userId,
-    name: chat[0].name,
-    createdAt: chat[0].createdAt,
-    updatedAt: chat[0].updatedAt
+    chatId: chat.chatId,
+    userId: chat.userId,
+    name: chat.name,
+    createdAt: chat.createdAt,
+    updatedAt: chat.updatedAt
   });
 }
 
 // delete chat by id controller function
 export async function deleteChatByIdController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -297,7 +296,7 @@ export async function deleteChatByIdController(req: Request, res: Response) {
 // get the chat blob controller function
 export async function getChatBlobController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -336,7 +335,7 @@ export async function getChatBlobController(req: Request, res: Response) {
 // share chat by id controller function
 export async function getTokenByIdController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -385,5 +384,75 @@ export async function getTokenByIdController(req: Request, res: Response) {
   } catch (error) {
     // send error response
     res.status(400).send({ message: 'Invalid expiresIn' });
+  }
+}
+
+// get chat with the jwt token controller
+export async function getChatWithJwtController(req: Request, res: Response) {
+  // secret key to verify the token
+  const JwtSecret = process.env.JWT_SECRET;
+
+  // get the token from the request
+  const JwtToken = req.params.token;
+
+  // verify the token
+  try {
+    // constants
+    const decoded: IJwtChatPayload = jwt.verify(JwtToken, JwtSecret) as IJwtChatPayload;
+
+    // query string
+    const query = `
+      SELECT chatId, userId, createdAt, updatedAt
+      FROM ${Chat.tableName} WHERE chatId = ?
+    `;
+
+    // chat id
+    const chatId = decoded.chatId;
+
+    // get chat with raw query
+    const chat = await sequelize.query(query, {
+      replacements: [chatId],
+      type: QueryTypes.SELECT,
+    }) as [{
+      chatId    : number,
+      userId    : number,
+      createdAt : Date,
+      updatedAt : Date,
+    }];
+
+    // if chat is not found
+    if (!chat.length) {
+      return res.status(404).json({ message: "Chat not found" });
+    }
+
+    // send the success response
+    res.status(200).json({
+      blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}/blob`,
+      chatId: chat[0].chatId,
+      userId: chat[0].userId,
+      createdAt: chat[0].createdAt,
+      updatedAt: chat[0].updatedAt,
+    });
+  } catch (error) {
+    res.status(410).json({ message: error.message });
+  }
+}
+
+// get blob with the jwt token controller
+export async function getBlobWithJwtController(req: Request, res: Response) {
+  // secret key to verify the token
+  const JwtSecret = process.env.JWT_SECRET;
+
+  // get the token from the request
+  const JwtToken = req.params.token;
+
+  // verify the token
+  try {
+    const decoded: IJwtChatPayload = jwt.verify(JwtToken, JwtSecret) as IJwtChatPayload;
+    const chat = await Chat.findByPk(decoded.chatId);
+    res.set('Content-Type', chat.mimeType);
+    res.send(chat.data);
+  } catch (error) {
+    res.status(410).json({ message: error.message });
   }
 }

@@ -165,7 +165,7 @@ export default function Viewchat() {
     }
 
     // Query Url to get token
-    const tokenUrl = `/api/v1/users/${user.userId}/chats/${chat.chatId}/token`;
+    const tokenUrl = `/api/v2/chats/${chat.chatId}/token`;
 
     // axios request
     const resp = await axios.get(tokenUrl, {
@@ -178,7 +178,7 @@ export default function Viewchat() {
 
     // download the chat
     const downloadUrl = (
-      `${axios.defaults.baseURL}/api/v1/util/chats/${token}/blob`
+      `${axios.defaults.baseURL}/api/v2/chats/shared/${token}/blob`
     );
 
     // download the chat
@@ -193,7 +193,7 @@ export default function Viewchat() {
     }
 
     // Query Url to get token
-    const QueryUrl = `/api/v1/users/${user.userId}/chats/${chat.chatId}/token`;
+    const QueryUrl = `/api/v2/chats/${chat.chatId}/token`;
 
     // axios request
     const resp = await axios.get(QueryUrl, {

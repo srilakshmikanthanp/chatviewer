@@ -11,17 +11,16 @@ import {
   getTokenByIdController,
   getChatBlobController,
   patchChatByIdController,
+  getChatWithJwtController,
+  getBlobWithJwtController
 } from "./chatController";
+
 import {
   userPostController,
   userGetController,
   userPatchController,
   userDeleteController
 } from "./userController";
-import {
-  getChatWithJwtController,
-  getBlobWithJwtController
-} from "./utilController";
 
 export {
   getChatWithJwtController,

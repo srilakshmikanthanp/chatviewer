@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useChatWithToken, useBlobWithToken } from "../apiClients/utilApi";
+import { useChatWithToken, useBlobWithToken } from "../apiClients/chatApi";
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { createViewerState } from "../utilities/constructors";
 import WhatsappParser from "../utilities/whatsapp";

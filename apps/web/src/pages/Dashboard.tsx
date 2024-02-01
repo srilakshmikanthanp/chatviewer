@@ -97,7 +97,6 @@ export default function Dashboard() {
     error,
     isFetching,
   } = useGetChats({
-    userId: user.userId,
     jwt: jwt,
     params: {
       page: pageNumber,
@@ -184,7 +183,6 @@ export default function Dashboard() {
 
     // delete the chat
     await chatDelete.mutateAsync({
-      userId: user.userId,
       chatId: chat.chatId,
       jwt: jwt,
     });

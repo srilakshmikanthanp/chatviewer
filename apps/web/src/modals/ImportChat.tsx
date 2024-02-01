@@ -5,7 +5,7 @@
 
 import { blobToMsg, getMimeType } from "../utilities/functions";
 import { ChangeEvent, HTMLAttributes, useState } from "react";
-import { IChat, IMsg, IUser } from "../interfaces";
+import { IChat, IMsg } from "../interfaces";
 import { Form } from "react-bootstrap";
 import { useCreateChat } from "../apiClients/chatApi";
 import { blobToBase64 } from "../utilities/functions";
@@ -23,7 +23,6 @@ import {
 interface IImportChatProps extends HTMLAttributes<HTMLDivElement> {
   onImport: (msgs: IMsg[], chat: IChat | null) => void;
   isOpen: boolean;
-  user: IUser | null;
   jwt: string | null;
   onClose: () => void;
 }
@@ -96,7 +95,7 @@ export default function ImportChat(props: IImportChatProps) {
     }
 
     // if not uploadable
-    if (!isUploadable || (!props.user || !props.jwt)) {
+    if (!isUploadable || !props.jwt) {
       // set the file blob to null
       setSelectedFile(undefined);
 
@@ -114,7 +113,7 @@ export default function ImportChat(props: IImportChatProps) {
     }
 
     // Check if the user is valid
-    if ((!props.user || !props.jwt)) {
+    if ((!props.jwt)) {
       throw new Error("Can't Upload: User is not valid");
     }
 
@@ -129,7 +128,6 @@ export default function ImportChat(props: IImportChatProps) {
 
     // create the chat
     const response = await createChat.mutateAsync({
-      userId: props.user.userId,
       jwt: props.jwt,
       chat: chat,
     });
@@ -220,7 +218,7 @@ export default function ImportChat(props: IImportChatProps) {
               checked={isUploadable}
               type="checkbox"
               label="Upload the Chat"
-              disabled={!props.user && !props.jwt}
+              disabled={!props.jwt}
             />
           </Form.Group>
         </Form>

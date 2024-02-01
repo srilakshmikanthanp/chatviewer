@@ -9,21 +9,20 @@ import { IUser } from '../interfaces';
 
 // To get the user details
 export const useGetUser = ({
-  userId,
   token
 }: {
   userId: number;
   token: string;
 }) => {
   // Query Key for the get user
-  const queryKey = ['users', userId];
+  const queryKey = ['users', 'me'];
 
   // Response Type
   type ResponseType = IUser;
 
   // Fetcher
   const fetcher = async () => {
-    const QueryUrl = `/api/v1/users/${userId}`;
+    const QueryUrl = `/api/v2/users/me`;
     return await axios.get<ResponseType>(QueryUrl, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -45,7 +44,7 @@ export const useCreateUser = () => {
 
   // Mutator
   const mutator = async ({ token }: MutationParams) => {
-    const QueryUrl = '/api/v1/users';
+    const QueryUrl = '/api/v2/users';
     return await axios.post<MutationResult>(QueryUrl, { token });
   };
 
@@ -60,7 +59,6 @@ export const usePatchUser = () => {
 
   // Mutation Params
   type MutationParams = {
-    userId: number;
     jwt: string;
     options: {
       name?: string;
@@ -71,8 +69,8 @@ export const usePatchUser = () => {
   type MutationResult = IUser;
 
   // Mutator
-  const mutator = async ({ userId, jwt: token, options }: MutationParams) => {
-    const mutationUrl = `/api/v1/users/${userId}`;
+  const mutator = async ({ jwt: token, options }: MutationParams) => {
+    const mutationUrl = `/api/v2/users/me`;
     return await axios.patch<MutationResult>(mutationUrl,{
         name: options.name
       }, {
@@ -84,7 +82,7 @@ export const usePatchUser = () => {
   // Query
   return useMutation(mutator, {
     onSuccess: (data, variables) => {
-      client.invalidateQueries(['user', variables.userId]);
+      client.invalidateQueries(['user', 'me']);
     }
   });
 };
@@ -93,7 +91,6 @@ export const usePatchUser = () => {
 export const useDeleteUser = () => {
   // Mutation Params
   type MutationParams = {
-    userId: number;
     jwt: string;
   };
 
@@ -103,8 +100,8 @@ export const useDeleteUser = () => {
   };
 
   // Query Function
-  const mutator = async ({ userId, jwt: token }: MutationParams) => {
-    const mutationUrl = `/api/v1/users/${userId}`;
+  const mutator = async ({ jwt: token }: MutationParams) => {
+    const mutationUrl = `/api/v2/users/me`;
     return await axios.delete<MutationResult>(mutationUrl, {
       headers: { Authorization: `Bearer ${token}` }
     });

@@ -57,7 +57,6 @@ export default function UserEditor(props: UserEditorProps) {
   const handleSave = async () => {
     // patch user details
     const resp = await patchUser.mutateAsync({
-      userId: props.user.userId,
       jwt: props.jwt,
       options: {
         name: userName

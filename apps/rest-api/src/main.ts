@@ -1,6 +1,5 @@
-import userRouter from './routers/v1/userRouter';
-import chatRouter from "./routers/v1/chatRouter";
-import utilRouter from "./routers/v1/utilRouter";
+import userRouter from './routers/v2/userRouter';
+import chatRouter from "./routers/v2/chatRouter";
 import { db_initializer } from './utilities';
 import * as express from 'express';
 import * as cors from "cors";
@@ -30,13 +29,10 @@ async function main() {
   app.enable('trust proxy');
 
   // add the user router
-  app.use('/api/v1/users', userRouter);
+  app.use('/api/v2/users', userRouter);
 
   // add the chat router
-  app.use('/api/v1/users/:user_id/chats', chatRouter);
-
-  // add util Router
-  app.use('/api/v1/util', utilRouter);
+  app.use('/api/v2/chats', chatRouter);
 
   // add welcome handler
   app.get('/', (req, res) => {

@@ -15,13 +15,13 @@ const router = Router({ mergeParams: true });
 router.post("/", userPostValidator, userPostController);
 
 // get the user details from the database
-router.get("/:user_id", authenticator, userGetController);
+router.get("/me", authenticator, userGetController);
 
 // update user details in the database
-router.patch("/:user_id", authenticator, userPatchValidator, userPatchController);
+router.patch("/me", authenticator, userPatchValidator, userPatchController);
 
 // delete user from the database
-router.delete("/:user_id", authenticator, userDeleteController);
+router.delete("/me", authenticator, userDeleteController);
 
 // export the router object
 export default router;

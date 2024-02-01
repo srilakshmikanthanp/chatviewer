@@ -69,7 +69,6 @@ export default function ChatEditor(props: UserEditorProps) {
   const handleSave = async () => {
     // patch user details
     const resp = await patchChat.mutateAsync({
-      userId: props.user.userId,
       chatId: props.chat.chatId,
       jwt: props.jwt,
       options: {

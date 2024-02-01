@@ -56,7 +56,7 @@ export async function userPostController(req: Request, res: Response) {
 // get the user details from the database
 export async function userGetController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -78,7 +78,7 @@ export async function userGetController(req: Request, res: Response) {
 // update the user details in the database
 export async function userPatchController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {
@@ -106,7 +106,7 @@ export async function userPatchController(req: Request, res: Response) {
 // delete the user details from the database
 export async function userDeleteController(req: Request, res: Response) {
   // get the user id and validate it
-  const userID = res.locals.user_auth_payload?.userId === +req.params.user_id ? +req.params.user_id : null;
+  const userID = +res.locals.user_auth_payload?.userId
 
   // id from the url should be same as the id from the jwt
   if (!userID) {

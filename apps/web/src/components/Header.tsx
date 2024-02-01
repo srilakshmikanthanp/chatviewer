@@ -183,7 +183,6 @@ export default function Header() {
       </Menu>}
       <ImportChat
         onClose={() => SetIsImportModalVisible(false)}
-        user={user}
         jwt={jwt}
         isOpen={isImportModalVisible}
         onImport={handleImportChat}

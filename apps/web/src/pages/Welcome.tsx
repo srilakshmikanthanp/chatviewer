@@ -113,7 +113,6 @@ export default function Welcome() {
         <ImportChat
           onClose={() => setIsDialogOpen(false)}
           isOpen={isDialogOpen}
-          user={user}
           jwt={jwt}
           onImport={handleImport}
         />

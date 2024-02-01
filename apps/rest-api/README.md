@@ -4,7 +4,6 @@ This Documentation was available here for the REST API of Chat Viewer. This Docu
 
 * [User](#user)
 * [Chat](#chat)
-* [Util](#util)
 
 ## User
 
@@ -55,7 +54,7 @@ This API was used to get the user details from the Application, None of the user
 #### Request
 
 ```sh
-GET {{host}}/api/v1/users/1
+GET {{host}}/api/v1/users/me
 ```
 
 ###### Auth
@@ -83,7 +82,7 @@ This API was to update the user details currently only updatable field is the Na
 #### Request
 
 ```sh
-PATCH {{host}}/api/v1/users/1
+PATCH {{host}}/api/v1/users/me
 ```
 
 ##### Auth
@@ -119,7 +118,7 @@ This will remove all details of the user, so make correct use of it
 #### Request
 
 ```sh
-DELETE {{host}}/api/v1/users/1
+DELETE {{host}}/api/v1/users/me
 ```
 
 ##### Auth
@@ -147,7 +146,7 @@ This API is used to create a new chat for the user.
 #### Request
 
 ```sh
-POST {{host}}/api/v1/users/1/chats
+POST {{host}}/api/v1/chats
 ```
 
 ##### Auth
@@ -169,7 +168,7 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+  "blobUrl": "http://localhost:8000/api/v1/chats/2/blob",
   "name": "Chat 1",
   "chatId": 2,
   "userId": 1,
@@ -185,7 +184,7 @@ This API is used to get all chats of the user
 #### Request
 
 ```sh
-GET {{host}}/api/v1/users/1/chats
+GET {{host}}/api/v1/chats
 ```
 
 ##### Auth
@@ -207,7 +206,7 @@ The Query Parameters have been used for paging the results. It returns results w
 ```json
 [
   {
-    "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+    "blobUrl": "http://localhost:8000/api/v1/chats/2/blob",
     "name": "Chat 1",
     "chatId": 2,
     "userId": 1,
@@ -215,7 +214,7 @@ The Query Parameters have been used for paging the results. It returns results w
     "updatedAt": "2022-07-23T22:16:42.000Z"
   },
   {
-    "blobUrl": "http://localhost:8000/api/v1/users/1/chats/3/blob",
+    "blobUrl": "http://localhost:8000/api/v1/chats/3/blob",
     "name": "Chat 2",
     "chatId": 3,
     "userId": 1,
@@ -232,7 +231,7 @@ This API was used to get the Specific chat if the user
 #### Request
 
 ```sh
-GET {{host}}/api/v1/users/1/chats/2
+GET {{host}}/api/v1/chats/2
 ```
 
 ##### Auth
@@ -245,7 +244,7 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+  "blobUrl": "http://localhost:8000/api/v1/chats/2/blob",
   "name": "Chat 1",
   "chatId": 2,
   "userId": 1,
@@ -261,7 +260,7 @@ This API is used to update the chat of the user, currently, the only updatable f
 #### Request
 
 ```sh
-PATCH {{host}}/api/v1/users/1/chats/2
+PATCH {{host}}/api/v1/chats/2
 ```
 
 ##### Auth
@@ -282,7 +281,7 @@ Authorization Bearer <Token>
 
 ```json
 {
-  "blobUrl": "http://localhost:8000/api/v1/users/1/chats/2/blob",
+  "blobUrl": "http://localhost:8000/api/v1/chats/2/blob",
   "name": "Chat 1",
   "chatId": 2,
   "userId": 1,
@@ -298,7 +297,7 @@ This API is used to delete the chat of the user
 #### Request
 
 ```sh
-DELETE {{host}}/api/v1/users/1/chats/3
+DELETE {{host}}/api/v1/chats/3
 ```
 
 ##### Auth
@@ -322,7 +321,7 @@ This API is used to get the BLOB of the Chat
 #### Request
 
 ```sh
-GET {{host}}/api/v1/users/1/chats/2/blob
+GET {{host}}/api/v1/chats/2/blob
 ```
 
 ##### Auth
@@ -344,7 +343,7 @@ This API is used to generate a JWT token for the chat, so it can be shared easil
 #### Request
 
 ```sh
-GET {{host}}/api/v1/users/1/chats/2/token
+GET {{host}}/api/v1/chats/2/token
 ```
 
 ##### Auth
@@ -365,10 +364,6 @@ The header will contain the token
 chat-token <Token>
 ```
 
-## Util
-
-This API has some of the utilities for the REST API
-
 ### Get the chat with token
 
 You can generate a token for a specific chat with that token, and use this API to get the chat details
@@ -376,7 +371,7 @@ You can generate a token for a specific chat with that token, and use this API t
 #### Request
 
 ```sh
-GET {{host}}/api/v1/util/chats/<token>
+GET {{host}}/api/v1/chats/<token>
 ```
 
 #### Response
@@ -399,7 +394,7 @@ You can generate a token for a specific chat with that token, and use this API t
 #### Request
 
 ```sh
-GET {{host}}/api/v1/util/chats/<token>/blob
+GET {{host}}/api/v1/chats/<token>/blob
 ```
 
 #### Response

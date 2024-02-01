@@ -54,7 +54,6 @@ export default function AccountCloser(props: UserEditorProps) {
   const handleDelete = async () => {
     // delete user
     await deleteUser.mutateAsync({
-      userId: props.user.userId,
       jwt: props.jwt,
     });
 
