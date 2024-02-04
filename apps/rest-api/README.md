@@ -1,6 +1,6 @@
 # Rest API Documentation Chat Viewer
 
-This Documentation was available here for the REST API of Chat Viewer. This Documentation has Three Sections,
+This Documentation was available here for the REST API of Chat Viewer. This Documentation has Two Sections,
 
 * [User](#user)
 * [Chat](#chat)
