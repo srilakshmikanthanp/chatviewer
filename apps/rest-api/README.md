@@ -378,7 +378,7 @@ GET {{host}}/api/v1/chats/shared/<token>
 
 ```json
 {
-    "blobUrl": "http://localhost:8000/api/v1/util/chats/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0SWQiOjIsImlhdCI6MTY1ODczODQ4MCwiZXhwIjoxNjU4NzQ1NjgwfQ.ZyKgiK4dKMB-AYAmhKSMkXAIqnQGgsqesnb5CDorwIM/blob",
+    "blobUrl": "https://url-to-the-blob",
     "name": "Chat 1",
     "chatId": 2,
     "userId": 1,
