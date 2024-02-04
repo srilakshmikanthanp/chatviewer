@@ -43,11 +43,7 @@ export default function AccountCloser(props: UserEditorProps) {
     setText(event.target.value);
 
     // check valid
-    if (event.target.value === "confirm") {
-      setIsReady(true);
-    } else {
-      setIsReady(false);
-    }
+    setIsReady(event.target.value === "confirm");
   }
 
   // Handle Delete

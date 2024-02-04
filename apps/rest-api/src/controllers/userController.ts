@@ -128,5 +128,5 @@ export async function userDeleteController(req: Request, res: Response) {
   await user.destroy();
 
   // send the user details
-  res.status(200).json(user);
+  res.status(200).json({ message: 'User deleted'})
 }

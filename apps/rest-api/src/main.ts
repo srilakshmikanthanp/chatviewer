@@ -36,7 +36,7 @@ async function main() {
 
   // add welcome handler
   app.get('/', (req, res) => {
-    res.send('Hey, welcome to the API!');
+    res.json({ message: "Hey, welcome to the API!" });
   });
 
   // start the express application

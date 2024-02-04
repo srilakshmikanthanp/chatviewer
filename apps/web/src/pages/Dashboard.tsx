@@ -119,11 +119,11 @@ export default function Dashboard() {
 
   // on Delete User
   const onUserDeleted = () => {
-    // Set new state
-    dispatch(setUser({ user: null, jwt: null }));
-
     // navigate
     navigate("/");
+
+    // Set new state
+    dispatch(setUser({ user: null, jwt: null }));
   }
 
   // onClose Edit
