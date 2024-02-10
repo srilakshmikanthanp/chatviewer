@@ -193,7 +193,7 @@ export async function getChatByIdController(req: Request, res: Response) {
   const chatId = +req.params.chat_id;
 
   // get chat with raw query
-  const chat = await Chat.findOne({ attributes: { exclude: ['data'] },  where: { chatId: chatId } });
+  const chat = await Chat.findOne({ attributes: { exclude: ['data'] },  where: { chatId: chatId, userId: userID } });
 
   // if chat is not found
   if (!chat) {
@@ -279,7 +279,7 @@ export async function deleteChatByIdController(req: Request, res: Response) {
   const chatId = +req.params.chat_id;
 
   // get the chat data from the database
-  const chat = await Chat.findOne({ where: { chatId: chatId } });
+  const chat = await Chat.findOne({ where: { chatId: chatId, userId: userID } });
 
   // if chat is not found
   if (!chat) {
@@ -315,7 +315,7 @@ export async function getChatBlobController(req: Request, res: Response) {
   const chatId = +req.params.chat_id;
 
   // get the chat data from the database
-  const chat = await Chat.findOne({ where: { chatId: chatId } });
+  const chat = await Chat.findOne({ where: { chatId: chatId, userId: userID } });
 
   // if chat is not found
   if (!chat) {
