@@ -54,7 +54,7 @@ function Notice({ open, onClose }: { open: boolean; onClose: () => void }) {
 
 // Application
 export default function App() {
-  const [noticeShowing, setNoticeShowing] = useState(true);
+  const [noticeShowing, setNoticeShowing] = useState(false);
 
   const handleClose = () => {
     setNoticeShowing(false)
