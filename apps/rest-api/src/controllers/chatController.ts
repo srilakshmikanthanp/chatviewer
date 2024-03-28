@@ -96,13 +96,13 @@ export async function getAllChatsController(req: Request, res: Response) {
 
   // query string
   let ChatQuery = `
-    SELECT chatId, userId, name, createdAt, updatedAt
-    FROM ${Chat.tableName} WHERE userId = ?
+    SELECT "chatId", "userId", "name", "createdAt", "updatedAt"
+    FROM "${Chat.tableName}" WHERE "userId" = ?
   `;
 
   // if has short by then add it to the query string
   if (sortBy) {
-    ChatQuery += ` ORDER BY ${sortBy == "updatedAt" ? sortBy  + " DESC" : sortBy} `;
+    ChatQuery += ` ORDER BY "${sortBy == "updatedAt" ? sortBy  + " DESC" : sortBy}" `;
   }
 
   // if per_page is present and page is present
@@ -137,7 +137,7 @@ export async function getAllChatsController(req: Request, res: Response) {
   });
 
   // query to count the total number of chats
-  const countQuery = `SELECT COUNT(*) as total FROM ${Chat.tableName} WHERE userId = ?`;
+  const countQuery = `SELECT COUNT(*) as total FROM "${Chat.tableName}" WHERE "userId" = ?`;
 
   // get the total number of chats
   const total = +(
@@ -400,38 +400,30 @@ export async function getChatWithJwtController(req: Request, res: Response) {
     // constants
     const decoded: IJwtChatPayload = jwt.verify(JwtToken, JwtSecret) as IJwtChatPayload;
 
-    // query string
-    const query = `
-      SELECT chatId, userId, createdAt, updatedAt
-      FROM ${Chat.tableName} WHERE chatId = ?
-    `;
-
     // chat id
     const chatId = decoded.chatId;
 
-    // get chat with raw query
-    const chat = await sequelize.query(query, {
-      replacements: [chatId],
-      type: QueryTypes.SELECT,
-    }) as [{
+    const chat = await Chat.findOne({
+      where: { chatId }, attributes: { exclude: ["data"] }
+    }) as {
       chatId    : number,
       userId    : number,
       createdAt : Date,
       updatedAt : Date,
-    }];
+    };
 
     // if chat is not found
-    if (!chat.length) {
+    if (!chat) {
       return res.status(404).json({ message: "Chat not found" });
     }
 
     // send the success response
     res.status(200).json({
       blobUrl: `${req.protocol}://${req.get('host')}${req.originalUrl}/blob`,
-      chatId: chat[0].chatId,
-      userId: chat[0].userId,
-      createdAt: chat[0].createdAt,
-      updatedAt: chat[0].updatedAt,
+      chatId: chat.chatId,
+      userId: chat.userId,
+      createdAt: chat.createdAt,
+      updatedAt: chat.updatedAt,
     });
   } catch (error) {
     res.status(410).json({ message: error.message });
