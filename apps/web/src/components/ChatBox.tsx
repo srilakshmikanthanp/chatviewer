@@ -7,7 +7,7 @@ import { linkify } from '../utilities/functions';
 import { HtmlHTMLAttributes } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import ReactPlayer from 'react-player/youtube';
+import ReactPlayer from 'react-player';
 import styled from 'styled-components';
 import { IMsg } from '../interfaces';
 
