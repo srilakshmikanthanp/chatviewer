@@ -2,6 +2,7 @@
   from = "https://chatviewer.netlify.app/*"
   to = "https://chatviewer.srilakshmikanthanp.com/:splat"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/*"
