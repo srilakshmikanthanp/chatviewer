@@ -1,5 +1,5 @@
 [[redirects]]
-  from = "chatviewer.netlify.app"
+  from = "https://chatviewer.netlify.app/"
   to = "https://chatviewer.srilakshmikanthanp.com"
   status = 301
 
