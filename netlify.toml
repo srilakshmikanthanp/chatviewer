@@ -1,4 +1,5 @@
 [[redirects]]
   from = "/*"
-  to = "/"
-  status = 200
+  to = "https://chatviewer.srilakshmikanthanp.com"
+  status = 301
+  force = true
