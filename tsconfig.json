@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/chatviewer-web-e2e"
+    },
+    {
+      "path": "./apps/chatviewer-web"
+    },
+    {
+      "path": "./apps/chatviewer-api-e2e"
+    },
+    {
+      "path": "./apps/chatviewer-api"
+    }
+  ]
+}

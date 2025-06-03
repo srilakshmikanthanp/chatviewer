@@ -86,20 +86,24 @@ To run the project local install npm and node js
 ### Installation
 
 1. Clone the repo from github
+
    ```sh
    git clone https://github.com/srilakshmikanthanp/chatviewer.git
    ```
-2. Install NPM packages
+3. Install NPM packages
+
    ```sh
    npm install
    ```
-3. Start the server using Nx
+5. Start the server using Nx
+
    ```sh
-   npx nx serve rest-api 
+   npx nx serve chatviewer-api 
    ```
-4. Start the React using nx
+7. Start the React using nx
+
    ```sh
-   npx nx serve web
+   npx nx serve chatviewer-web
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -111,11 +115,11 @@ To run the project local install npm and node js
 
 For REST API documentation go to the following link
 
-  * [REST API](apps/rest-api)
+  * [REST API](apps/chatviewer-api)
 
 For Web UI documentation go to the following link
 
-  * [Web UI](apps/web)
+  * [Web UI](apps/chatviewer-web)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

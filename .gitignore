@@ -1,9 +1,9 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
-/out-tsc
+dist
+tmp
+out-tsc
 
 # dependencies
 node_modules
@@ -18,7 +18,6 @@ node_modules
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -39,5 +38,14 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# ENV
+.nx/cache
+.nx/workspace-data
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
+test-output
+
+# Env
 .env
