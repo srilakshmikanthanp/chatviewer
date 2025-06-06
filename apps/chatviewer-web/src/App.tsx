@@ -13,7 +13,7 @@ import {
 import { Chatshared, Dashboard, Viewchat, Welcome } from './pages';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import './styles/global.module.css';
+import './styles/global.css';
 import App404 from './App404';
 import { useState } from 'react';
 
