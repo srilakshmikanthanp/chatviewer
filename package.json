@@ -2,7 +2,12 @@
   "name": "@chatviewer/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start-api": "nx serve chatviewer-api",
+    "build-api": "nx build chatviewer-api",
+    "start-web": "nx serve chatviewer-web",
+    "build-web": "nx build chatviewer-web"
+  },
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
