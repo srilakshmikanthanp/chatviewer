@@ -7,7 +7,6 @@ import { linkify } from '../utilities/functions';
 import { HtmlHTMLAttributes, JSX } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import ReactPlayer from 'react-player';
 import styled from 'styled-components';
 import { IMsg } from '../types';
 
@@ -139,11 +138,11 @@ function ChatBox({ onClicked, message, isPrimary }: IChatBoxProps) {
       break;
     case 'video':
       mediaBodyComponent = (
-        <ReactPlayer
-          url={URL.createObjectURL(message.media)}
-          height = "200px"
-          width = "100%"
-          controls = {true}
+        <video
+          src={URL.createObjectURL(message.media)}
+          height="200px"
+          width="100%"
+          controls={true}
         />
       );
       break;

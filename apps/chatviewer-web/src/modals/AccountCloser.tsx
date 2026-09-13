@@ -71,7 +71,7 @@ export default function AccountCloser(props: UserEditorProps) {
           and cannot be undone. If you are sure,
           please enter confirm below.
         </DialogContentText>
-        <Box display="flex" flexDirection="column">
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <TextField
             onChange={handleChange}
             label="Please enter confirm"

@@ -104,7 +104,7 @@ export default class AppError extends React.Component<HTMLAttributes<HTMLDivElem
         <Alert severity="error">
           Opps! Something went wrong. Please try again later.
         </Alert>
-        <Typography align="center" mt={3} sx={{ maxWidth: "350px" }}>
+        <Typography align="center" sx={{ mt: 3, maxWidth: "350px" }}>
           Sorry for the inconvenience. We are working on it.
           If you want to Inform us up, Please Issue a Bug
           Report at&nbsp;

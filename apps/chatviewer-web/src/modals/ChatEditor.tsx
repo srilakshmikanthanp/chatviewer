@@ -94,7 +94,7 @@ export default function ChatEditor(props: UserEditorProps) {
         <DialogContentText className="mb-3">
           Edit the Chat details and click save to Proceed.
         </DialogContentText>
-        <Box display="flex" flexDirection="column">
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <TextField
             onChange={handleChange}
             label="Chat Name"

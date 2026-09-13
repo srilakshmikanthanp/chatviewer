@@ -81,7 +81,7 @@ export default function UserEditor(props: UserEditorProps) {
         <DialogContentText className="mb-3">
           Edit the user details and click save to Proceed.
         </DialogContentText>
-        <Box display="flex" flexDirection="column">
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <TextField
             onChange={handleChange}
             label="User Name"

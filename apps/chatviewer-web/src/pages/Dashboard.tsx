@@ -91,7 +91,6 @@ export default function Dashboard() {
 
   // chats for the dashboard
   const {
-    isPreviousData: isPrevData,
     isError,
     data,
     error,
@@ -144,7 +143,7 @@ export default function Dashboard() {
 
   // on next handler
   const onNextChat = () => {
-    if (!isPrevData && link?.includes("next")) {
+    if (link?.includes("next")) {
       setPageNumber(pageNumber + 1);
     }
   };
@@ -209,7 +208,7 @@ export default function Dashboard() {
       </UserViewWrapper>
       <ChatViewWrapper>
         <ChatView
-          hasNext={!isPrevData && link?.includes("next") || false}
+          hasNext={link?.includes("next") || false}
           isFetching={isFetching}
           isProgress={isInProgress}
           setSortBy={setSortBy}

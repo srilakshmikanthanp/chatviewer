@@ -26,6 +26,7 @@ import {
   SpeedDialAction,
   SpeedDial,
   SpeedDialIcon,
+  Tooltip,
   Snackbar,
   Alert,
 } from "@mui/material";
@@ -54,25 +55,25 @@ function ChatOptions(props: IChatBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Speed Dial Icon
-  const selectAuthorIcon = <SpeedDialAction
-    tooltipTitle="Choose Primary Author"
-    icon={<Person />}
-    onClick={props.onAuthor}
-  />;
+  const selectAuthorIcon = (
+    <Tooltip title="Choose Primary Author">
+      <SpeedDialAction icon={<Person />} onClick={props.onAuthor} />
+    </Tooltip>
+  );
 
   // Download Icon
-  const downloadIcon = <SpeedDialAction
-    tooltipTitle="Download Chat File"
-    icon={<CloudDownload />}
-    onClick={props.onDownload}
-  />;
+  const downloadIcon = (
+    <Tooltip title="Download Chat File">
+      <SpeedDialAction icon={<CloudDownload />} onClick={props.onDownload} />
+    </Tooltip>
+  );
 
   // Share Icon
-  const shareIcon = <SpeedDialAction
-    tooltipTitle="Copy Link for Chat"
-    icon={<Share />}
-    onClick={props.onShare}
-  />;
+  const shareIcon = (
+    <Tooltip title="Copy Link for Chat">
+      <SpeedDialAction icon={<Share />} onClick={props.onShare} />
+    </Tooltip>
+  );
 
   // Render Speed Dial
   return (

@@ -52,7 +52,7 @@ export default function Input(props: InputProps) {
         <DialogContentText className="mb-3">
           {props.description}
         </DialogContentText>
-        <Box display="flex" flexDirection="column">
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <TextField
             onChange={handleChange}
             value={text}
