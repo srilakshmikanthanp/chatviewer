@@ -63,7 +63,7 @@ export default function App() {
   return (
     <AppContainer>
       <Routes>
-        <Route path="/chatshared/:token" element={<Chatshared />} />
+        <Route path="/chatshared/:driveFileId" element={<Chatshared />} />
         <Route path="/viewchat" element={<Viewchat />} />
         <Route path="/" element={<Welcome />} />
         <Route path="*" element={<App404 />} />

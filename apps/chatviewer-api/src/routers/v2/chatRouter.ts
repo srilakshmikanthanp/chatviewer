@@ -5,14 +5,10 @@
 
 import {
   deleteChatByIdController,
-  getTokenByIdController,
-  getChatBlobController,
   postChatController,
   getAllChatsController,
   getChatByIdController,
   patchChatByIdController,
-  getChatWithJwtController,
-  getBlobWithJwtController
 } from '../../controllers';
 import { postChatValidator, patchChatValidator } from '../../validators';
 import { authenticator } from '../../middlewares';
@@ -61,36 +57,6 @@ router.patch(
   authenticator,
   patchChatValidator,
   patchChatByIdController
-);
-
-// get blob
-router.get(
-  '/:chat_id/blob',
-
-  authenticator,
-  getChatBlobController
-);
-
-// get share link
-router.get(
-  '/:chat_id/token',
-
-  authenticator,
-  getTokenByIdController
-);
-
-// get chat with jwt
-router.get(
-  '/shared/:token',
-
-  getChatWithJwtController
-);
-
-// get blob with jwt
-router.get(
-  '/shared/:token/blob',
-
-  getBlobWithJwtController
 );
 
 // export router

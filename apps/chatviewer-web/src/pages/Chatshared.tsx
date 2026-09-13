@@ -3,17 +3,18 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useChatWithToken, useBlobWithToken } from "../apiClients/chatApi";
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { useDownloadDriveChat } from "../apiClients/googleDriveApi";
+import { useDriveAuth } from "../apiClients/DriveAuthProvider";
+import { blobToMsg } from "../utilities/functions";
 import { createViewerState } from "../utilities/constructors";
-import WhatsappParser from "../utilities/whatsapp";
-import { LinearProgress } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress } from "@mui/material";
 import { Header, Footer } from "../components";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { IChat, IMsg } from "../types";
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
+import { selectUser } from "../redux/slices/userSlice";
+import { useSelector } from "react-redux";
 
 const ChatSharedContainer = styled('div')`
   justify-content: center;
@@ -28,50 +29,58 @@ const ChatSharedContainer = styled('div')`
  * ChatShared is a component that is used to view the shared chat.
  */
 export default function Chatshared() {
-  // Get the chat token from the url
-  const token = useParams()["token"] as string;
-
-  // Get the chat data from the api
-  const chat = useChatWithToken({ token });
-
-  // Get the blob data from the api
-  const blob = useBlobWithToken({ token });
+  // The route value is the Google Drive file ID.
+  const downloadDriveChat = useDownloadDriveChat();
+  const { getToken } = useDriveAuth();
+  const user = useSelector(selectUser);
+  const { driveFileId } = useParams<{ driveFileId: string }>();
+  const [isDownloadErrorOpen, setIsDownloadErrorOpen] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   // create the navigate hook
   const navigate = useNavigate();
 
-  // on Fetched Handle the fetched data
-  const onFetched = async (chat: IChat, blob: Blob) => {
-    // create a new whatsapp parser
-    const iterator = new WhatsappParser(blob);
-
-    // message array
-    const messages : IMsg[] = [];
-
-    // Iterate through the messages
-    for await (const msg of iterator) {
-      messages.push(msg);
+  const handleConnect = async () => {
+    if (!driveFileId) {
+      setIsDownloadErrorOpen(true);
+      return;
     }
 
-    // navigate to the view chat page
-   return navigate('/viewchat', { state: createViewerState(chat, messages) });
-  }
-
-  // if error in fetching the chat
-  if (chat.error || blob.error) {
-    throw chat.error || blob.error;
-  }
-
-  // if data is fetched
-  if (chat.isSuccess && blob.isSuccess) {
-    onFetched(chat.data.data, blob.data.data);
-  }
+    try {
+      setIsConnecting(true);
+      const accessToken = await getToken(true, user?.email);
+      const blob = await downloadDriveChat.mutateAsync({ driveFileId, accessToken });
+      const messages = await blobToMsg(blob);
+      navigate('/viewchat', { state: createViewerState({ driveFileId }, messages), replace: true});
+    } catch {
+      setIsDownloadErrorOpen(true);
+    } finally {
+      setIsConnecting(false);
+    }
+  };
 
   // Body
   const Body = () => (
     <ChatSharedContainer>
-      <CloudDownloadIcon sx={{width: "50px", height: "50px",}}/>
-      <LinearProgress sx={{ width: "250px" }} />
+      <Alert severity="info">
+        Connect Google Drive to view this shared chat.
+        <Button onClick={handleConnect} disabled={isConnecting}>
+          {isConnecting ? 'Opening Google Drive...' : 'Connect Google Drive'}
+        </Button>
+      </Alert>
+      {isConnecting && <LinearProgress sx={{ width: "250px" }} />}
+      <Dialog
+        open={isDownloadErrorOpen}
+        onClose={() => setIsDownloadErrorOpen(false)}
+      >
+        <DialogTitle>Chat unavailable</DialogTitle>
+        <DialogContent>
+          This file may have been deleted from Google Drive or you may no longer have permission to view it.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDownloadErrorOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </ChatSharedContainer>
   );
 

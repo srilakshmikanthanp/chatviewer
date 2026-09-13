@@ -11,8 +11,7 @@ class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
   declare chatId: CreationOptional<number>;
   declare userId: CreationOptional<number>;
   declare name: string;
-  declare data: Buffer;
-  declare mimeType: string;
+  declare driveFileId: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -32,11 +31,7 @@ Chat.init({
     type: DataTypes.STRING,
     allowNull: false
   },
-  data: {
-    type: DataTypes.BLOB('long'),
-    allowNull: false
-  },
-  mimeType: {
+  driveFileId: {
     type: DataTypes.STRING,
     allowNull: false
   },

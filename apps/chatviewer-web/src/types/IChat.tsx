@@ -5,8 +5,7 @@
 
 export default interface IChat {
   createdAt: string;
-  blobUrl: string;
-  mimeType: string;
+  driveFileId: string;
   name: string;
   chatId: number;
   userId: number;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 // Copyright (c) 2022 Sri Lakshmi Kanthan P
 //
 // This software is released under the MIT License.
@@ -9,10 +8,11 @@ import { MenuItem, Menu, Divider, CircularProgress } from "@mui/material";
 import { createViewerState } from "../utilities/constructors";
 import { useSelector, useDispatch } from "react-redux";
 import { useCreateUser } from "../apiClients/userApi";
-import React, { useState, useEffect } from "react";
+import { CredentialResponse, googleLogout, GoogleLogin } from '@react-oauth/google';
+import { useDriveAuth } from "../apiClients/DriveAuthProvider";
+import { useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import AppLogo from "../assets/images/logo.png";
-import { GOOGLE_CLIENT_ID } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -41,14 +41,15 @@ const LogoImg = styled('img')`
   padding: 10px;
 `;
 
-const SignIn = styled('div')`
+const Progress = styled(CircularProgress)`
   margin-left: auto;
   padding: 10px;
 `;
 
-const Progress = styled(CircularProgress)`
+const HeaderActions = styled('div')`
   margin-left: auto;
-  padding: 10px;
+  display: flex;
+  align-items: center;
 `;
 
 // Navbar component
@@ -65,9 +66,6 @@ export default function Header() {
   // is sign in progress
   const [isSignInProgress, setIsSignInProgress] = useState(false);
 
-  // ref for the sign in sutton
-  const signInRef = React.createRef<HTMLDivElement>();
-
   // create use mutation hook for creating a user
   const createUser = useCreateUser();
 
@@ -82,6 +80,23 @@ export default function Header() {
 
   // jwt token
   const jwt: string | null = useSelector(selectJwt);
+  const { clearToken } = useDriveAuth();
+
+  const signHandler = async (response: CredentialResponse) => {
+    if (!response.credential) {
+      throw new Error('Google sign-in did not return an ID token');
+    }
+
+    try {
+      setIsSignInProgress(true);
+      const res = await createUser.mutateAsync({ token: response.credential });
+      const jwt = res.headers["auth-token"];
+      const user = res.data;
+      dispatch(setUser({ user, jwt }));
+    } finally {
+      setIsSignInProgress(false);
+    }
+  };
 
   // Menu Icon
   const MenuBar = (
@@ -98,7 +113,7 @@ export default function Header() {
     } else if (user !== null) {
       return MenuBar;
     } else {
-      return <SignIn ref={signInRef} />;
+      return <GoogleLogin onSuccess={signHandler} onError={() => undefined} />;
     }
   })();
 
@@ -116,50 +131,19 @@ export default function Header() {
     navigate("/dashboard");
   }
 
-  // Sign Handler
-  const signHandler = async (token: string) => {
-    // set the sign in progress state
-    setIsSignInProgress(true);
-
-    // sign in the user
-    const res = await createUser.mutateAsync({ token });
-    const jwt = res.headers["auth-token"];
-    const user = res.data;
-    dispatch(setUser({ user, jwt }));
-
-    // set the sign in progress state
-    setIsSignInProgress(false);
-  }
-
   // handle the Sign Out
   const handleSignOut = () => {
-    // dispatch the sign out action
     dispatch(setUser({ user: null, jwt: null, }));
-
-    // navigate to the sign in page
+    clearToken();
+    googleLogout();
     navigate("/");
   }
-
-  // render the sign in button
-  useEffect(() => {
-    // @ts-ignore
-    signInRef.current && google.accounts.id.renderButton(
-      signInRef.current, { theme: 'outline', size: "medium" }
-    );
-  });
-
-  // attach the google sign in button
-  // @ts-ignore
-  google.accounts.id.initialize({
-    callback: (res) => signHandler(res.credential),
-    client_id: GOOGLE_CLIENT_ID,
-  });
 
   // render the component
   return (
     <HeaderContent>
       <Link to="/"><LogoImg src={AppLogo} alt="logo" /></Link>
-      {RightSideComponent}
+    <HeaderActions>{RightSideComponent}</HeaderActions>
       {user && <Menu anchorEl={menuRef} open={!isMenuHidden} onClose={() => setIsMenuHidden(true)} >
         <MenuItem
           sx={{ justifyContent: "center" }}

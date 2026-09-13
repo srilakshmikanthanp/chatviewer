@@ -8,11 +8,7 @@ import {
   postChatController,
   getAllChatsController,
   getChatByIdController,
-  getTokenByIdController,
-  getChatBlobController,
   patchChatByIdController,
-  getChatWithJwtController,
-  getBlobWithJwtController
 } from "./chatController";
 
 import {
@@ -23,17 +19,13 @@ import {
 } from "./userController";
 
 export {
-  getChatWithJwtController,
-  getBlobWithJwtController,
   userPostController,
   userGetController,
   userPatchController,
   userDeleteController,
+  deleteChatByIdController,
   postChatController,
   getAllChatsController,
   getChatByIdController,
-  deleteChatByIdController,
-  getTokenByIdController,
-  getChatBlobController,
   patchChatByIdController,
 };

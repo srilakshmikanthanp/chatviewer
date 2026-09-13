@@ -17,6 +17,9 @@ import { BASE_URL } from "./constants";
 import AppError from "./AppError";
 import App from "./App";
 import { CircularProgress } from "@mui/material";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { DriveAuthProvider } from './apiClients/DriveAuthProvider';
+import { GOOGLE_CLIENT_ID } from './constants';
 
 // Jwt token expired
 axios.interceptors.response.use(undefined, (error) => {
@@ -68,9 +71,13 @@ const Application = (
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={Loading} >
-        <BrowserRouter>
-          <AppError><App /></AppError>
-        </BrowserRouter>
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+          <DriveAuthProvider>
+            <BrowserRouter>
+              <AppError><App /></AppError>
+            </BrowserRouter>
+          </DriveAuthProvider>
+        </GoogleOAuthProvider>
       </PersistGate>
     </Provider>
   </QueryClientProvider>

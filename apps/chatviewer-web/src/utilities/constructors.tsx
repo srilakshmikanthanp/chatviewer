@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import { IViewchatState } from "../types/pagestates";
-import { IChat, IMsg } from "../types";
+import { IChat, IMsg, IViewerChat } from "../types";
 
 /**
  * This function is used to create a new IViewerState object.
@@ -13,11 +13,15 @@ import { IChat, IMsg } from "../types";
  * @return - returns a viewer state
  */
 export function createViewerState(
-  chat: IChat | null,
+  chat: IChat | IViewerChat | null,
   messages: IMsg[],
 ): IViewchatState {
+  const viewerChat = chat && 'chatId' in chat
+    ? { ...chat, canShare: chat.chatId > 0 }
+    : chat;
+
   return {
-    header: { chat },
+    header: { chat: viewerChat },
     body: { messages }
   };
 }

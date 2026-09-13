@@ -6,13 +6,14 @@
 import { IViewchatState } from "../types/pagestates";
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useState, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { Selector, Input } from "../modals";
+import { Selector, ShareModal } from "../modals";
+import { useDownloadDriveChat } from "../apiClients/googleDriveApi";
+import { useDriveAuth } from "../apiClients/DriveAuthProvider";
 import { IUser } from "../types";
 import { saveAs } from 'file-saver';
-import axios from "axios";
 import {
   selectUser,
   selectJwt
@@ -26,7 +27,6 @@ import {
   SpeedDialAction,
   SpeedDial,
   SpeedDialIcon,
-  Tooltip,
   Snackbar,
   Alert,
 } from "@mui/material";
@@ -47,6 +47,12 @@ interface IChatBoxProps {
   canChangeAuthor: boolean;
 }
 
+const SpeedDialActionWithTooltip = SpeedDialAction as unknown as React.ComponentType<{
+  tooltipTitle: string;
+  icon: React.ReactElement;
+  onClick: () => void;
+}>;
+
 function ChatOptions(props: IChatBoxProps) {
   // SpeedDial Icon Constants
   const SPEED_DIAL_ICON = (<SpeedDialIcon openIcon={<Close />} icon={<Construction />} />);
@@ -56,23 +62,29 @@ function ChatOptions(props: IChatBoxProps) {
 
   // Speed Dial Icon
   const selectAuthorIcon = (
-    <Tooltip title="Choose Primary Author">
-      <SpeedDialAction icon={<Person />} onClick={props.onAuthor} />
-    </Tooltip>
+    <SpeedDialActionWithTooltip
+      tooltipTitle="Choose Primary Author"
+      icon={<Person />}
+      onClick={props.onAuthor}
+    />
   );
 
   // Download Icon
   const downloadIcon = (
-    <Tooltip title="Download Chat File">
-      <SpeedDialAction icon={<CloudDownload />} onClick={props.onDownload} />
-    </Tooltip>
+    <SpeedDialActionWithTooltip
+      tooltipTitle="Download Chat File"
+      icon={<CloudDownload />}
+      onClick={props.onDownload}
+    />
   );
 
   // Share Icon
   const shareIcon = (
-    <Tooltip title="Copy Link for Chat">
-      <SpeedDialAction icon={<Share />} onClick={props.onShare} />
-    </Tooltip>
+    <SpeedDialActionWithTooltip
+      tooltipTitle="Copy Link for Chat"
+      icon={<Share />}
+      onClick={props.onShare}
+    />
   );
 
   // Render Speed Dial
@@ -114,14 +126,17 @@ export default function Viewchat() {
   // Is Author Selector Open or not to select Primary Author
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
 
-  // is input open for share expiring time
-  const [isInputOpen, setIsInputOpen] = useState(false);
+  // is share modal open
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   // is snackbar open
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   // primary author of the chat
   const [primaryAuthor, setPrimaryAuthor] = useState('');
+
+  const driveDownload = useDownloadDriveChat();
+  const { getToken } = useDriveAuth();
 
   // location state from the router to get data
   const locationState = useLocation().state as IViewchatState;
@@ -132,16 +147,16 @@ export default function Viewchat() {
   // jwt token
   const jwt: string | null = useSelector(selectJwt);
 
-  // if no data is found
-  if (!locationState) {
-    throw new Error("No Chats/Messages found");
+  // Unique Chat id from the location state
+  const chat = locationState?.header.chat;
+
+  // The viewer requires a Drive-backed chat.
+  if (!locationState || !chat?.driveFileId) {
+    return <Navigate to="/" replace />;
   }
 
   // messages from the location state
   const messages = locationState.body.messages;
-
-  // Unique Chat id from the location state
-  const chat = locationState.header.chat;
 
   // author list of chats
   const authors = Array.from(new Set(
@@ -161,57 +176,16 @@ export default function Viewchat() {
   // handle download
   const handleDownload = async () => {
     // if no user is found or no jwt is found
-    if (!user || !jwt || !chat) {
+    if (!user || !jwt) {
       throw new Error("Something Went Wrong: Can't Download the chat at the Moment");
     }
 
-    // Query Url to get token
-    const tokenUrl = `/api/v2/chats/${chat.chatId}/token`;
-
-    // axios request
-    const resp = await axios.get(tokenUrl, {
-      headers: { Authorization: `Bearer ${jwt}` },
-      params: { expiresIn: "1h" },
+    const accessToken = await getToken(true, user.email);
+    const blob = await driveDownload.mutateAsync({
+      driveFileId: chat.driveFileId,
+      accessToken,
     });
-
-    // get the token
-    const token = resp.headers["chat-token"];
-
-    // download the chat
-    const downloadUrl = (
-      `${axios.defaults.baseURL}/api/v2/chats/shared/${token}/blob`
-    );
-
-    // download the chat
-    saveAs(downloadUrl, chat.name);
-  }
-
-  // handle share
-  const handleShare = async (exp: string) => {
-    // if no user is found or no jwt is found
-    if (!user || !jwt || !chat) {
-      throw new Error("Something Went Wrong: Can't Share the chat at the Moment");
-    }
-
-    // Query Url to get token
-    const QueryUrl = `/api/v2/chats/${chat.chatId}/token`;
-
-    // axios request
-    const resp = await axios.get(QueryUrl, {
-      headers: { Authorization: `Bearer ${jwt}` }, params: { expiresIn: exp },
-    });
-
-    // token
-    const token = resp.headers["chat-token"];
-
-    // generate url
-    const url = `${window.location.origin}/chatshared/${token}`;
-
-    // copy to clipboard
-    await navigator.clipboard.writeText(url);
-
-    // show snackbar
-    setIsSnackbarOpen(true);
+    saveAs(blob, chat.name || 'chat');
   }
 
   // handle author selection
@@ -227,19 +201,18 @@ export default function Viewchat() {
   const Body = () => (
     <ContentWrapper>
       <ChatOptions
-        downloadable={chat !== null && user !== null}
+        downloadable={user !== null}
         canChangeAuthor={true}
-        shareable={chat !== null && user !== null}
+        shareable={chat.canShare === true && user !== null}
         onDownload={handleDownload}
-        onShare={() => setIsInputOpen(true)}
+        onShare={() => setIsShareModalOpen(true)}
         onAuthor={() => setIsSelectorOpen(true)}
       />
-      <Input
-        description="The max time for link remain valid."
-        title="Enter Expiring Time"
-        isOpen={isInputOpen}
-        onClose={() => setIsInputOpen(false)}
-        onEntered={handleShare}
+      <ShareModal
+        driveFileId={chat.driveFileId}
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        onSuccess={() => setIsSnackbarOpen(true)}
       />
       <Snackbar
         onClose={() => setIsSnackbarOpen(false)}

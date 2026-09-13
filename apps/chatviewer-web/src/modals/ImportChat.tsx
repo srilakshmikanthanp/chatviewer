@@ -5,10 +5,13 @@
 
 import { blobToMsg, getMimeType } from "../utilities/functions";
 import { ChangeEvent, HTMLAttributes, useState } from "react";
+import { useSelector } from "react-redux";
 import { IChat, IMsg } from "../types";
+import { selectUser } from "../redux/slices/userSlice";
 import { Form } from "react-bootstrap";
 import { useCreateChat } from "../apiClients/chatApi";
-import { blobToBase64 } from "../utilities/functions";
+import { useUploadDriveChat } from "../apiClients/googleDriveApi";
+import { useDriveAuth } from "../apiClients/DriveAuthProvider";
 import {
   DialogContentText,
   DialogActions,
@@ -39,9 +42,15 @@ export default function ImportChat(props: IImportChatProps) {
 
   // is now ready to import the chat
   const [isImportable, setIsImportable] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // create chat hook
   const createChat = useCreateChat();
+
+  // upload chat file to Google Drive
+  const uploadDriveChat = useUploadDriveChat();
+  const { getToken } = useDriveAuth();
+  const user = useSelector(selectUser);
 
   // on File Upload
   const handleFileUpload = async (evt: ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +86,7 @@ export default function ImportChat(props: IImportChatProps) {
 
     // set is importing to true
     setIsImporting(true);
+    setErrorMessage(null);
 
     // Check if the mime type is valid
     if (!mimeType) { return; }
@@ -117,35 +127,35 @@ export default function ImportChat(props: IImportChatProps) {
       throw new Error("Can't Upload: User is not valid");
     }
 
-    // get the base64 encoded file
-    const base64 = await blobToBase64(chatBlob);
+    try {
+      const accessToken = await getToken(true, user?.email);
 
-    // chat Data
-    const chat = {
-      name: selectedFile.name,
-      base64: base64,
-    };
+      const uploadedFile = await uploadDriveChat.mutateAsync({
+        name: selectedFile.name,
+        file: selectedFile,
+        accessToken,
+      });
 
-    // create the chat
-    const response = await createChat.mutateAsync({
-      jwt: props.jwt,
-      chat: chat,
-    });
+      const chat = {
+        name: selectedFile.name,
+        driveFileId: uploadedFile,
+      };
 
-    // set the file blob to null
-    setSelectedFile(undefined);
+      const response = await createChat.mutateAsync({
+        jwt: props.jwt,
+        chat,
+      });
 
-    // set is uploadable to true
-    setIsUploadable(true);
-
-    // set is importing to false
-    setIsImporting(false);
-
-    // set is ready to false
-    setIsImportable(false);
-
-    // import the chat
-    return props.onImport(chats, response.data);
+      setSelectedFile(undefined);
+      setIsUploadable(true);
+      setIsImporting(false);
+      setIsImportable(false);
+      return props.onImport(chats, response.data);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Unable to upload chat');
+      setIsImporting(false);
+      setIsImportable(true);
+    }
   }
 
   // on Close
@@ -201,6 +211,7 @@ export default function ImportChat(props: IImportChatProps) {
           Import your chat from a file Here.
           it should be either .txt or .zip.
         </DialogContentText>
+        {errorMessage && <DialogContentText className="text-danger">{errorMessage}</DialogContentText>}
         <Form className="mt-3">
           <Form.Group controlId="formChatFile" className="mb-3">
             <Form.Control

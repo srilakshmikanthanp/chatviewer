@@ -6,9 +6,11 @@
 import IUser from "./IUser";
 import IChat from "./IChat";
 import IMsg from "./IMsg";
+import IViewerChat from "./IViewerChat";
 
 export type {
   IUser,
   IChat,
-  IMsg
+  IMsg,
+  IViewerChat
 }

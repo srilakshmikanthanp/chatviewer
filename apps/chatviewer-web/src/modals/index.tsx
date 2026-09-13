@@ -9,6 +9,7 @@ import ImportChat from "./ImportChat";
 import Selector from "./Selector";
 import UserEditor from "./UserEditor";
 import Input from "./Input"
+import ShareModal from "./ShareModal";
 
 export {
   AccountCloser,
@@ -17,4 +18,5 @@ export {
   Input,
   Selector,
   UserEditor,
+  ShareModal,
 };

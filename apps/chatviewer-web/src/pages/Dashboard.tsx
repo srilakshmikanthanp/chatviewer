@@ -9,6 +9,8 @@ import { selectUser, selectJwt } from "../redux/slices/userSlice";
 import { createViewerState } from "../utilities/constructors";
 import { useDeleteChat } from "../apiClients/chatApi";
 import { useGetChats } from "../apiClients/chatApi";
+import { useDeleteDriveChat, useDownloadDriveChat } from "../apiClients/googleDriveApi";
+import { useDriveAuth } from "../apiClients/DriveAuthProvider";
 import { blobToMsg } from "../utilities/functions";
 import { setUser } from "../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
@@ -17,7 +19,7 @@ import { IUser, IChat } from "../types";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import React, { useState } from "react";
-import axios from "axios";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 // Dashboard Wrapper
 const DashboardWrapper = styled('div')`
@@ -62,6 +64,7 @@ export default function Dashboard() {
 
   // is in progress
   const [isInProgress, setIsInProgress] = useState<boolean>(false);
+  const [isDownloadErrorOpen, setIsDownloadErrorOpen] = useState(false);
 
   // Editing chat
   const [editingChat, setEditingChat] = useState<IChat | null>(null);
@@ -71,6 +74,9 @@ export default function Dashboard() {
 
   // Chat Delete hook
   const chatDelete = useDeleteChat();
+  const driveDelete = useDeleteDriveChat();
+  const driveDownload = useDownloadDriveChat();
+  const { getToken } = useDriveAuth();
 
   // user details
   const user: IUser | null = useSelector(selectUser);
@@ -155,22 +161,20 @@ export default function Dashboard() {
 
   // on Open Handler
   const onOpenChat = async (chat: IChat) => {
-    // set the progress to indicate loading
-    setIsInProgress(true);
-
-    // get the blob from the server
-    const blob = await axios.get(chat.blobUrl, {
-      headers: { Authorization: "Bearer " + jwt },
-      responseType: "blob"
-    });
-
-    // convert the blob to msg
-    const msgs = await blobToMsg(blob.data);
-
-    // Navigate to the chat view page
-    navigate("/viewchat", {
-      state: createViewerState(chat, msgs)
-    });
+    try {
+      setIsInProgress(true);
+      const accessToken = await getToken(true, user.email);
+      const blob = await driveDownload.mutateAsync({
+        driveFileId: chat.driveFileId,
+        accessToken,
+      });
+      const msgs = await blobToMsg(blob);
+      navigate("/viewchat", { state: createViewerState(chat, msgs) });
+    } catch {
+      setIsDownloadErrorOpen(true);
+    } finally {
+      setIsInProgress(false);
+    }
   }
 
   // on Delete Handler
@@ -180,7 +184,13 @@ export default function Dashboard() {
       return;
     }
 
-    // delete the chat
+    const accessToken = await getToken(true, user.email);
+    await driveDelete.mutateAsync({
+      driveFileId: chat.driveFileId,
+      accessToken,
+    });
+
+    // delete the chat metadata
     await chatDelete.mutateAsync({
       chatId: chat.chatId,
       jwt: jwt,
@@ -243,6 +253,18 @@ export default function Dashboard() {
         jwt={jwt}
         isOpen={isChatEditorOpen}
       />}
+      <Dialog
+        open={isDownloadErrorOpen}
+        onClose={() => setIsDownloadErrorOpen(false)}
+      >
+        <DialogTitle>Chat unavailable</DialogTitle>
+        <DialogContent>
+          This file may have been deleted from Google Drive or you may no longer have permission to view it.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDownloadErrorOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </DashboardWrapper>
   );
 

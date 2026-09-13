@@ -3,12 +3,12 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import IChat from "../IChat";
+import IViewerChat from "../IViewerChat";
 import IMsg from "../IMsg";
 
 export default interface IViewchatState {
   header: {
-    chat: IChat | null;
+    chat: IViewerChat | null;
   },
   body: {
     messages: IMsg[];
