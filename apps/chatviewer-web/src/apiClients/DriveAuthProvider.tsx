@@ -11,7 +11,7 @@ import {
   useState,
 } from 'react';
 
-const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+const DRIVE_SCOPE = ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/drive.file'].join(' ');
 const TOKEN_EXPIRY_BUFFER_MS = 60_000;
 
 type DriveAuthContextValue = {
