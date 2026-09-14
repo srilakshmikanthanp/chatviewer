@@ -1,6 +1,6 @@
-import userRouter from './routers/v2/userRouter';
-import chatRouter from "./routers/v2/chatRouter";
-import { db_initializer } from './utilities';
+import userRouter from './user/userRouter';
+import chatRouter from "./chat/chatRouter";
+import db_initializer from './database/db_init';
 import express from 'express';
 import cors from "cors";
 

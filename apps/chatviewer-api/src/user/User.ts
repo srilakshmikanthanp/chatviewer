@@ -7,7 +7,7 @@ import { JWT_EXPIRATION_TIME } from "../constants";
 import { IJwtAuthPayload } from "../types/jwt";
 import { sequelize } from "../database";
 import * as jwt from "jsonwebtoken";
-import Chat from "./Chat";
+import Chat from "../chat/Chat";
 import * as env from "../env/env";
 
 import {

@@ -3,9 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { userPostController, userGetController, userPatchController, userDeleteController } from "../../controllers"
-import { userPatchValidator, userPostValidator } from "../../validators";
-import { authenticator } from "../../middlewares";
+import { userPostController, userGetController, userPatchController, userDeleteController } from "./userController"
+import { userPatchValidator, userPostValidator } from "./userValidator";
+import { authenticator } from "../middlewares";
 import { Router } from "express";
 
 // create a router object

@@ -5,7 +5,8 @@
 
 import { Request, Response } from 'express';
 import { sequelize } from '../database';
-import { User, Chat } from '../models';
+import User from '../user/User';
+import Chat from './Chat';
 import { QueryTypes } from 'sequelize';
 
 // post chat controller function

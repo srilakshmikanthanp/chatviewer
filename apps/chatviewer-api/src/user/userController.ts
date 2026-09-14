@@ -5,7 +5,8 @@
 
 import { OAuth2Client } from 'google-auth-library';
 import { Request, Response } from 'express';
-import { User, Chat } from '../models';
+import User from './User';
+import Chat from '../chat/Chat';
 
 // create a user controller function
 export async function userPostController(req: Request, res: Response) {

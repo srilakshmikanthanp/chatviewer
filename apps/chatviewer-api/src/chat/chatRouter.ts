@@ -9,9 +9,9 @@ import {
   getAllChatsController,
   getChatByIdController,
   patchChatByIdController,
-} from '../../controllers';
-import { postChatValidator, patchChatValidator } from '../../validators';
-import { authenticator } from '../../middlewares';
+} from './chatController';
+import { postChatValidator, patchChatValidator } from './chatValidator';
+import { authenticator } from '../middlewares';
 import { Router } from 'express';
 
 // Create a new router for the chat API

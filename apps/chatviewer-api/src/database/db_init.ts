@@ -3,7 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { sequelize } from "../database";
+import { sequelize } from "./index";
+import "../user/User";
 
 // initialize the database
 export default async function db_initializer() {
