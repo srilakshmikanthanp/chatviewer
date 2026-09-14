@@ -70,7 +70,7 @@ export function DriveAuthProvider({ children }: { children: ReactNode }) {
       resolveRequest.current = resolve;
       rejectRequest.current = reject;
       login({
-        prompt: interactive ? 'consent' : 'none',
+        prompt: interactive ? '' : 'none',
         hint: loginHint,
       });
     });
